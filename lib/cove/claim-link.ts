@@ -17,6 +17,9 @@ export type ClaimBlobV1 = {
   v: 1;
   // Owner private key (bigint hex) — secret. Whoever holds this can spend.
   sk: string;
+  // Blinding factor (bigint hex) — secret. Required by the spend ZK proof to
+  // recompute the commitment witness. Lose it and the UTXO is unspendable.
+  r: string;
   amt: string;
   mint: string;
   idx: number;

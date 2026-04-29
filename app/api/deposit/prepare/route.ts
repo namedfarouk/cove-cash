@@ -241,6 +241,9 @@ export async function POST(req: Request) {
     utxoSerializedBase64: bytesToBase64(serializeUtxo(depositOutput)),
     utxoOwnerPrivateKeyHex: bigintToHex(utxoOwner.privateKey),
     utxoOwnerPublicKeyHex: bigintToHex(utxoOwner.publicKey),
+    // Required for the claim flow to reconstruct the spend witness. Without
+    // this the URL blob is missing `r` and the UTXO is unspendable.
+    utxoBlindingHex: bigintToHex(depositOutput.blinding),
     metadata: {
       amount: amount.toString(),
       mint: mint.toBase58(),

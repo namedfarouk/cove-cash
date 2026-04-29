@@ -16,6 +16,7 @@ type PrepareResponse = {
   utxoSerializedBase64: string;
   utxoOwnerPrivateKeyHex: string;
   utxoOwnerPublicKeyHex: string;
+  utxoBlindingHex: string;
   metadata: {
     amount: string;
     mint: string;
@@ -149,6 +150,7 @@ export default function SendPage() {
       const url = buildClaimUrl({
         v: 1,
         sk: prepared.utxoOwnerPrivateKeyHex,
+        r: prepared.utxoBlindingHex,
         amt: prepared.metadata.amount,
         mint: prepared.metadata.mint,
         idx: prepared.metadata.commitmentIndex,
