@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
+import Link from "next/link";
 
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { persistDeposit, type PersistedDeposit } from "@/lib/cove/storage";
@@ -104,6 +105,7 @@ export default function SendPage() {
         mint: prepared.metadata.mint,
         ownerPublicKeyHex: prepared.utxoOwnerPublicKeyHex,
         ownerPrivateKeyHex: prepared.utxoOwnerPrivateKeyHex,
+        r: prepared.utxoBlindingHex,
         index: prepared.metadata.commitmentIndex,
         commitment: prepared.metadata.expectedCommitment,
         siblingCommitment: prepared.metadata.expectedSiblingCommitment,
@@ -184,7 +186,15 @@ export default function SendPage() {
     <div className="min-h-screen flex flex-col">
       <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
         <span className="text-xl font-semibold tracking-tight">Cove</span>
-        <WalletMultiButton />
+        <div className="flex items-center gap-4">
+          <Link
+            href="/dashboard"
+            className="text-sm text-zinc-500 hover:underline"
+          >
+            Dashboard
+          </Link>
+          <WalletMultiButton />
+        </div>
       </header>
 
       <main className="flex flex-1 items-center justify-center px-6 py-12">

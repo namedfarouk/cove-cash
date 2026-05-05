@@ -22,6 +22,7 @@ export type PersistedDeposit = {
   mint: string;
   ownerPublicKeyHex: string;
   ownerPrivateKeyHex: string;
+  r?: string;
   index?: number;
   commitment?: string;
   siblingCommitment?: string;
