@@ -8,6 +8,7 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
+import { ThemeProvider } from "next-themes";
 
 const FALLBACK_RPC_URL = "https://api.mainnet-beta.solana.com";
 const RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? FALLBACK_RPC_URL;
@@ -26,10 +27,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <ConnectionProvider endpoint={RPC_URL}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>{children}</WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
+      <ConnectionProvider endpoint={RPC_URL}>
+        <WalletProvider wallets={wallets} autoConnect>
+          <WalletModalProvider>{children}</WalletModalProvider>
+        </WalletProvider>
+      </ConnectionProvider>
+    </ThemeProvider>
   );
 }
