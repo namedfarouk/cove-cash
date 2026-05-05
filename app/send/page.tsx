@@ -110,15 +110,22 @@ export default function SendPage() {
       };
       const storageKey = persistDeposit(persisted);
 
-      // 3. Deserialize the unsigned tx and ask the wallet to sign.
+      // 3. Deserialize the unsigned tx. The blockhash baked in by the server
+      //    may have expired during proof generation (~10–30s) plus user think
+      //    time — Solana's blockhash window is ~90s. Refresh before signing so
+      //    preflight simulation doesn't reject with "Blockhash not found".
       const tx = VersionedTransaction.deserialize(
         base64ToBytes(prepared.unsignedTransactionBase64),
       );
+      const { blockhash: freshBlockhash, lastValidBlockHeight: freshLastValid } =
+        await connection.getLatestBlockhash("confirmed");
+      tx.message.recentBlockhash = freshBlockhash;
 
       setStatus({ kind: "signing" });
       const signed = await signTransaction(tx);
 
-      // 4. Submit and confirm.
+      // 4. Submit and confirm against the fresh blockhash (NOT
+      //    prepared.metadata's stale one).
       setStatus({ kind: "submitting" });
       const signature = await connection.sendRawTransaction(signed.serialize(), {
         skipPreflight: false,
@@ -128,8 +135,8 @@ export default function SendPage() {
       const confirmation = await connection.confirmTransaction(
         {
           signature,
-          blockhash: prepared.metadata.recentBlockhash,
-          lastValidBlockHeight: prepared.metadata.lastValidBlockHeight ?? 0,
+          blockhash: freshBlockhash,
+          lastValidBlockHeight: freshLastValid,
         },
         "confirmed",
       );

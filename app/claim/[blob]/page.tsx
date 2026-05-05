@@ -129,17 +129,29 @@ export default function ClaimPage() {
 
       // 2. Two possible paths from the route:
       //    - relay_submitted: Cove relay already submitted the tx with its own
-      //      wallet. We just confirm on chain.
+      //      wallet. We just confirm on chain (use the route's blockhash).
       //    - user_sign: SDK fell back to direct submission. Client signs and
-      //      submits. (Forward-compat fallback; not used under SDK 0.1.5.)
+      //      submits. The route's blockhash is stale (proof gen + think time
+      //      can exceed Solana's ~90s window), so we refresh before signing
+      //      and confirm against the fresh strategy.
       let signature: string;
+      let confirmBlockhash = prepared.metadata.recentBlockhash;
+      let confirmLastValidBlockHeight =
+        prepared.metadata.lastValidBlockHeight ?? 0;
+
       if (prepared.mode === "relay_submitted") {
         signature = prepared.signature;
-        // Skip signing/submitting entirely.
+        // Skip signing/submitting entirely. Relay already used its own
+        // blockhash; we keep the route-supplied strategy as our polling bound.
       } else {
         const tx = VersionedTransaction.deserialize(
           base64ToBytes(prepared.unsignedTransactionBase64),
         );
+        const refreshed = await connection.getLatestBlockhash("confirmed");
+        tx.message.recentBlockhash = refreshed.blockhash;
+        confirmBlockhash = refreshed.blockhash;
+        confirmLastValidBlockHeight = refreshed.lastValidBlockHeight;
+
         setStatus({ kind: "signing" });
         const signed = await signTransaction(tx);
 
@@ -149,15 +161,13 @@ export default function ClaimPage() {
         });
       }
 
-      // 3. Confirm on chain. In relay_submitted mode the tx is already on the
-      //    wire; the strategy just bounds how long we poll. In user_sign mode
-      //    the tx was just submitted client-side.
+      // 3. Confirm on chain.
       setStatus({ kind: "confirming", signature });
       const confirmation = await connection.confirmTransaction(
         {
           signature,
-          blockhash: prepared.metadata.recentBlockhash,
-          lastValidBlockHeight: prepared.metadata.lastValidBlockHeight ?? 0,
+          blockhash: confirmBlockhash,
+          lastValidBlockHeight: confirmLastValidBlockHeight,
         },
         "confirmed",
       );
