@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import { motion } from "framer-motion";
 import {
   Bird,
   Check,
   CopyCheck,
   LockKeyhole,
+  Menu,
   Send,
   Wallet,
 } from "lucide-react";
@@ -13,15 +16,20 @@ import Link from "next/link";
 
 import { useCoveLanguage } from "@/components/cove-language";
 import {
+  MobileMenuOverlay,
   LanguageSelector,
   SectionEyebrow,
   ThemeToggle,
   fadeUp,
   stagger,
+  useLockBodyScroll,
 } from "@/components/cove-ui";
 
 export default function Home() {
   const { t } = useCoveLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useLockBodyScroll(isOpen);
 
   const steps = [
     {
@@ -61,6 +69,16 @@ export default function Home() {
       label: t.landing.privacy,
       oldWay: t.landing.privacyOld,
       cove: t.landing.privacyCove,
+    },
+  ];
+
+  const mobileLinks = [
+    { label: t.nav.howItWorks, href: "#how-it-works" },
+    { label: t.nav.compare, href: "#compare" },
+    {
+      label: t.nav.docs,
+      href: "https://github.com/namedfarouk/cove-cash#readme",
+      external: true,
     },
   ];
 
@@ -114,7 +132,24 @@ export default function Home() {
 
           <div className="min-w-0 flex-1 md:hidden" />
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2 md:hidden">
+            <Link
+              href="/send"
+              className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+            >
+              {t.landing.launchCove}
+            </Link>
+            <button
+              type="button"
+              aria-label="Open menu"
+              onClick={() => setIsOpen(true)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="hidden shrink-0 items-center gap-2 md:flex">
             <LanguageSelector />
             <ThemeToggle />
             <Link
@@ -125,6 +160,12 @@ export default function Home() {
             </Link>
           </div>
         </motion.header>
+
+        <MobileMenuOverlay
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          links={mobileLinks}
+        />
 
         <section className="relative pb-24 pt-10 sm:pb-28 sm:pt-14 lg:pb-32">
           <motion.div

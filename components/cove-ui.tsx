@@ -6,9 +6,11 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import {
   ChevronDown,
   Globe,
+  Menu,
   Moon,
   Sparkles,
   Sun,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -44,6 +46,19 @@ export function SectionEyebrow({ children }: { children: ReactNode }) {
       {children}
     </div>
   );
+}
+
+export function useLockBodyScroll(locked: boolean) {
+  useEffect(() => {
+    if (!locked) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [locked]);
 }
 
 export function ThemeToggle() {
@@ -177,38 +192,176 @@ export function CoveNavbar({
   cta?: { label: string; href: string };
   walletSlot?: ReactNode;
 }) {
+  const { t } = useCoveLanguage();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useLockBodyScroll(isOpen);
+
+  const mobileLinks = [
+    { label: t.nav.dashboard, href: "/dashboard" },
+    { label: t.nav.sendPayment, href: "/send" },
+  ];
+
   return (
-    <motion.header
-      initial="hidden"
-      animate="visible"
-      variants={fadeUp}
-      className="flex min-h-[72px] items-center gap-4 py-6"
-    >
-      <Link href="/" className="flex shrink-0 items-center gap-3">
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
-          C
-        </span>
-        <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
-          Cove
-        </span>
-      </Link>
+    <>
+      <motion.header
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        className="flex min-h-[72px] items-center gap-4 py-6"
+      >
+        <Link href="/" className="flex shrink-0 items-center gap-3">
+          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
+            C
+          </span>
+          <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
+            Cove
+          </span>
+        </Link>
 
-      <div className="min-w-0 flex-1" />
+        <div className="min-w-0 flex-1" />
 
-      <div className="flex shrink-0 items-center gap-2">
-        <ThemeToggle />
-        <LanguageSelector />
-        {cta ? (
-          <Link
-            href={cta.href}
-            className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          {walletSlot ?? (cta ? (
+            <Link
+              href={cta.href}
+              className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+            >
+              {cta.label}
+            </Link>
+          ) : null)}
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setIsOpen(true)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
           >
-            {cta.label}
-          </Link>
-        ) : null}
-        {walletSlot}
-      </div>
-    </motion.header>
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
+          <ThemeToggle />
+          <LanguageSelector />
+          {cta ? (
+            <Link
+              href={cta.href}
+              className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
+            >
+              {cta.label}
+            </Link>
+          ) : null}
+          {walletSlot}
+        </div>
+      </motion.header>
+
+      <MobileMenuOverlay
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        links={mobileLinks}
+      />
+    </>
+  );
+}
+
+export function MobileMenuOverlay({
+  isOpen,
+  onClose,
+  links,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  links: Array<{ label: string; href: string; external?: boolean }>;
+}) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleResize() {
+      if (window.innerWidth >= 768) onClose();
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen ? (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+          className="fixed inset-0 z-50 bg-[#0B0F14]/95 backdrop-blur-lg"
+        >
+          <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-6">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/"
+                onClick={onClose}
+                className="flex items-center gap-3"
+              >
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lg font-semibold text-white shadow-[0_0_30px_rgba(34,197,94,0.16)]">
+                  C
+                </span>
+                <span className="text-lg font-semibold tracking-tight text-white">
+                  Cove
+                </span>
+              </Link>
+
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={onClose}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-200 transition-colors duration-200 hover:bg-zinc-800 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+              {links.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={onClose}
+                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                ) : link.href.startsWith("#") ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={onClose}
+                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={onClose}
+                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ),
+              )}
+            </div>
+
+            <div className="flex items-center justify-center gap-3 pb-6">
+              <LanguageSelector />
+              <ThemeToggle />
+            </div>
+          </div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }
 
