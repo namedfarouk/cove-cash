@@ -203,64 +203,58 @@ export function CoveNavbar({
   ];
 
   return (
-    <>
-      <motion.header
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex min-h-[72px] items-center gap-4 py-6"
-      >
-        <Link href="/" className="flex shrink-0 items-center gap-3">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
-            C
-          </span>
-          <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
-            Cove
-          </span>
-        </Link>
+    <div className="fixed left-0 top-0 z-50 w-full border-b border-zinc-200/70 bg-white/95 backdrop-blur-md dark:border-zinc-900 dark:bg-[#0B0F14]/95">
+      <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        <motion.header
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+          className="flex min-h-[72px] items-center gap-4"
+        >
+          <Link href="/" className="flex shrink-0 items-center gap-3">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
+              C
+            </span>
+            <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
+              Cove
+            </span>
+          </Link>
 
-        <div className="min-w-0 flex-1" />
+          <div className="min-w-0 flex-1" />
 
-        <div className="flex shrink-0 items-center gap-2 md:hidden">
-          {walletSlot ?? (cta ? (
-            <Link
-              href={cta.href}
-              className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
-            >
-              {cta.label}
-            </Link>
-          ) : null)}
           <button
             type="button"
-            aria-label="Open menu"
-            onClick={() => setIsOpen(true)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            onClick={() => setIsOpen((current) => !current)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8 md:hidden"
           >
-            <Menu className="h-5 w-5" />
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-        </div>
 
-        <div className="hidden shrink-0 items-center gap-2 md:flex">
-          <ThemeToggle />
-          <LanguageSelector />
-          {cta ? (
-            <Link
-              href={cta.href}
-              className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
-            >
-              {cta.label}
-            </Link>
-          ) : null}
-          {walletSlot}
-        </div>
-      </motion.header>
+          <div className="hidden shrink-0 items-center gap-2 md:flex">
+            <ThemeToggle />
+            <LanguageSelector />
+            {cta ? (
+              <Link
+                href={cta.href}
+                className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
+              >
+                {cta.label}
+              </Link>
+            ) : null}
+            {walletSlot}
+          </div>
+        </motion.header>
+      </div>
 
       <MobileMenuOverlay
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         links={mobileLinks}
+        primaryAction={cta}
+        walletSlot={walletSlot}
       />
-    </>
+    </div>
   );
 }
 
@@ -268,10 +262,14 @@ export function MobileMenuOverlay({
   isOpen,
   onClose,
   links,
+  primaryAction,
+  walletSlot,
 }: {
   isOpen: boolean;
   onClose: () => void;
   links: Array<{ label: string; href: string; external?: boolean }>;
+  primaryAction?: { label: string; href: string };
+  walletSlot?: ReactNode;
 }) {
   useEffect(() => {
     if (!isOpen) return;
@@ -292,34 +290,10 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-0 z-50 bg-[#0B0F14]/95 backdrop-blur-lg"
+          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-[#0B0F14] md:hidden"
         >
-          <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 py-6 sm:px-6">
-            <div className="flex items-center justify-between">
-              <Link
-                href="/"
-                onClick={onClose}
-                className="flex items-center gap-3"
-              >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lg font-semibold text-white shadow-[0_0_30px_rgba(34,197,94,0.16)]">
-                  C
-                </span>
-                <span className="text-lg font-semibold tracking-tight text-white">
-                  Cove
-                </span>
-              </Link>
-
-              <button
-                type="button"
-                aria-label="Close menu"
-                onClick={onClose}
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-200 transition-colors duration-200 hover:bg-zinc-800 hover:text-white"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+          <div className="flex min-h-full flex-col space-y-6 p-6">
+            <div className="flex flex-col space-y-6">
               {links.map((link) =>
                 link.external ? (
                   <a
@@ -328,7 +302,7 @@ export function MobileMenuOverlay({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -337,7 +311,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -346,7 +320,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-2xl font-medium text-zinc-200 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -354,9 +328,24 @@ export function MobileMenuOverlay({
               )}
             </div>
 
-            <div className="flex items-center justify-center gap-3 pb-6">
-              <LanguageSelector />
-              <ThemeToggle />
+            <div className="border-t border-zinc-800 pt-6">
+              <div className="flex items-center gap-3">
+                <LanguageSelector />
+                <ThemeToggle />
+              </div>
+            </div>
+
+            <div className="mt-auto flex flex-col gap-3">
+              {walletSlot ? <div className="flex justify-start">{walletSlot}</div> : null}
+              {primaryAction ? (
+                <Link
+                  href={primaryAction.href}
+                  onClick={onClose}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-[#22C55E] px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors duration-200 hover:bg-[#16a34a]"
+                >
+                  {primaryAction.label}
+                </Link>
+              ) : null}
             </div>
           </div>
         </motion.div>
@@ -415,7 +404,7 @@ export function CovePage({
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         {navbar}
-        <div className={`relative flex-1 ${contentClassName}`}>{children}</div>
+        <div className={`relative flex-1 pt-24 ${contentClassName}`}>{children}</div>
       </div>
     </main>
   );

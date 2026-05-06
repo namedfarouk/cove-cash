@@ -10,6 +10,7 @@ import {
   LockKeyhole,
   Menu,
   Send,
+  X,
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
@@ -91,82 +92,79 @@ export default function Home() {
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.75),rgba(255,255,255,0.96)),linear-gradient(to_right,rgba(24,24,27,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(24,24,27,0.04)_1px,transparent_1px)] bg-[size:auto,72px_72px,72px_72px] dark:bg-[linear-gradient(to_bottom,rgba(24,24,27,0.1),rgba(24,24,27,0.85)),linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)]" />
       </div>
 
-      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
-        <motion.header
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="flex items-center gap-4 py-6"
-        >
-          <Link href="/" className="flex shrink-0 items-center gap-3">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
-              C
-            </span>
-            <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
-              Cove
-            </span>
-          </Link>
-
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 md:flex">
-            <a
-              href="#how-it-works"
-              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
-            >
-              {t.nav.howItWorks}
-            </a>
-            <a
-              href="#compare"
-              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
-            >
-              {t.nav.compare}
-            </a>
-            <a
-              href="https://github.com/namedfarouk/cove-cash#readme"
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
-            >
-              {t.nav.docs}
-            </a>
-          </nav>
-
-          <div className="min-w-0 flex-1 md:hidden" />
-
-          <div className="flex shrink-0 items-center gap-2 md:hidden">
-            <Link
-              href="/send"
-              className="inline-flex items-center rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
-            >
-              {t.landing.launchCove}
+      <div className="fixed left-0 top-0 z-50 w-full border-b border-zinc-200/70 bg-white/95 backdrop-blur-md dark:border-zinc-900 dark:bg-[#0B0F14]/95">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <motion.header
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="flex min-h-[72px] items-center gap-4"
+          >
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
+                C
+              </span>
+              <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
+                Cove
+              </span>
             </Link>
+
+            <div className="min-w-0 flex-1 md:hidden" />
+
             <button
               type="button"
-              aria-label="Open menu"
-              onClick={() => setIsOpen(true)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              onClick={() => setIsOpen((current) => !current)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8 md:hidden"
             >
-              <Menu className="h-5 w-5" />
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
-          </div>
 
-          <div className="hidden shrink-0 items-center gap-2 md:flex">
-            <LanguageSelector />
-            <ThemeToggle />
-            <Link
-              href="/send"
-              className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
-            >
-              {t.landing.launchCove}
-            </Link>
-          </div>
-        </motion.header>
+            <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 md:flex">
+              <a
+                href="#how-it-works"
+                className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+              >
+                {t.nav.howItWorks}
+              </a>
+              <a
+                href="#compare"
+                className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+              >
+                {t.nav.compare}
+              </a>
+              <a
+                href="https://github.com/namedfarouk/cove-cash#readme"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+              >
+                {t.nav.docs}
+              </a>
+            </nav>
+
+            <div className="hidden shrink-0 items-center gap-2 md:flex">
+              <LanguageSelector />
+              <ThemeToggle />
+              <Link
+                href="/send"
+                className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+              >
+                {t.landing.launchCove}
+              </Link>
+            </div>
+          </motion.header>
+        </div>
 
         <MobileMenuOverlay
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           links={mobileLinks}
+          primaryAction={{ label: t.landing.launchCove, href: "/send" }}
         />
+      </div>
 
+      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pt-24 sm:px-6 lg:px-8">
         <section className="relative pb-24 pt-10 sm:pb-28 sm:pt-14 lg:pb-32">
           <motion.div
             initial="hidden"
