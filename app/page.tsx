@@ -90,7 +90,28 @@ export default function Home() {
             </span>
           </Link>
 
-          <div className="min-w-0 flex-1" />
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 md:flex">
+            <a
+              href="#how-it-works"
+              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+            >
+              {t.nav.howItWorks}
+            </a>
+            <a
+              href="#compare"
+              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+            >
+              {t.nav.compare}
+            </a>
+            <a
+              href="#get-started"
+              className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
+            >
+              {t.nav.getStarted}
+            </a>
+          </nav>
+
+          <div className="min-w-0 flex-1 md:hidden" />
 
           <div className="flex shrink-0 items-center gap-2">
             <LanguageSelector />
@@ -100,7 +121,6 @@ export default function Home() {
               className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
             >
               {t.landing.launchCove}
-              <span aria-hidden>→</span>
             </Link>
           </div>
         </motion.header>
@@ -234,11 +254,12 @@ export default function Home() {
         </section>
 
         <motion.section
+          id="how-it-works"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={stagger}
-          className="pb-24 sm:pb-28"
+          className="scroll-mt-24 pb-24 sm:pb-28"
         >
           <motion.div variants={fadeUp} className="max-w-3xl">
             <SectionEyebrow>{t.landing.howItWorksEyebrow}</SectionEyebrow>
@@ -283,11 +304,12 @@ export default function Home() {
         </motion.section>
 
         <motion.section
+          id="compare"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           variants={stagger}
-          className="pb-24 sm:pb-28"
+          className="scroll-mt-24 pb-24 sm:pb-28"
         >
           <motion.div variants={fadeUp} className="max-w-3xl">
             <SectionEyebrow>{t.landing.oldFlowEyebrow}</SectionEyebrow>
@@ -335,11 +357,12 @@ export default function Home() {
         </motion.section>
 
         <motion.section
+          id="get-started"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={fadeUp}
-          className="pb-16"
+          className="scroll-mt-24 pb-16"
         >
           <div className="relative overflow-hidden rounded-[2rem] border border-zinc-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(244,244,245,0.92))] px-6 py-14 text-center shadow-[0_28px_80px_rgba(15,23,42,0.1)] sm:px-10 dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] dark:shadow-none">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />

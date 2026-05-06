@@ -9,6 +9,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
 
+import { useCoveLanguage } from "@/components/cove-language";
 import {
   CoveNavbar,
   CovePage,
@@ -63,6 +64,7 @@ function base64ToBytes(b64: string): Uint8Array {
 export default function SendPage() {
   const { connection } = useConnection();
   const { publicKey, signTransaction, connected } = useWallet();
+  const { t } = useCoveLanguage();
   const [amountSol, setAmountSol] = useState<string>("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
@@ -183,6 +185,7 @@ export default function SendPage() {
     <CovePage
       navbar={
         <CoveNavbar
+          cta={{ label: t.nav.dashboard, href: "/dashboard" }}
           walletSlot={<WalletMultiButton />}
         />
       }
@@ -195,10 +198,10 @@ export default function SendPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-zinc-500 dark:text-zinc-500">
-                    Live transfer composer
+                    {t.send.liveTransferComposer}
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
-                    Send a private payment
+                    {t.send.sendPrivatePayment}
                   </h2>
                 </div>
                 <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
@@ -209,7 +212,7 @@ export default function SendPage() {
               <div className="mt-8 rounded-[1.5rem] border border-zinc-200 bg-zinc-50/80 p-5 dark:border-white/8 dark:bg-white/[0.03]">
                 <label className="block space-y-3">
                   <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                    Amount (SOL)
+                    {t.send.amount}
                   </span>
                   <input
                     type="number"
@@ -221,7 +224,7 @@ export default function SendPage() {
                     className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 text-lg font-medium text-zinc-950 outline-none transition-colors duration-200 placeholder:text-zinc-400 focus:border-emerald-500 dark:border-white/10 dark:bg-black/30 dark:text-white dark:focus:border-emerald-300"
                   />
                   <span className="text-xs uppercase tracking-[0.2em] text-zinc-500">
-                    Minimum {MIN_SOL} SOL
+                    {t.send.minimumSol}
                   </span>
                 </label>
 
@@ -232,7 +235,7 @@ export default function SendPage() {
                   disabled={!canSubmit}
                   className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
                 >
-                  Generate claim link
+                  {t.send.generateClaimLink}
                   <ArrowRight className="h-4 w-4" />
                 </motion.button>
               </div>
@@ -255,27 +258,28 @@ function StatusPanel({
   status: Status;
   connected: boolean;
 }) {
+  const { t } = useCoveLanguage();
   if (status.kind === "idle") {
     return (
       <div className="rounded-[1.5rem] border border-zinc-200 bg-white/70 p-4 text-sm text-zinc-600 shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400 dark:shadow-none">
-        {connected ? "Ready to prepare the deposit." : "Connect a wallet to begin."}
+        {connected ? t.send.readyToPrepare : t.send.connectWalletToBegin}
       </div>
     );
   }
 
   if (status.kind === "preparing") {
-    return <InlineNotice tone="neutral">Preparing deposit and generating proof...</InlineNotice>;
+    return <InlineNotice tone="neutral">{t.send.preparingDeposit}</InlineNotice>;
   }
   if (status.kind === "signing") {
-    return <InlineNotice tone="neutral">Waiting for wallet signature...</InlineNotice>;
+    return <InlineNotice tone="neutral">{t.send.waitingForSignature}</InlineNotice>;
   }
   if (status.kind === "submitting") {
-    return <InlineNotice tone="neutral">Submitting transaction to Solana...</InlineNotice>;
+    return <InlineNotice tone="neutral">{t.send.submittingTransaction}</InlineNotice>;
   }
   if (status.kind === "confirming") {
     return (
       <InlineNotice tone="neutral">
-        Confirming on chain...
+        {t.send.confirmingOnChain}
         <span className="ml-1 font-mono text-xs">{status.signature.slice(0, 12)}…</span>
       </InlineNotice>
     );
@@ -288,12 +292,12 @@ function StatusPanel({
     <div className="space-y-4 rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
       <div className="flex items-center gap-2 font-medium">
         <CheckCircle2 className="h-4 w-4" />
-        Deposit confirmed.
+        {t.send.depositConfirmed}
       </div>
 
       <label className="block space-y-2">
         <span className="text-xs uppercase tracking-[0.2em] text-emerald-700/80 dark:text-emerald-300/80">
-          Claim link
+          {t.send.claimLinkLabel}
         </span>
         <div className="flex gap-2">
           <input
@@ -314,10 +318,14 @@ function StatusPanel({
       </label>
 
       <p className="break-all text-xs text-emerald-800/80 dark:text-emerald-200/80">
-        Signature: <span className="font-mono">{status.signature}</span>
+        {t.send.signatureLabel} <span className="font-mono">{status.signature}</span>
       </p>
       <p className="text-xs text-zinc-600 dark:text-zinc-400">
-        Open <Link href="/dashboard" className="underline">Dashboard</Link> to manage and re-copy this link later.
+        {t.send.openDashboardPrefix}
+        <Link href="/dashboard" className="underline">
+          {t.send.dashboardLinkText}
+        </Link>
+        {t.send.openDashboardSuffix}
       </p>
     </div>
   );

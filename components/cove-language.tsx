@@ -28,6 +28,9 @@ type TranslationTree = {
     french: string;
     chinese: string;
     comingSoon: string;
+    howItWorks: string;
+    compare: string;
+    getStarted: string;
   };
   landing: {
     eyebrow: string;
@@ -84,6 +87,81 @@ type TranslationTree = {
     footerX: string;
     footerGithub: string;
   };
+  send: {
+    liveTransferComposer: string;
+    sendPrivatePayment: string;
+    amount: string;
+    minimumSol: string;
+    generateClaimLink: string;
+    readyToPrepare: string;
+    connectWalletToBegin: string;
+    preparingDeposit: string;
+    waitingForSignature: string;
+    submittingTransaction: string;
+    confirmingOnChain: string;
+    depositConfirmed: string;
+    claimLinkLabel: string;
+    signatureLabel: string;
+    openDashboardPrefix: string;
+    openDashboardSuffix: string;
+    dashboardLinkText: string;
+  };
+  claim: {
+    eyebrow: string;
+    heroTitle: string;
+    heroBody: string;
+    bullet1: string;
+    bullet2: string;
+    bullet3: string;
+    redemptionModule: string;
+    claimAPrivatePayment: string;
+    privateSpend: string;
+    amountLabel: string;
+    delivery: string;
+    encryptedWitness: string;
+    recipientWallet: string;
+    claimToMyWallet: string;
+    readyToClaim: string;
+    connectWalletToBegin: string;
+    preparingClaim: string;
+    waitingForSignature: string;
+    submittingTransaction: string;
+    confirmingOnChain: string;
+    claimConfirmed: string;
+    claimedViaRelay: string;
+    signatureLabel: string;
+    viewOnSolscan: string;
+    noPayloadInUrl: string;
+    missingBlinding: string;
+    failedToDecodePrefix: string;
+  };
+  dashboard: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    trackedDeposits: string;
+    pendingClaims: string;
+    claimedStat: string;
+    complianceSafeExport: string;
+    depositActivity: string;
+    exportCsv: string;
+    exporting: string;
+    readingLocal: string;
+    noDepositsFoundPrefix: string;
+    noDepositsFoundLinkLabel: string;
+    colAmount: string;
+    colMint: string;
+    colStatus: string;
+    colDepositTx: string;
+    colActions: string;
+    copyClaimLink: string;
+    loadingState: string;
+    copied: string;
+    errorPrefix: string;
+    checkingBadge: string;
+    claimedBadge: string;
+    pendingClaimBadge: string;
+  };
 };
 
 const translations: Record<LanguageValue, TranslationTree> = {
@@ -97,6 +175,9 @@ const translations: Record<LanguageValue, TranslationTree> = {
       french: "Français",
       chinese: "中文",
       comingSoon: "Coming soon",
+      howItWorks: "How it works",
+      compare: "Compare",
+      getStarted: "Get started",
     },
     landing: {
       eyebrow: "Private settlement for Solana",
@@ -162,6 +243,85 @@ const translations: Record<LanguageValue, TranslationTree> = {
       footerX: "Twitter/X",
       footerGithub: "Github",
     },
+    send: {
+      liveTransferComposer: "Live transfer composer",
+      sendPrivatePayment: "Send a private payment",
+      amount: "Amount (SOL)",
+      minimumSol: "Minimum 0.02 SOL",
+      generateClaimLink: "Generate claim link",
+      readyToPrepare: "Ready to prepare the deposit.",
+      connectWalletToBegin: "Connect a wallet to begin.",
+      preparingDeposit: "Preparing deposit and generating proof...",
+      waitingForSignature: "Waiting for wallet signature...",
+      submittingTransaction: "Submitting transaction to Solana...",
+      confirmingOnChain: "Confirming on chain...",
+      depositConfirmed: "Deposit confirmed.",
+      claimLinkLabel: "Claim link",
+      signatureLabel: "Signature:",
+      openDashboardPrefix: "Open ",
+      openDashboardSuffix: " to manage and re-copy this link later.",
+      dashboardLinkText: "Dashboard",
+    },
+    claim: {
+      eyebrow: "Claim flow",
+      heroTitle: "Redeem a private payment in one click.",
+      heroBody:
+        "Cove reconstructs the proof path behind the claim link so the recipient can connect a wallet and settle instantly.",
+      bullet1: "Claim links are single-use and carry the private spend witness.",
+      bullet2: "Relay mode can cover submission without charging the wallet a fee.",
+      bullet3: "The recipient wallet stays detached from the original DM thread.",
+      redemptionModule: "Redemption module",
+      claimAPrivatePayment: "Claim a private payment",
+      privateSpend: "Private spend",
+      amountLabel: "Amount",
+      delivery: "Delivery",
+      encryptedWitness: "Encrypted claim witness included",
+      recipientWallet: "Recipient wallet",
+      claimToMyWallet: "Claim to my wallet",
+      readyToClaim: "Ready to claim.",
+      connectWalletToBegin: "Connect a wallet to begin.",
+      preparingClaim: "Preparing claim proof and transaction...",
+      waitingForSignature: "Waiting for wallet signature...",
+      submittingTransaction: "Submitting transaction...",
+      confirmingOnChain: "Confirming on chain...",
+      claimConfirmed: "Claim confirmed.",
+      claimedViaRelay:
+        "Claimed via Cove relay. No transaction fee was paid by your wallet.",
+      signatureLabel: "Signature:",
+      viewOnSolscan: "View on Solscan",
+      noPayloadInUrl: "No claim payload in URL.",
+      missingBlinding:
+        "This claim link is missing the blinding factor (r) and cannot be redeemed. It was likely generated by an older version of Cove.",
+      failedToDecodePrefix: "Failed to decode claim link: ",
+    },
+    dashboard: {
+      eyebrow: "Private settlement ledger",
+      title: "Your deposits",
+      subtitle:
+        "Monitor claim status, re-copy links, and export the deposit trail without leaving the Cove flow.",
+      trackedDeposits: "Tracked deposits",
+      pendingClaims: "Pending claims",
+      claimedStat: "Claimed",
+      complianceSafeExport: "Compliance-safe export and claim management",
+      depositActivity: "Deposit activity",
+      exportCsv: "Export CSV",
+      exporting: "Exporting...",
+      readingLocal: "Reading local deposits...",
+      noDepositsFoundPrefix: "No deposits found yet. Start with ",
+      noDepositsFoundLinkLabel: "/send",
+      colAmount: "Amount",
+      colMint: "Mint",
+      colStatus: "Status",
+      colDepositTx: "Deposit tx",
+      colActions: "Actions",
+      copyClaimLink: "Copy claim link",
+      loadingState: "Loading...",
+      copied: "Copied",
+      errorPrefix: "Error: ",
+      checkingBadge: "Checking",
+      claimedBadge: "Claimed",
+      pendingClaimBadge: "Pending claim",
+    },
   },
   fr: {
     nav: {
@@ -173,6 +333,9 @@ const translations: Record<LanguageValue, TranslationTree> = {
       french: "Français",
       chinese: "中文",
       comingSoon: "Bientôt disponible",
+      howItWorks: "Comment ça marche",
+      compare: "Comparer",
+      getStarted: "Commencer",
     },
     landing: {
       eyebrow: "Règlement privé pour Solana",
@@ -237,6 +400,90 @@ const translations: Record<LanguageValue, TranslationTree> = {
       footerBody: "Paiements Solana par lien de réclamation privé.",
       footerX: "Twitter/X",
       footerGithub: "Github",
+    },
+    send: {
+      liveTransferComposer: "Compositeur de transfert",
+      sendPrivatePayment: "Envoyer un paiement privé",
+      amount: "Montant (SOL)",
+      minimumSol: "Minimum 0,02 SOL",
+      generateClaimLink: "Générer le lien",
+      readyToPrepare: "Prêt à préparer le dépôt.",
+      connectWalletToBegin: "Connectez un wallet pour commencer.",
+      preparingDeposit: "Préparation du dépôt et de la preuve...",
+      waitingForSignature: "En attente de la signature du wallet...",
+      submittingTransaction: "Envoi de la transaction sur Solana...",
+      confirmingOnChain: "Confirmation on-chain...",
+      depositConfirmed: "Dépôt confirmé.",
+      claimLinkLabel: "Lien de réclamation",
+      signatureLabel: "Signature :",
+      openDashboardPrefix: "Ouvrez le ",
+      openDashboardSuffix:
+        " pour gérer et recopier ce lien plus tard.",
+      dashboardLinkText: "tableau de bord",
+    },
+    claim: {
+      eyebrow: "Flux de réclamation",
+      heroTitle: "Réclamez un paiement privé en un clic.",
+      heroBody:
+        "Cove reconstruit le chemin de la preuve derrière le lien de réclamation afin que le destinataire connecte son wallet et règle instantanément.",
+      bullet1:
+        "Les liens de réclamation sont à usage unique et contiennent la preuve de dépense privée.",
+      bullet2:
+        "Le mode relais peut couvrir l'envoi sans débiter de frais sur votre wallet.",
+      bullet3:
+        "Le wallet du destinataire reste détaché du fil DM d'origine.",
+      redemptionModule: "Module de réclamation",
+      claimAPrivatePayment: "Réclamer un paiement privé",
+      privateSpend: "Dépense privée",
+      amountLabel: "Montant",
+      delivery: "Livraison",
+      encryptedWitness: "Preuve de réclamation chiffrée incluse",
+      recipientWallet: "Wallet du destinataire",
+      claimToMyWallet: "Réclamer vers mon wallet",
+      readyToClaim: "Prêt à réclamer.",
+      connectWalletToBegin: "Connectez un wallet pour commencer.",
+      preparingClaim: "Préparation de la preuve et de la transaction...",
+      waitingForSignature: "En attente de la signature du wallet...",
+      submittingTransaction: "Envoi de la transaction...",
+      confirmingOnChain: "Confirmation on-chain...",
+      claimConfirmed: "Réclamation confirmée.",
+      claimedViaRelay:
+        "Réclamé via le relais Cove. Aucun frais de transaction n'a été débité de votre wallet.",
+      signatureLabel: "Signature :",
+      viewOnSolscan: "Voir sur Solscan",
+      noPayloadInUrl: "Aucun contenu de réclamation dans l'URL.",
+      missingBlinding:
+        "Ce lien de réclamation n'a pas le facteur d'aveuglement (r) et ne peut pas être réclamé. Il a probablement été généré par une ancienne version de Cove.",
+      failedToDecodePrefix: "Impossible de décoder le lien de réclamation : ",
+    },
+    dashboard: {
+      eyebrow: "Registre de règlement privé",
+      title: "Vos dépôts",
+      subtitle:
+        "Suivez l'état des réclamations, recopiez les liens et exportez l'historique sans quitter Cove.",
+      trackedDeposits: "Dépôts suivis",
+      pendingClaims: "Réclamations en attente",
+      claimedStat: "Réclamés",
+      complianceSafeExport:
+        "Export conforme et gestion des réclamations",
+      depositActivity: "Activité des dépôts",
+      exportCsv: "Exporter CSV",
+      exporting: "Export en cours...",
+      readingLocal: "Lecture des dépôts locaux...",
+      noDepositsFoundPrefix: "Aucun dépôt trouvé pour le moment. Commencez par ",
+      noDepositsFoundLinkLabel: "/send",
+      colAmount: "Montant",
+      colMint: "Mint",
+      colStatus: "État",
+      colDepositTx: "Tx du dépôt",
+      colActions: "Actions",
+      copyClaimLink: "Copier le lien",
+      loadingState: "Chargement...",
+      copied: "Copié",
+      errorPrefix: "Erreur : ",
+      checkingBadge: "Vérification",
+      claimedBadge: "Réclamé",
+      pendingClaimBadge: "En attente",
     },
   },
 };

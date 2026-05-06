@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
+import { useCoveLanguage } from "@/components/cove-language";
 import {
   CoveNavbar,
   CovePage,
@@ -98,6 +99,7 @@ function readDepositedFromStorage(): Row[] {
 
 export default function DashboardPage() {
   const { connection } = useConnection();
+  const { t } = useCoveLanguage();
   const [state, setState] = useState<LoadState>({ kind: "loading" });
   const [exporting, setExporting] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState<Record<number, string>>({});
@@ -153,7 +155,7 @@ export default function DashboardPage() {
   }, []);
 
   async function handleCopyClaimLink(row: Row) {
-    setCopyFeedback((prev) => ({ ...prev, [row.index]: "Loading..." }));
+    setCopyFeedback((prev) => ({ ...prev, [row.index]: t.dashboard.loadingState }));
     try {
       if (row.r) {
         const claimUrl = buildClaimUrl({
@@ -168,7 +170,7 @@ export default function DashboardPage() {
           sig: row.depositSignature,
         });
         await navigator.clipboard.writeText(claimUrl);
-        setCopyFeedback((prev) => ({ ...prev, [row.index]: "Copied" }));
+        setCopyFeedback((prev) => ({ ...prev, [row.index]: t.dashboard.copied }));
         setTimeout(
           () => setCopyFeedback((prev) => ({ ...prev, [row.index]: "" })),
           2000,
@@ -203,7 +205,10 @@ export default function DashboardPage() {
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setCopyFeedback((prev) => ({ ...prev, [row.index]: `Error: ${message}` }));
+      setCopyFeedback((prev) => ({
+        ...prev,
+        [row.index]: `${t.dashboard.errorPrefix}${message}`,
+      }));
     }
   }
 
@@ -274,6 +279,7 @@ export default function DashboardPage() {
     <CovePage
       navbar={
         <CoveNavbar
+          cta={{ label: t.nav.sendPayment, href: "/send" }}
           walletSlot={<WalletMultiButton />}
         />
       }
@@ -281,13 +287,12 @@ export default function DashboardPage() {
     >
       <PageReveal className="space-y-8">
         <motion.section variants={fadeUp} className="max-w-3xl">
-          <SectionEyebrow>Private settlement ledger</SectionEyebrow>
+          <SectionEyebrow>{t.dashboard.eyebrow}</SectionEyebrow>
           <h1 className="mt-6 text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
-            Your deposits
+            {t.dashboard.title}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
-            Monitor claim status, re-copy links, and export the deposit trail
-            without leaving the Cove flow.
+            {t.dashboard.subtitle}
           </p>
         </motion.section>
 
@@ -295,17 +300,17 @@ export default function DashboardPage() {
           {[
             {
               icon: WalletCards,
-              label: "Tracked deposits",
+              label: t.dashboard.trackedDeposits,
               value: rows.length.toString(),
             },
             {
               icon: Clock3,
-              label: "Pending claims",
+              label: t.dashboard.pendingClaims,
               value: pendingCount.toString(),
             },
             {
               icon: CheckCircle2,
-              label: "Claimed",
+              label: t.dashboard.claimedStat,
               value: claimedCount.toString(),
             },
           ].map((item) => {
@@ -334,10 +339,10 @@ export default function DashboardPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                    Compliance-safe export and claim management
+                    {t.dashboard.complianceSafeExport}
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
-                    Deposit activity
+                    {t.dashboard.depositActivity}
                   </h2>
                 </div>
 
@@ -349,20 +354,20 @@ export default function DashboardPage() {
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
                   >
                     <Download className="h-4 w-4" />
-                    {exporting ? "Exporting..." : "Export CSV"}
+                    {exporting ? t.dashboard.exporting : t.dashboard.exportCsv}
                   </motion.button>
                 ) : null}
               </div>
 
               {state.kind === "loading" ? (
-                <Notice tone="neutral">Reading local deposits...</Notice>
+                <Notice tone="neutral">{t.dashboard.readingLocal}</Notice>
               ) : null}
 
               {state.kind === "empty" ? (
                 <Notice tone="neutral">
-                  No deposits found yet. Start with{" "}
+                  {t.dashboard.noDepositsFoundPrefix}
                   <Link href="/send" className="underline">
-                    /send
+                    {t.dashboard.noDepositsFoundLinkLabel}
                   </Link>
                   .
                 </Notice>
@@ -375,11 +380,11 @@ export default function DashboardPage() {
               {state.kind === "ready" && state.rows.length > 0 ? (
                 <div className="mt-8 space-y-3">
                   <div className="hidden grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] gap-3 px-4 text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 md:grid">
-                    <span>Amount</span>
-                    <span>Mint</span>
-                    <span>Status</span>
-                    <span>Deposit tx</span>
-                    <span>Actions</span>
+                    <span>{t.dashboard.colAmount}</span>
+                    <span>{t.dashboard.colMint}</span>
+                    <span>{t.dashboard.colStatus}</span>
+                    <span>{t.dashboard.colDepositTx}</span>
+                    <span>{t.dashboard.colActions}</span>
                   </div>
 
                   {state.rows.map((row) => (
@@ -390,7 +395,7 @@ export default function DashboardPage() {
                     >
                       <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
-                          Amount
+                          {t.dashboard.colAmount}
                         </p>
                         <p className="tabular-nums text-base font-semibold text-zinc-950 dark:text-white">
                           {lamportsToSol(row.amount)} SOL
@@ -399,7 +404,7 @@ export default function DashboardPage() {
 
                       <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
-                          Mint
+                          {t.dashboard.colMint}
                         </p>
                         <p className="font-mono text-sm text-zinc-600 dark:text-zinc-300">
                           {row.mint.slice(0, 4)}…{row.mint.slice(-4)}
@@ -408,14 +413,14 @@ export default function DashboardPage() {
 
                       <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
-                          Status
+                          {t.dashboard.colStatus}
                         </p>
                         <StatusBadge status={row.status} />
                       </div>
 
                       <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
-                          Deposit tx
+                          {t.dashboard.colDepositTx}
                         </p>
                         <a
                           href={`https://solscan.io/tx/${row.depositSignature}`}
@@ -436,7 +441,7 @@ export default function DashboardPage() {
                           className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
                         >
                           <Copy className="h-3.5 w-3.5" />
-                          {copyFeedback[row.index] || "Copy claim link"}
+                          {copyFeedback[row.index] || t.dashboard.copyClaimLink}
                         </motion.button>
                       </div>
                     </motion.div>
@@ -452,11 +457,12 @@ export default function DashboardPage() {
 }
 
 function StatusBadge({ status }: { status: Row["status"] }) {
+  const { t } = useCoveLanguage();
   if (status === "loading") {
     return (
       <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">
         <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-zinc-400" />
-        Checking
+        {t.dashboard.checkingBadge}
       </span>
     );
   }
@@ -464,14 +470,14 @@ function StatusBadge({ status }: { status: Row["status"] }) {
     return (
       <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200">
         <CheckCircle2 className="h-3.5 w-3.5" />
-        Claimed
+        {t.dashboard.claimedBadge}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
       <Link2 className="h-3.5 w-3.5" />
-      Pending claim
+      {t.dashboard.pendingClaimBadge}
     </span>
   );
 }
