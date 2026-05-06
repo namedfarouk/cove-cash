@@ -10,6 +10,8 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { ThemeProvider } from "next-themes";
 
+import { CoveLanguageProvider } from "@/components/cove-language";
+
 const FALLBACK_RPC_URL = "https://api.mainnet-beta.solana.com";
 const RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? FALLBACK_RPC_URL;
 if (!process.env.NEXT_PUBLIC_SOLANA_RPC_URL) {
@@ -33,11 +35,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
-      <ConnectionProvider endpoint={RPC_URL}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>{children}</WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      <CoveLanguageProvider>
+        <ConnectionProvider endpoint={RPC_URL}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>{children}</WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </CoveLanguageProvider>
     </ThemeProvider>
   );
 }

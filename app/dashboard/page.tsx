@@ -274,9 +274,6 @@ export default function DashboardPage() {
     <CovePage
       navbar={
         <CoveNavbar
-          appHref="/send"
-          appLabel="Send Payment"
-          secondaryLink={{ href: "/", label: "Home" }}
           walletSlot={<WalletMultiButton />}
         />
       }

@@ -198,9 +198,6 @@ export default function ClaimPage() {
     <CovePage
       navbar={
         <CoveNavbar
-          appHref="/dashboard"
-          appLabel="Dashboard"
-          secondaryLink={{ href: "/", label: "Home" }}
           walletSlot={<WalletMultiButton />}
         />
       }
