@@ -3,14 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Copy,
-  Link2,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Copy } from "lucide-react";
 import Link from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -21,7 +14,6 @@ import {
   CovePage,
   PageReveal,
   PremiumCard,
-  SectionEyebrow,
   fadeUp,
 } from "@/components/cove-ui";
 import { buildClaimUrl } from "@/lib/cove/claim-link";
@@ -196,56 +188,7 @@ export default function SendPage() {
       }
       contentClassName="flex items-center py-10 sm:py-14"
     >
-      <PageReveal className="grid w-full gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-        <motion.section variants={fadeUp} className="self-center">
-          <SectionEyebrow>Private payment rail</SectionEyebrow>
-          <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
-            Send a private payment without the wallet-address dance.
-          </h1>
-          <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
-            Lock SOL. Generate the claim link. Drop it in the DM. Cove handles
-            the handoff without leaking a public key into the conversation.
-          </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {[
-              {
-                icon: ShieldCheck,
-                title: "Private by default",
-                copy: "No pubkey exchange before settlement.",
-              },
-              {
-                icon: Link2,
-                title: "One link",
-                copy: "Single-use claim URL, ready for chat.",
-              },
-              {
-                icon: Sparkles,
-                title: "Fast path",
-                copy: "Proof prep, sign, confirm, done.",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  variants={fadeUp}
-                  whileHover={{ scale: 1.01 }}
-                  className="rounded-[1.5rem] border border-zinc-200 bg-white/80 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.05)] transition-colors duration-200 dark:border-white/8 dark:bg-white/[0.03] dark:shadow-none"
-                >
-                  <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
-                  <h2 className="mt-4 text-sm font-semibold text-zinc-950 dark:text-white">
-                    {item.title}
-                  </h2>
-                  <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                    {item.copy}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.section>
-
+      <PageReveal className="mx-auto w-full max-w-xl">
         <motion.section variants={fadeUp}>
           <PremiumCard className="border-emerald-500/20 dark:border-emerald-400/20">
             <div className="p-6 sm:p-8">

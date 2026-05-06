@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Tailwind v4 defaults dark mode to `prefers-color-scheme`. We use next-themes
+ * which toggles a `.dark` class on <html>, so we redefine the variant. Without
+ * this, `dark:` utility classes ignore our toggle and only literal `.dark ...`
+ * CSS selectors (like the wallet adapter overrides below) react to it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #18181b;

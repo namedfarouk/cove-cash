@@ -93,26 +93,15 @@ export default function Home() {
           <div className="min-w-0 flex-1" />
 
           <div className="flex shrink-0 items-center gap-2">
-            <Link
-              href="/"
-              className="inline-flex rounded-full border border-zinc-200 bg-white/80 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
-            >
-              {t.nav.home}
-            </Link>
-            <Link
-              href="/send"
-              className="inline-flex rounded-full border border-zinc-200 bg-white/80 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
-            >
-              {t.nav.sendPayment}
-            </Link>
-            <Link
-              href="/dashboard"
-              className="inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
-            >
-              {t.nav.dashboard}
-            </Link>
             <LanguageSelector />
             <ThemeToggle />
+            <Link
+              href="/send"
+              className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+            >
+              {t.landing.launchCove}
+              <span aria-hidden>→</span>
+            </Link>
           </div>
         </motion.header>
 
