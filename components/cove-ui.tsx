@@ -119,7 +119,7 @@ export function LanguageSelector() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white/80 px-4 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-[#0B0F14] dark:text-zinc-300 dark:shadow-none dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
       >
         <Globe className="h-4 w-4" />
         <span className="text-base leading-none">{selectedLanguage.flag}</span>
@@ -139,7 +139,7 @@ export function LanguageSelector() {
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
             role="menu"
-            className="absolute right-0 z-30 mt-3 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 shadow-[0_20px_45px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-zinc-900 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)]"
+            className="absolute right-0 z-30 mt-3 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 shadow-[0_20px_45px_rgba(0,0,0,0.12)] dark:border-zinc-800 dark:bg-[#0B0F14] dark:text-zinc-300 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)]"
           >
             {supportedLanguages.map((language) => {
               const active = language.value === selectedLanguage.value;
@@ -165,7 +165,7 @@ export function LanguageSelector() {
                   } ${
                     active
                       ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300"
-                      : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
+                      : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
                   }`}
                 >
                   <span className="text-base leading-none">{language.flag}</span>
@@ -290,7 +290,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-[#0B0F14] md:hidden"
+          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-white text-zinc-900 dark:bg-[#0B0F14] dark:text-white md:hidden"
         >
           <div className="flex min-h-full flex-col space-y-6 p-6">
             <div className="flex flex-col space-y-6">
@@ -302,7 +302,7 @@ export function MobileMenuOverlay({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -311,7 +311,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -320,7 +320,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-300 transition-colors duration-200 hover:text-white"
+                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -328,7 +328,7 @@ export function MobileMenuOverlay({
               )}
             </div>
 
-            <div className="border-t border-zinc-800 pt-6">
+            <div className="border-t border-zinc-200 pt-6 dark:border-zinc-800">
               <div className="flex items-center gap-3">
                 <LanguageSelector />
                 <ThemeToggle />
