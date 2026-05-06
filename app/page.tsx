@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import {
   Bird,
   Check,
-  CodeXml,
   CopyCheck,
   LockKeyhole,
   Send,
@@ -104,10 +103,12 @@ export default function Home() {
               {t.nav.compare}
             </a>
             <a
-              href="#get-started"
+              href="https://github.com/namedfarouk/cove-cash#readme"
+              target="_blank"
+              rel="noreferrer"
               className="text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
             >
-              {t.nav.getStarted}
+              {t.nav.docs}
             </a>
           </nav>
 
@@ -387,26 +388,34 @@ export default function Home() {
             <span className="text-base font-semibold tracking-tight text-zinc-950 dark:text-white">
               Cove
             </span>
-            <span>{t.landing.footerBody}</span>
+            <span>— Private claim-link payments on Solana. © 2026 Cove.</span>
           </div>
           <div className="flex items-center gap-5">
             <a
               href="https://x.com/cove_cash"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 transition hover:text-zinc-950 dark:hover:text-white"
+              aria-label="Cove on X"
+              title="Cove on X"
+              className="inline-flex items-center transition hover:text-zinc-950 dark:hover:text-white"
             >
               <Bird className="h-4 w-4" />
-              {t.landing.footerX}
             </a>
             <a
               href="https://github.com/namedfarouk/cove-cash"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 transition hover:text-zinc-950 dark:hover:text-white"
+              aria-label="Cove GitHub repository"
+              title="Cove GitHub repository"
+              className="inline-flex items-center transition hover:text-zinc-950 dark:hover:text-white"
             >
-              <CodeXml className="h-4 w-4" />
-              {t.landing.footerGithub}
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 fill-current"
+              >
+                <path d="M12 0C5.37 0 0 5.5 0 12.28c0 5.42 3.44 10.01 8.2 11.64.6.11.82-.27.82-.6 0-.3-.01-1.08-.02-2.12-3.34.74-4.04-1.67-4.04-1.67-.55-1.42-1.33-1.8-1.33-1.8-1.09-.76.08-.75.08-.75 1.2.09 1.84 1.27 1.84 1.27 1.08 1.89 2.82 1.35 3.5 1.03.11-.8.42-1.35.76-1.66-2.66-.31-5.47-1.36-5.47-6.08 0-1.35.47-2.45 1.24-3.31-.13-.31-.54-1.56.12-3.25 0 0 1.01-.33 3.3 1.26a11.2 11.2 0 0 1 6 0c2.29-1.59 3.29-1.26 3.29-1.26.67 1.69.26 2.94.13 3.25.77.86 1.24 1.96 1.24 3.31 0 4.73-2.81 5.77-5.49 6.08.43.38.82 1.12.82 2.25 0 1.63-.02 2.94-.02 3.34 0 .33.21.72.83.6 4.75-1.63 8.18-6.22 8.18-11.64C24 5.5 18.63 0 12 0Z" />
+              </svg>
             </a>
           </div>
         </footer>

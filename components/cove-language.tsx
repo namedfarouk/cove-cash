@@ -24,6 +24,7 @@ type TranslationTree = {
     sendPayment: string;
     dashboard: string;
     launchApp: string;
+    docs: string;
     english: string;
     french: string;
     chinese: string;
@@ -171,6 +172,7 @@ const translations: Record<LanguageValue, TranslationTree> = {
       sendPayment: "Send Payment",
       dashboard: "Dashboard",
       launchApp: "Launch App",
+      docs: "Docs",
       english: "English",
       french: "Français",
       chinese: "中文",
@@ -329,6 +331,7 @@ const translations: Record<LanguageValue, TranslationTree> = {
       sendPayment: "Envoyer",
       dashboard: "Tableau de bord",
       launchApp: "Ouvrir l'app",
+      docs: "Docs",
       english: "English",
       french: "Français",
       chinese: "中文",

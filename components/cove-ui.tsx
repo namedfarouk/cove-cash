@@ -201,10 +201,9 @@ export function CoveNavbar({
         {cta ? (
           <Link
             href={cta.href}
-            className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
+            className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
           >
             {cta.label}
-            <span aria-hidden>→</span>
           </Link>
         ) : null}
         {walletSlot}
