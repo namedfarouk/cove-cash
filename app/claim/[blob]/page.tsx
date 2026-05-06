@@ -2,12 +2,28 @@
 
 import { useMemo, useState } from "react";
 
+import { motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  ShieldCheck,
+  Sparkles,
+  Wallet,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
-import Link from "next/link";
-import { useParams } from "next/navigation";
 
+import {
+  CoveNavbar,
+  CovePage,
+  PageReveal,
+  PremiumCard,
+  SectionEyebrow,
+  fadeUp,
+} from "@/components/cove-ui";
 import { decodeClaimBlob, type ClaimBlobV1 } from "@/lib/cove/claim-link";
 
 type ClaimMetadata = {
@@ -49,8 +65,6 @@ function base64ToBytes(b64: string): Uint8Array {
 }
 
 function lamportsToSol(lamportsStr: string): string {
-  // Display-only conversion. We deliberately avoid Number() rounding for
-  // values near JS safe-integer; format as a decimal string instead.
   const lamports = BigInt(lamportsStr);
   const whole = lamports / 1_000_000_000n;
   const frac = lamports % 1_000_000_000n;
@@ -64,7 +78,6 @@ export default function ClaimPage() {
   const { publicKey, signTransaction, connected } = useWallet();
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
-  // Decode the URL blob once. Memoized so we don't reparse on every render.
   const decoded = useMemo<
     | { ok: true; blob: ClaimBlobV1 }
     | { ok: false; reason: string }
@@ -105,7 +118,6 @@ export default function ClaimPage() {
 
     setStatus({ kind: "preparing" });
     try {
-      // 1. Ask the server to build the unsigned withdraw tx (proof + tx).
       const res = await fetch("/api/claim/prepare", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -128,13 +140,6 @@ export default function ClaimPage() {
       }
       const prepared = (await res.json()) as ClaimPrepareResponse;
 
-      // 2. Two possible paths from the route:
-      //    - relay_submitted: Cove relay already submitted the tx with its own
-      //      wallet. We just confirm on chain (use the route's blockhash).
-      //    - user_sign: SDK fell back to direct submission. Client signs and
-      //      submits. The route's blockhash is stale (proof gen + think time
-      //      can exceed Solana's ~90s window), so we refresh before signing
-      //      and confirm against the fresh strategy.
       let signature: string;
       let confirmBlockhash = prepared.metadata.recentBlockhash;
       let confirmLastValidBlockHeight =
@@ -142,8 +147,6 @@ export default function ClaimPage() {
 
       if (prepared.mode === "relay_submitted") {
         signature = prepared.signature;
-        // Skip signing/submitting entirely. Relay already used its own
-        // blockhash; we keep the route-supplied strategy as our polling bound.
       } else {
         const tx = VersionedTransaction.deserialize(
           base64ToBytes(prepared.unsignedTransactionBase64),
@@ -162,7 +165,6 @@ export default function ClaimPage() {
         });
       }
 
-      // 3. Confirm on chain.
       setStatus({ kind: "confirming", signature });
       const confirmation = await connection.confirmTransaction(
         {
@@ -193,58 +195,120 @@ export default function ClaimPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-        <span className="text-xl font-semibold tracking-tight">Cove</span>
-        <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard"
-            className="text-sm text-zinc-500 hover:underline"
-          >
-            Dashboard
-          </Link>
-          <WalletMultiButton />
-        </div>
-      </header>
+    <CovePage
+      navbar={
+        <CoveNavbar
+          appHref="/dashboard"
+          appLabel="Dashboard"
+          secondaryLink={{ href: "/", label: "Home" }}
+          walletSlot={<WalletMultiButton />}
+        />
+      }
+      contentClassName="flex items-center py-10 sm:py-14"
+    >
+      <PageReveal className="grid w-full gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <motion.section variants={fadeUp} className="self-center">
+          <SectionEyebrow>Claim flow</SectionEyebrow>
+          <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
+            Redeem a private payment in one click.
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
+            Cove reconstructs the proof path behind the claim link so the
+            recipient can connect a wallet and settle instantly.
+          </p>
 
-      <main className="flex flex-1 items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md rounded-xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-4 bg-white dark:bg-zinc-950">
-          <h1 className="text-xl font-semibold">Claim a private payment</h1>
+          <div className="mt-8 space-y-3">
+            {[
+              "Claim links are single-use and carry the private spend witness.",
+              "Relay mode can cover submission without charging the wallet a fee.",
+              "The recipient wallet stays detached from the original DM thread.",
+            ].map((copy) => (
+              <div
+                key={copy}
+                className="rounded-[1.5rem] border border-zinc-200 bg-white/80 px-4 py-3 text-sm text-zinc-600 shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400 dark:shadow-none"
+              >
+                {copy}
+              </div>
+            ))}
+          </div>
+        </motion.section>
 
-          {!decoded.ok ? (
-            <div className="rounded-md border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-900 p-3 text-sm text-red-700 dark:text-red-300">
-              {decoded.reason}
-            </div>
-          ) : (
-            <>
-              <div className="rounded-md border border-zinc-200 dark:border-zinc-800 p-3">
-                <p className="text-xs text-zinc-500">Amount</p>
-                <p className="text-2xl font-semibold tabular-nums">
-                  {lamportsToSol(decoded.blob.amt)} SOL
-                </p>
+        <motion.section variants={fadeUp}>
+          <PremiumCard className="border-emerald-500/20 dark:border-emerald-400/20">
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Redemption module
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
+                    Claim a private payment
+                  </h2>
+                </div>
+                <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
+                  Private spend
+                </span>
               </div>
 
-              {connected && publicKey && (
-                <p className="text-xs text-zinc-500 break-all">
-                  Will be sent to{" "}
-                  <span className="font-mono">{publicKey.toBase58()}</span>
-                </p>
+              {!decoded.ok ? (
+                <Notice tone="error" className="mt-8">
+                  {decoded.reason}
+                </Notice>
+              ) : (
+                <>
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-[1.5rem] border border-zinc-200 bg-zinc-50/80 p-5 dark:border-white/8 dark:bg-white/[0.03]">
+                      <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                        Amount
+                      </p>
+                      <p className="mt-3 text-3xl font-semibold tabular-nums text-zinc-950 dark:text-white">
+                        {lamportsToSol(decoded.blob.amt)} SOL
+                      </p>
+                    </div>
+                    <div className="rounded-[1.5rem] border border-zinc-200 bg-zinc-50/80 p-5 dark:border-white/8 dark:bg-white/[0.03]">
+                      <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                        Delivery
+                      </p>
+                      <div className="mt-3 flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                        <ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-300" />
+                        Encrypted claim witness included
+                      </div>
+                    </div>
+                  </div>
+
+                  {connected && publicKey ? (
+                    <div className="mt-4 rounded-[1.5rem] border border-zinc-200 bg-white/70 p-4 text-sm text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400">
+                      <div className="flex items-center gap-2 font-medium text-zinc-900 dark:text-white">
+                        <Wallet className="h-4 w-4" />
+                        Recipient wallet
+                      </div>
+                      <p className="mt-2 break-all font-mono text-xs">
+                        {publicKey.toBase58()}
+                      </p>
+                    </div>
+                  ) : null}
+
+                  <motion.button
+                    whileHover={canClaim ? { scale: 1.01 } : undefined}
+                    whileTap={canClaim ? { scale: 0.995 } : undefined}
+                    onClick={handleClaim}
+                    disabled={!canClaim}
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                  >
+                    Claim to my wallet
+                    <Sparkles className="h-4 w-4" />
+                  </motion.button>
+
+                  <div className="mt-6">
+                    <ClaimStatusPanel status={status} connected={connected} />
+                  </div>
+                </>
               )}
-
-              <button
-                onClick={handleClaim}
-                disabled={!canClaim}
-                className="w-full rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Claim to my wallet
-              </button>
-
-              <ClaimStatusPanel status={status} connected={connected} />
-            </>
-          )}
-        </div>
-      </main>
-    </div>
+            </div>
+          </PremiumCard>
+        </motion.section>
+      </PageReveal>
+    </CovePage>
   );
 }
 
@@ -257,64 +321,77 @@ function ClaimStatusPanel({
 }) {
   if (status.kind === "idle") {
     return (
-      <p className="text-sm text-zinc-500">
-        {connected ? "Ready." : "Connect a wallet to begin."}
-      </p>
+      <Notice tone="neutral">
+        {connected ? "Ready to claim." : "Connect a wallet to begin."}
+      </Notice>
     );
   }
   if (status.kind === "preparing") {
-    return (
-      <p className="text-sm text-zinc-500">
-        Preparing claim (proof generation, ~10–30s)...
-      </p>
-    );
+    return <Notice tone="neutral">Preparing claim proof and transaction...</Notice>;
   }
   if (status.kind === "signing") {
-    return (
-      <p className="text-sm text-zinc-500">Waiting for wallet signature...</p>
-    );
+    return <Notice tone="neutral">Waiting for wallet signature...</Notice>;
   }
   if (status.kind === "submitting") {
-    return <p className="text-sm text-zinc-500">Submitting transaction...</p>;
+    return <Notice tone="neutral">Submitting transaction...</Notice>;
   }
   if (status.kind === "confirming") {
     return (
-      <p className="text-sm text-zinc-500">
-        Confirming on chain...{" "}
-        <span className="font-mono">{status.signature.slice(0, 12)}…</span>
-      </p>
+      <Notice tone="neutral">
+        Confirming on chain...
+        <span className="ml-1 font-mono text-xs">{status.signature.slice(0, 12)}…</span>
+      </Notice>
     );
   }
   if (status.kind === "error") {
-    return (
-      <div className="rounded-md border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-900 p-3 text-sm text-red-700 dark:text-red-300">
-        {status.message}
-      </div>
-    );
+    return <Notice tone="error">{status.message}</Notice>;
   }
 
-  // success
   return (
-    <div className="space-y-2">
-      <div className="rounded-md border border-green-300 bg-green-50 dark:bg-green-950/30 dark:border-green-900 p-3 text-sm text-green-700 dark:text-green-300">
+    <div className="space-y-4 rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+      <div className="flex items-center gap-2 font-medium">
+        <CheckCircle2 className="h-4 w-4" />
         Claim confirmed.
       </div>
-      {status.mode === "relay_submitted" && (
-        <p className="text-xs text-zinc-500">
+      {status.mode === "relay_submitted" ? (
+        <p className="text-xs text-zinc-600 dark:text-zinc-400">
           Claimed via Cove relay. No transaction fee was paid by your wallet.
         </p>
-      )}
-      <p className="text-xs text-zinc-500 break-all">
+      ) : null}
+      <p className="break-all text-xs">
         Signature: <span className="font-mono">{status.signature}</span>
       </p>
       <a
-        className="text-xs text-zinc-500 underline"
+        className="inline-flex items-center gap-1 text-xs underline"
         href={`https://solscan.io/tx/${status.signature}`}
         target="_blank"
         rel="noreferrer"
       >
         View on Solscan
+        <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
+    </div>
+  );
+}
+
+function Notice({
+  children,
+  tone,
+  className = "",
+}: {
+  children: React.ReactNode;
+  tone: "neutral" | "error";
+  className?: string;
+}) {
+  return (
+    <div
+      className={`rounded-[1.5rem] border p-4 text-sm ${
+        tone === "error"
+          ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+          : "border-zinc-200 bg-white/70 text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400"
+      } ${className}`}
+    >
+      {children}
     </div>
   );
 }

@@ -2,10 +2,28 @@
 
 import { useEffect, useState } from "react";
 
+import { motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  CheckCircle2,
+  Clock3,
+  Copy,
+  Download,
+  Link2,
+  WalletCards,
+} from "lucide-react";
+import Link from "next/link";
 import { useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import Link from "next/link";
 
+import {
+  CoveNavbar,
+  CovePage,
+  PageReveal,
+  PremiumCard,
+  SectionEyebrow,
+  fadeUp,
+} from "@/components/cove-ui";
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { type PersistedDeposit } from "@/lib/cove/storage";
 
@@ -22,7 +40,6 @@ type Row = {
   r?: string;
   depositSignature: string;
   serializedB64: string;
-  // Derived
   status: "loading" | "pending" | "claimed";
 };
 
@@ -50,8 +67,6 @@ function readDepositedFromStorage(): Row[] {
     try {
       const entry = JSON.parse(raw) as PersistedDeposit;
       if (entry.state !== "deposited") continue;
-      // Required fields for verifyUtxos lookup. Skip entries missing any of
-      // them — they can't be checked on chain.
       if (
         entry.index === undefined ||
         !entry.commitment ||
@@ -77,7 +92,6 @@ function readDepositedFromStorage(): Row[] {
       // Skip malformed entry
     }
   }
-  // Newest first by leaf index. Approximate but close enough.
   rows.sort((a, b) => b.index - a.index);
   return rows;
 }
@@ -94,7 +108,6 @@ export default function DashboardPage() {
       setState({ kind: "empty" });
       return;
     }
-    // Show rows immediately in loading state, then fill in status.
     setState({ kind: "ready", rows });
 
     (async () => {
@@ -140,7 +153,7 @@ export default function DashboardPage() {
   }, []);
 
   async function handleCopyClaimLink(row: Row) {
-    setCopyFeedback((prev) => ({ ...prev, [row.index]: "loading..." }));
+    setCopyFeedback((prev) => ({ ...prev, [row.index]: "Loading..." }));
     try {
       if (row.r) {
         const claimUrl = buildClaimUrl({
@@ -155,7 +168,7 @@ export default function DashboardPage() {
           sig: row.depositSignature,
         });
         await navigator.clipboard.writeText(claimUrl);
-        setCopyFeedback((prev) => ({ ...prev, [row.index]: "copied" }));
+        setCopyFeedback((prev) => ({ ...prev, [row.index]: "Copied" }));
         setTimeout(
           () => setCopyFeedback((prev) => ({ ...prev, [row.index]: "" })),
           2000,
@@ -163,7 +176,6 @@ export default function DashboardPage() {
         return;
       }
 
-      // Older entries do not include `r`, so recover it from serializedB64.
       const res = await fetch("/api/recover", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -184,14 +196,14 @@ export default function DashboardPage() {
       }
       const data = (await res.json()) as { claimUrl: string };
       await navigator.clipboard.writeText(data.claimUrl);
-      setCopyFeedback((prev) => ({ ...prev, [row.index]: "copied" }));
+      setCopyFeedback((prev) => ({ ...prev, [row.index]: "Copied" }));
       setTimeout(
         () => setCopyFeedback((prev) => ({ ...prev, [row.index]: "" })),
         2000,
       );
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      setCopyFeedback((prev) => ({ ...prev, [row.index]: `error: ${message}` }));
+      setCopyFeedback((prev) => ({ ...prev, [row.index]: `Error: ${message}` }));
     }
   }
 
@@ -199,8 +211,6 @@ export default function DashboardPage() {
     if (state.kind !== "ready") return;
     setExporting(true);
     try {
-      // Fetch deposit timestamps lazily — N parallel getTransaction calls.
-      // Pass maxSupportedTransactionVersion: 0 because our deposits are V0.
       const sigs = state.rows.map((r) => r.depositSignature);
       const txs = await Promise.all(
         sigs.map(async (sig) => {
@@ -232,7 +242,6 @@ export default function DashboardPage() {
       const lines = state.rows.map((r) => {
         const date = dateBySig.get(r.depositSignature) ?? "";
         const status = r.status === "claimed" ? "claimed" : "pending";
-        // claim_signature isn't tracked client-side in v1.
         return [
           date,
           lamportsToSol(r.amount),
@@ -257,135 +266,235 @@ export default function DashboardPage() {
     }
   }
 
+  const rows = state.kind === "ready" ? state.rows : [];
+  const pendingCount = rows.filter((row) => row.status === "pending").length;
+  const claimedCount = rows.filter((row) => row.status === "claimed").length;
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-        <Link href="/send" className="text-xl font-semibold tracking-tight">
-          Cove
-        </Link>
-        <div className="flex items-center gap-4">
-          <Link href="/send" className="text-sm text-zinc-500 hover:underline">
-            Send
-          </Link>
-          <WalletMultiButton />
+    <CovePage
+      navbar={
+        <CoveNavbar
+          appHref="/send"
+          appLabel="Send Payment"
+          secondaryLink={{ href: "/", label: "Home" }}
+          walletSlot={<WalletMultiButton />}
+        />
+      }
+      contentClassName="py-10 sm:py-14"
+    >
+      <PageReveal className="space-y-8">
+        <motion.section variants={fadeUp} className="max-w-3xl">
+          <SectionEyebrow>Private settlement ledger</SectionEyebrow>
+          <h1 className="mt-6 text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
+            Your deposits
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
+            Monitor claim status, re-copy links, and export the deposit trail
+            without leaving the Cove flow.
+          </p>
+        </motion.section>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              icon: WalletCards,
+              label: "Tracked deposits",
+              value: rows.length.toString(),
+            },
+            {
+              icon: Clock3,
+              label: "Pending claims",
+              value: pendingCount.toString(),
+            },
+            {
+              icon: CheckCircle2,
+              label: "Claimed",
+              value: claimedCount.toString(),
+            },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <motion.div key={item.label} variants={fadeUp}>
+                <PremiumCard className="rounded-[1.5rem]">
+                  <div className="p-5">
+                    <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
+                    <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">
+                      {item.value}
+                    </p>
+                  </div>
+                </PremiumCard>
+              </motion.div>
+            );
+          })}
         </div>
-      </header>
 
-      <main className="flex-1 px-6 py-12">
-        <div className="mx-auto w-full max-w-4xl space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold">Your deposits</h1>
-            {state.kind === "ready" && state.rows.length > 0 && (
-              <button
-                onClick={handleExportCsv}
-                disabled={exporting}
-                className="rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-50 dark:hover:bg-zinc-900 disabled:opacity-50"
-              >
-                {exporting ? "Exporting..." : "Export CSV"}
-              </button>
-            )}
-          </div>
+        <motion.section variants={fadeUp}>
+          <PremiumCard>
+            <div className="p-6 sm:p-8">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Compliance-safe export and claim management
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
+                    Deposit activity
+                  </h2>
+                </div>
 
-          {state.kind === "loading" && (
-            <p className="text-sm text-zinc-500">Reading local deposits...</p>
-          )}
+                {state.kind === "ready" && state.rows.length > 0 ? (
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    onClick={handleExportCsv}
+                    disabled={exporting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+                  >
+                    <Download className="h-4 w-4" />
+                    {exporting ? "Exporting..." : "Export CSV"}
+                  </motion.button>
+                ) : null}
+              </div>
 
-          {state.kind === "empty" && (
-            <p className="text-sm text-zinc-500">
-              No deposits found. Make one at{" "}
-              <Link href="/send" className="underline">
-                /send
-              </Link>
-              .
-            </p>
-          )}
+              {state.kind === "loading" ? (
+                <Notice tone="neutral">Reading local deposits...</Notice>
+              ) : null}
 
-          {state.kind === "error" && (
-            <div className="rounded-md border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-900 p-3 text-sm text-red-700 dark:text-red-300">
-              {state.message}
-            </div>
-          )}
+              {state.kind === "empty" ? (
+                <Notice tone="neutral">
+                  No deposits found yet. Start with{" "}
+                  <Link href="/send" className="underline">
+                    /send
+                  </Link>
+                  .
+                </Notice>
+              ) : null}
 
-          {state.kind === "ready" && state.rows.length > 0 && (
-            <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-              <table className="w-full text-sm">
-                <thead className="bg-zinc-50 dark:bg-zinc-900 text-zinc-500 text-xs uppercase tracking-wide">
-                  <tr>
-                    <th className="text-left px-4 py-3 font-medium">Amount</th>
-                    <th className="text-left px-4 py-3 font-medium">Mint</th>
-                    <th className="text-left px-4 py-3 font-medium">Status</th>
-                    <th className="text-left px-4 py-3 font-medium">
-                      Deposit tx
-                    </th>
-                    <th className="text-left px-4 py-3 font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
+              {state.kind === "error" ? (
+                <Notice tone="error">{state.message}</Notice>
+              ) : null}
+
+              {state.kind === "ready" && state.rows.length > 0 ? (
+                <div className="mt-8 space-y-3">
+                  <div className="hidden grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] gap-3 px-4 text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 md:grid">
+                    <span>Amount</span>
+                    <span>Mint</span>
+                    <span>Status</span>
+                    <span>Deposit tx</span>
+                    <span>Actions</span>
+                  </div>
+
                   {state.rows.map((row) => (
-                    <tr
+                    <motion.div
+                      whileHover={{ scale: 1.005 }}
                       key={row.index}
-                      className="border-t border-zinc-200 dark:border-zinc-800"
+                      className="grid gap-4 rounded-[1.5rem] border border-zinc-200 bg-white/75 p-4 shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:bg-zinc-50 dark:border-white/8 dark:bg-white/[0.03] dark:shadow-none dark:hover:bg-zinc-800/50 md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center"
                     >
-                      <td className="px-4 py-3 tabular-nums">
-                        {lamportsToSol(row.amount)} SOL
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs">
-                        {row.mint.slice(0, 4)}…{row.mint.slice(-4)}
-                      </td>
-                      <td className="px-4 py-3">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                          Amount
+                        </p>
+                        <p className="tabular-nums text-base font-semibold text-zinc-950 dark:text-white">
+                          {lamportsToSol(row.amount)} SOL
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                          Mint
+                        </p>
+                        <p className="font-mono text-sm text-zinc-600 dark:text-zinc-300">
+                          {row.mint.slice(0, 4)}…{row.mint.slice(-4)}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                          Status
+                        </p>
                         <StatusBadge status={row.status} />
-                      </td>
-                      <td className="px-4 py-3">
+                      </div>
+
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                          Deposit tx
+                        </p>
                         <a
                           href={`https://solscan.io/tx/${row.depositSignature}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="font-mono text-xs underline text-zinc-500"
+                          className="inline-flex items-center gap-1 font-mono text-sm text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
                         >
                           {row.depositSignature.slice(0, 8)}…
+                          <ArrowUpRight className="h-3.5 w-3.5" />
                         </a>
-                      </td>
-                      <td className="px-4 py-3">
-                        <button
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          type="button"
                           onClick={() => handleCopyClaimLink(row)}
-                          className="rounded-md border border-zinc-300 dark:border-zinc-700 px-2 py-1 text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900"
+                          className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
                         >
+                          <Copy className="h-3.5 w-3.5" />
                           {copyFeedback[row.index] || "Copy claim link"}
-                        </button>
-                      </td>
-                    </tr>
+                        </motion.button>
+                      </div>
+                    </motion.div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              ) : null}
             </div>
-          )}
-        </div>
-      </main>
-    </div>
+          </PremiumCard>
+        </motion.section>
+      </PageReveal>
+    </CovePage>
   );
 }
 
 function StatusBadge({ status }: { status: Row["status"] }) {
   if (status === "loading") {
     return (
-      <span className="inline-flex items-center gap-2 text-xs text-zinc-500">
-        <span className="inline-block w-2 h-2 rounded-full bg-zinc-400 animate-pulse" />
-        Checking...
+      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">
+        <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-zinc-400" />
+        Checking
       </span>
     );
   }
   if (status === "claimed") {
     return (
-      <span className="inline-flex items-center gap-2 text-xs text-zinc-500">
-        <span className="inline-block w-2 h-2 rounded-full bg-zinc-400" />
+      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200">
+        <CheckCircle2 className="h-3.5 w-3.5" />
         Claimed
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-2 text-xs text-green-700 dark:text-green-400">
-      <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
+    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+      <Link2 className="h-3.5 w-3.5" />
       Pending claim
     </span>
+  );
+}
+
+function Notice({
+  children,
+  tone,
+}: {
+  children: React.ReactNode;
+  tone: "neutral" | "error";
+}) {
+  return (
+    <div
+      className={`mt-6 rounded-[1.5rem] border p-4 text-sm ${
+        tone === "error"
+          ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+          : "border-zinc-200 bg-white/70 text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400"
+      }`}
+    >
+      {children}
+    </div>
   );
 }

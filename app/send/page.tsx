@@ -2,11 +2,28 @@
 
 import { useMemo, useState } from "react";
 
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Copy,
+  Link2,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
-import Link from "next/link";
 
+import {
+  CoveNavbar,
+  CovePage,
+  PageReveal,
+  PremiumCard,
+  SectionEyebrow,
+  fadeUp,
+} from "@/components/cove-ui";
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { persistDeposit, type PersistedDeposit } from "@/lib/cove/storage";
 
@@ -78,7 +95,6 @@ export default function SendPage() {
 
     setStatus({ kind: "preparing" });
     try {
-      // 1. Ask the server to build everything (proof + unsigned tx + UTXO state).
       const res = await fetch("/api/deposit/prepare", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -95,9 +111,6 @@ export default function SendPage() {
       }
       const prepared = (await res.json()) as PrepareResponse;
 
-      // 2. INVARIANT: persist the UTXO BEFORE we sign or submit. If signing
-      //    is rejected or submission fails, the blinding is still on disk so
-      //    a recovery flow can locate the deposit on chain.
       const persisted: PersistedDeposit = {
         state: "pending_deposit",
         serializedB64: prepared.utxoSerializedBase64,
@@ -112,10 +125,6 @@ export default function SendPage() {
       };
       const storageKey = persistDeposit(persisted);
 
-      // 3. Deserialize the unsigned tx. The blockhash baked in by the server
-      //    may have expired during proof generation (~10–30s) plus user think
-      //    time — Solana's blockhash window is ~90s. Refresh before signing so
-      //    preflight simulation doesn't reject with "Blockhash not found".
       const tx = VersionedTransaction.deserialize(
         base64ToBytes(prepared.unsignedTransactionBase64),
       );
@@ -126,8 +135,6 @@ export default function SendPage() {
       setStatus({ kind: "signing" });
       const signed = await signTransaction(tx);
 
-      // 4. Submit and confirm against the fresh blockhash (NOT
-      //    prepared.metadata's stale one).
       setStatus({ kind: "submitting" });
       const signature = await connection.sendRawTransaction(signed.serialize(), {
         skipPreflight: false,
@@ -148,14 +155,12 @@ export default function SendPage() {
         );
       }
 
-      // 5. Update the persisted entry with deposited state + signature.
       persistDeposit({
         ...persisted,
         state: "deposited",
         depositSignature: signature,
       });
 
-      // 6. Build the claim URL.
       const url = buildClaimUrl({
         v: 1,
         sk: prepared.utxoOwnerPrivateKeyHex,
@@ -183,52 +188,123 @@ export default function SendPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800">
-        <span className="text-xl font-semibold tracking-tight">Cove</span>
-        <div className="flex items-center gap-4">
-          <Link
-            href="/dashboard"
-            className="text-sm text-zinc-500 hover:underline"
-          >
-            Dashboard
-          </Link>
-          <WalletMultiButton />
-        </div>
-      </header>
+    <CovePage
+      navbar={
+        <CoveNavbar
+          appHref="/dashboard"
+          appLabel="Dashboard"
+          secondaryLink={{ href: "/", label: "Home" }}
+          walletSlot={<WalletMultiButton />}
+        />
+      }
+      contentClassName="flex items-center py-10 sm:py-14"
+    >
+      <PageReveal className="grid w-full gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+        <motion.section variants={fadeUp} className="self-center">
+          <SectionEyebrow>Private payment rail</SectionEyebrow>
+          <h1 className="mt-6 max-w-xl text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
+            Send a private payment without the wallet-address dance.
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
+            Lock SOL. Generate the claim link. Drop it in the DM. Cove handles
+            the handoff without leaking a public key into the conversation.
+          </p>
 
-      <main className="flex flex-1 items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md rounded-xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-4 bg-white dark:bg-zinc-950">
-          <h1 className="text-xl font-semibold">Send a private payment</h1>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "Private by default",
+                copy: "No pubkey exchange before settlement.",
+              },
+              {
+                icon: Link2,
+                title: "One link",
+                copy: "Single-use claim URL, ready for chat.",
+              },
+              {
+                icon: Sparkles,
+                title: "Fast path",
+                copy: "Proof prep, sign, confirm, done.",
+              },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.title}
+                  variants={fadeUp}
+                  whileHover={{ scale: 1.01 }}
+                  className="rounded-[1.5rem] border border-zinc-200 bg-white/80 p-4 shadow-[0_18px_50px_rgba(15,23,42,0.05)] transition-colors duration-200 dark:border-white/8 dark:bg-white/[0.03] dark:shadow-none"
+                >
+                  <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
+                  <h2 className="mt-4 text-sm font-semibold text-zinc-950 dark:text-white">
+                    {item.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                    {item.copy}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.section>
 
-          <label className="block space-y-1">
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              Amount (SOL)
-            </span>
-            <input
-              type="number"
-              min={MIN_SOL}
-              step="0.001"
-              value={amountSol}
-              onChange={(e) => setAmountSol(e.target.value)}
-              placeholder={MIN_SOL.toString()}
-              className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-transparent px-3 py-2 outline-none focus:border-zinc-900 dark:focus:border-zinc-100"
-            />
-            <span className="text-xs text-zinc-500">Minimum {MIN_SOL} SOL</span>
-          </label>
+        <motion.section variants={fadeUp}>
+          <PremiumCard className="border-emerald-500/20 dark:border-emerald-400/20">
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-500">
+                    Live transfer composer
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
+                    Send a private payment
+                  </h2>
+                </div>
+                <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
+                  Mainnet
+                </span>
+              </div>
 
-          <button
-            onClick={handleGenerate}
-            disabled={!canSubmit}
-            className="w-full rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 py-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Generate claim link
-          </button>
+              <div className="mt-8 rounded-[1.5rem] border border-zinc-200 bg-zinc-50/80 p-5 dark:border-white/8 dark:bg-white/[0.03]">
+                <label className="block space-y-3">
+                  <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                    Amount (SOL)
+                  </span>
+                  <input
+                    type="number"
+                    min={MIN_SOL}
+                    step="0.001"
+                    value={amountSol}
+                    onChange={(e) => setAmountSol(e.target.value)}
+                    placeholder={MIN_SOL.toString()}
+                    className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 text-lg font-medium text-zinc-950 outline-none transition-colors duration-200 placeholder:text-zinc-400 focus:border-emerald-500 dark:border-white/10 dark:bg-black/30 dark:text-white dark:focus:border-emerald-300"
+                  />
+                  <span className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                    Minimum {MIN_SOL} SOL
+                  </span>
+                </label>
 
-          <StatusPanel status={status} connected={connected} />
-        </div>
-      </main>
-    </div>
+                <motion.button
+                  whileHover={canSubmit ? { scale: 1.01 } : undefined}
+                  whileTap={canSubmit ? { scale: 0.995 } : undefined}
+                  onClick={handleGenerate}
+                  disabled={!canSubmit}
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                >
+                  Generate claim link
+                  <ArrowRight className="h-4 w-4" />
+                </motion.button>
+              </div>
+
+              <div className="mt-6">
+                <StatusPanel status={status} connected={connected} />
+              </div>
+            </div>
+          </PremiumCard>
+        </motion.section>
+      </PageReveal>
+    </CovePage>
   );
 }
 
@@ -241,60 +317,88 @@ function StatusPanel({
 }) {
   if (status.kind === "idle") {
     return (
-      <p className="text-sm text-zinc-500">
-        {connected ? "Ready." : "Connect a wallet to begin."}
-      </p>
+      <div className="rounded-[1.5rem] border border-zinc-200 bg-white/70 p-4 text-sm text-zinc-600 shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400 dark:shadow-none">
+        {connected ? "Ready to prepare the deposit." : "Connect a wallet to begin."}
+      </div>
     );
   }
 
   if (status.kind === "preparing") {
-    return (
-      <p className="text-sm text-zinc-500">
-        Preparing deposit (proof generation, ~10–30s)...
-      </p>
-    );
+    return <InlineNotice tone="neutral">Preparing deposit and generating proof...</InlineNotice>;
   }
   if (status.kind === "signing") {
-    return (
-      <p className="text-sm text-zinc-500">Waiting for wallet signature...</p>
-    );
+    return <InlineNotice tone="neutral">Waiting for wallet signature...</InlineNotice>;
   }
   if (status.kind === "submitting") {
-    return <p className="text-sm text-zinc-500">Submitting transaction...</p>;
+    return <InlineNotice tone="neutral">Submitting transaction to Solana...</InlineNotice>;
   }
   if (status.kind === "confirming") {
     return (
-      <p className="text-sm text-zinc-500">
-        Confirming on chain... <span className="font-mono">{status.signature.slice(0, 12)}…</span>
-      </p>
+      <InlineNotice tone="neutral">
+        Confirming on chain...
+        <span className="ml-1 font-mono text-xs">{status.signature.slice(0, 12)}…</span>
+      </InlineNotice>
     );
   }
   if (status.kind === "error") {
-    return (
-      <div className="rounded-md border border-red-300 bg-red-50 dark:bg-red-950/30 dark:border-red-900 p-3 text-sm text-red-700 dark:text-red-300">
-        {status.message}
-      </div>
-    );
+    return <InlineNotice tone="error">{status.message}</InlineNotice>;
   }
 
-  // success
   return (
-    <div className="space-y-2">
-      <div className="rounded-md border border-green-300 bg-green-50 dark:bg-green-950/30 dark:border-green-900 p-3 text-sm text-green-700 dark:text-green-300">
+    <div className="space-y-4 rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+      <div className="flex items-center gap-2 font-medium">
+        <CheckCircle2 className="h-4 w-4" />
         Deposit confirmed.
       </div>
-      <label className="block space-y-1">
-        <span className="text-xs text-zinc-500">Claim link</span>
-        <input
-          readOnly
-          value={status.url}
-          onFocus={(e) => e.currentTarget.select()}
-          className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-transparent px-3 py-2 text-xs font-mono"
-        />
+
+      <label className="block space-y-2">
+        <span className="text-xs uppercase tracking-[0.2em] text-emerald-700/80 dark:text-emerald-300/80">
+          Claim link
+        </span>
+        <div className="flex gap-2">
+          <input
+            readOnly
+            value={status.url}
+            onFocus={(e) => e.currentTarget.select()}
+            className="min-w-0 flex-1 rounded-2xl border border-emerald-500/20 bg-white/80 px-3 py-3 text-xs font-mono text-zinc-900 outline-none dark:border-white/10 dark:bg-black/20 dark:text-zinc-100"
+          />
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            type="button"
+            onClick={() => navigator.clipboard.writeText(status.url)}
+            className="inline-flex items-center justify-center rounded-2xl border border-emerald-500/20 bg-white/70 px-3 text-zinc-900 transition-colors duration-200 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+          >
+            <Copy className="h-4 w-4" />
+          </motion.button>
+        </div>
       </label>
-      <p className="text-xs text-zinc-500 break-all">
+
+      <p className="break-all text-xs text-emerald-800/80 dark:text-emerald-200/80">
         Signature: <span className="font-mono">{status.signature}</span>
       </p>
+      <p className="text-xs text-zinc-600 dark:text-zinc-400">
+        Open <Link href="/dashboard" className="underline">Dashboard</Link> to manage and re-copy this link later.
+      </p>
+    </div>
+  );
+}
+
+function InlineNotice({
+  children,
+  tone,
+}: {
+  children: React.ReactNode;
+  tone: "neutral" | "error";
+}) {
+  return (
+    <div
+      className={`rounded-[1.5rem] border p-4 text-sm shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:shadow-none ${
+        tone === "error"
+          ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
+          : "border-zinc-200 bg-white/70 text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400"
+      }`}
+    >
+      {children}
     </div>
   );
 }
