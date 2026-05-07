@@ -54,15 +54,15 @@ export const secondaryButtonClass =
 
 function CoveBrand() {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3">
       <Image
         src="/logo.png"
         alt="Cove"
-        width={32}
-        height={32}
-        className="h-7 w-7 object-contain md:h-8 md:w-8"
+        width={48}
+        height={48}
+        className="h-10 w-10 object-contain md:h-12 md:w-12"
       />
-      <span className="text-xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
+      <span className="text-2xl md:text-3xl font-black font-syne tracking-tighter text-zinc-900 dark:text-white">
         Cove
       </span>
     </div>
@@ -252,7 +252,7 @@ export function CoveNavbar({
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex min-h-[72px] items-center gap-4"
+            className="flex min-h-[84px] items-center gap-4"
           >
             <Link href="/" className="flex shrink-0 items-center">
               <CoveBrand />
@@ -353,7 +353,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-x-0 top-[72px] z-40 h-[calc(100vh-72px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
+          className="fixed inset-x-0 top-[84px] z-40 h-[calc(100vh-84px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">

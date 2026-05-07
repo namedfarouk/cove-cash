@@ -193,7 +193,7 @@ export default function Home() {
       />
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 pt-24 sm:px-6 lg:px-8">
-        <section className="relative pb-24 pt-10 sm:pb-28 sm:pt-14 lg:pb-32">
+        <section className="relative pb-24 pt-32 md:pt-40 sm:pb-28 lg:pb-32">
           <motion.div
             initial="hidden"
             animate="visible"
