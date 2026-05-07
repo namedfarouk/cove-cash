@@ -100,7 +100,7 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex min-h-[84px] items-center gap-4"
+            className="flex items-center gap-4 py-4"
           >
             <Link href="/" className="flex shrink-0 items-center">
               <CoveBrand />

@@ -54,8 +54,8 @@ export const secondaryButtonClass =
 
 export function CoveBrand() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+    <div className="flex items-center gap-3 md:gap-4">
+      <div className="relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
         <Image 
           src="/logo.png" 
           alt="Cove Logo" 
@@ -64,7 +64,7 @@ export function CoveBrand() {
           priority 
         />
       </div>
-      <span className="text-2xl md:text-3xl font-black font-syne tracking-tighter text-zinc-900 dark:text-white">
+      <span className="text-3xl md:text-4xl font-black font-syne tracking-tighter text-zinc-900 dark:text-white">
         Cove
       </span>
     </div>
@@ -254,7 +254,7 @@ export function CoveNavbar({
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex min-h-[84px] items-center gap-4"
+            className="flex items-center gap-4 py-4"
           >
             <Link href="/" className="flex shrink-0 items-center">
               <CoveBrand />
@@ -289,7 +289,7 @@ export function CoveNavbar({
               initial="hidden"
               animate="visible"
               variants={fadeUp}
-              className="flex items-center gap-6"
+              className="flex items-center gap-6 py-3"
             >
               <Link href="/" className="flex shrink-0 items-center">
                 <CoveBrand />
@@ -355,7 +355,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-x-0 top-[84px] z-40 h-[calc(100vh-84px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
+          className="fixed inset-x-0 top-[112px] z-40 h-[calc(100vh-112px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
