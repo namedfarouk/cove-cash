@@ -18,6 +18,7 @@ import {
   Sun,
   X,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 
@@ -50,6 +51,23 @@ export const primaryButtonClass =
 
 export const secondaryButtonClass =
   "cove-secondary-button";
+
+function CoveBrand() {
+  return (
+    <div className="flex items-center gap-2">
+      <Image
+        src="/logo.png"
+        alt="Cove"
+        width={32}
+        height={32}
+        className="h-7 w-7 object-contain md:h-8 md:w-8"
+      />
+      <span className="text-xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
+        Cove
+      </span>
+    </div>
+  );
+}
 
 export function useFloatingNavbarState(threshold = 32) {
   const { scrollY } = useScroll();
@@ -236,13 +254,8 @@ export function CoveNavbar({
             variants={fadeUp}
             className="flex min-h-[72px] items-center gap-4"
           >
-            <Link href="/" className="flex shrink-0 items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
-                C
-              </span>
-              <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
-                Cove
-              </span>
+            <Link href="/" className="flex shrink-0 items-center">
+              <CoveBrand />
             </Link>
 
             <div className="min-w-0 flex-1" />
@@ -276,13 +289,8 @@ export function CoveNavbar({
               variants={fadeUp}
               className="flex items-center gap-6"
             >
-              <Link href="/" className="flex shrink-0 items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
-                  C
-                </span>
-                <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
-                  Cove
-                </span>
+              <Link href="/" className="flex shrink-0 items-center">
+                <CoveBrand />
               </Link>
 
               <div className="min-w-0 flex-1" />
