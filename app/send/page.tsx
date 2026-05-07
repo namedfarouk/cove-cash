@@ -262,9 +262,17 @@ function StatusPanel({
 }) {
   const { t } = useCoveLanguage();
   if (status.kind === "idle") {
+    if (!connected) {
+      return (
+        <div className="w-full [&_.wallet-adapter-button]:flex [&_.wallet-adapter-button]:w-full [&_.wallet-adapter-button]:justify-center [&_.wallet-adapter-button]:items-center [&_.wallet-adapter-button]:rounded-xl [&_.wallet-adapter-button]:px-4 [&_.wallet-adapter-button]:py-3 [&_.wallet-adapter-button]:font-syne [&_.wallet-adapter-button]:font-bold [&_.wallet-adapter-button]:bg-zinc-900 [&_.wallet-adapter-button]:text-white [&_.wallet-adapter-button]:transition-colors hover:[&_.wallet-adapter-button]:bg-zinc-800 dark:[&_.wallet-adapter-button]:bg-white dark:[&_.wallet-adapter-button]:text-zinc-900 dark:hover:[&_.wallet-adapter-button]:bg-zinc-200 [&_.wallet-adapter-button-trigger]:flex [&_.wallet-adapter-button-trigger]:w-full [&_.wallet-adapter-button-trigger]:justify-center [&_.wallet-adapter-button-trigger]:items-center [&_.wallet-adapter-button-trigger]:rounded-xl [&_.wallet-adapter-button-trigger]:px-4 [&_.wallet-adapter-button-trigger]:py-3 [&_.wallet-adapter-button-trigger]:font-syne [&_.wallet-adapter-button-trigger]:font-bold [&_.wallet-adapter-button-trigger]:bg-zinc-900 [&_.wallet-adapter-button-trigger]:text-white [&_.wallet-adapter-button-trigger]:transition-colors hover:[&_.wallet-adapter-button-trigger]:bg-zinc-800 dark:[&_.wallet-adapter-button-trigger]:bg-white dark:[&_.wallet-adapter-button-trigger]:text-zinc-900 dark:hover:[&_.wallet-adapter-button-trigger]:bg-zinc-200">
+          <WalletMultiButton />
+        </div>
+      );
+    }
+
     return (
       <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400">
-        {connected ? t.send.readyToPrepare : t.send.connectWalletToBegin}
+        {t.send.readyToPrepare}
       </div>
     );
   }
