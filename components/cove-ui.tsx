@@ -348,6 +348,13 @@ export function MobileMenuOverlay({
           className="fixed inset-x-0 top-[72px] z-40 h-[calc(100vh-72px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
+            <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
+              <div className="flex items-center gap-3">
+                <LanguageSelector />
+                <ThemeToggle />
+              </div>
+            </div>
+
             <div className="flex flex-col space-y-6">
               {links.map((link) =>
                 link.external ? (
@@ -383,16 +390,12 @@ export function MobileMenuOverlay({
               )}
             </div>
 
-            <div className="border-t border-zinc-200 pt-6 dark:border-white/20">
-              <div className="flex items-center gap-3">
-                <LanguageSelector />
-                <ThemeToggle />
-              </div>
-            </div>
-
             <div className="mt-8 flex flex-col gap-4">
-              {walletSlot ? <div className="w-full">{walletSlot}</div> : null}
-              {primaryAction ? (
+              {walletSlot ? (
+                <div className="w-full [&_.wallet-adapter-button]:w-full [&_.wallet-adapter-button]:justify-center [&_.wallet-adapter-button-trigger]:w-full [&_.wallet-adapter-button-trigger]:justify-center">
+                  {walletSlot}
+                </div>
+              ) : primaryAction ? (
                 <Link href={primaryAction.href} onClick={onClose} className={`${primaryButtonClass} w-full`}>
                   {primaryAction.label}
                 </Link>

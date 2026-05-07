@@ -133,14 +133,21 @@ body {
 
 .wallet-adapter-dropdown-list-item {
   border-radius: 0.75rem !important;
+  color: #18181b !important;
   font-family: var(--font-body), Arial, Helvetica, sans-serif !important;
   transition: background-color 0.2s ease !important;
 }
 
 .wallet-adapter-dropdown-list-item:hover {
   background: rgba(24, 24, 27, 0.05) !important;
+  color: #18181b !important;
+}
+
+.dark .wallet-adapter-dropdown-list-item {
+  color: #ffffff !important;
 }
 
 .dark .wallet-adapter-dropdown-list-item:hover {
   background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
 }
