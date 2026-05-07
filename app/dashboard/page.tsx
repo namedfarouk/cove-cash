@@ -24,6 +24,7 @@ import {
   PremiumCard,
   SectionEyebrow,
   fadeUp,
+  secondaryButtonClass,
 } from "@/components/cove-ui";
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { type PersistedDeposit } from "@/lib/cove/storage";
@@ -288,10 +289,10 @@ export default function DashboardPage() {
       <PageReveal className="space-y-8">
         <motion.section variants={fadeUp} className="max-w-3xl">
           <SectionEyebrow>{t.dashboard.eyebrow}</SectionEyebrow>
-          <h1 className="mt-6 text-4xl font-semibold tracking-[-0.05em] text-zinc-950 dark:text-white sm:text-5xl">
+          <h1 className="mt-6 font-syne text-4xl font-semibold tracking-tighter text-white sm:text-5xl">
             {t.dashboard.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
+          <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
             {t.dashboard.subtitle}
           </p>
         </motion.section>
@@ -317,13 +318,13 @@ export default function DashboardPage() {
             const Icon = item.icon;
             return (
               <motion.div key={item.label} variants={fadeUp}>
-                <PremiumCard className="rounded-[1.5rem]">
+                <PremiumCard>
                   <div className="p-5">
-                    <Icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
-                    <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+                    <Icon className="h-5 w-5 text-cove-accent" />
+                    <p className="mt-4 font-inter text-sm text-zinc-500">
                       {item.label}
                     </p>
-                    <p className="mt-1 text-3xl font-semibold text-zinc-950 dark:text-white">
+                    <p className="mt-1 font-syne text-3xl font-semibold tracking-tighter text-white">
                       {item.value}
                     </p>
                   </div>
@@ -338,10 +339,10 @@ export default function DashboardPage() {
             <div className="p-6 sm:p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  <p className="font-inter text-sm text-zinc-500">
                     {t.dashboard.complianceSafeExport}
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
+                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-white">
                     {t.dashboard.depositActivity}
                   </h2>
                 </div>
@@ -351,7 +352,7 @@ export default function DashboardPage() {
                     whileHover={{ scale: 1.01 }}
                     onClick={handleExportCsv}
                     disabled={exporting}
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white/80 px-4 py-2.5 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+                    className={secondaryButtonClass}
                   >
                     <Download className="h-4 w-4" />
                     {exporting ? t.dashboard.exporting : t.dashboard.exportCsv}
@@ -379,7 +380,7 @@ export default function DashboardPage() {
 
               {state.kind === "ready" && state.rows.length > 0 ? (
                 <div className="mt-8 space-y-3">
-                  <div className="hidden grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] gap-3 px-4 text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 md:grid">
+                  <div className="hidden grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] gap-3 px-4 font-inter text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 md:grid">
                     <span>{t.dashboard.colAmount}</span>
                     <span>{t.dashboard.colMint}</span>
                     <span>{t.dashboard.colStatus}</span>
@@ -391,42 +392,42 @@ export default function DashboardPage() {
                     <motion.div
                       whileHover={{ scale: 1.005 }}
                       key={row.index}
-                      className="grid gap-4 rounded-[1.5rem] border border-zinc-200 bg-white/75 p-4 shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-colors duration-200 hover:bg-zinc-50 dark:border-white/8 dark:bg-white/[0.03] dark:shadow-none dark:hover:bg-zinc-800/50 md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center"
+                      className="grid gap-4 rounded-2xl border border-white/10 bg-black/40 p-4 transition-colors duration-200 hover:bg-white/[0.04] md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center"
                     >
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colAmount}
                         </p>
-                        <p className="tabular-nums text-base font-semibold text-zinc-950 dark:text-white">
+                        <p className="font-syne tabular-nums text-base font-semibold tracking-tight text-white">
                           {lamportsToSol(row.amount)} SOL
                         </p>
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colMint}
                         </p>
-                        <p className="font-mono text-sm text-zinc-600 dark:text-zinc-300">
+                        <p className="font-mono text-sm text-zinc-300">
                           {row.mint.slice(0, 4)}…{row.mint.slice(-4)}
                         </p>
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colStatus}
                         </p>
                         <StatusBadge status={row.status} />
                       </div>
 
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colDepositTx}
                         </p>
                         <a
                           href={`https://solscan.io/tx/${row.depositSignature}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-sm text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                          className="inline-flex items-center gap-1 font-mono text-sm text-zinc-300 transition hover:text-white"
                         >
                           {row.depositSignature.slice(0, 8)}…
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -438,7 +439,7 @@ export default function DashboardPage() {
                           whileHover={{ scale: 1.02 }}
                           type="button"
                           onClick={() => handleCopyClaimLink(row)}
-                          className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8"
+                          className={`${secondaryButtonClass} px-3 py-2 text-xs`}
                         >
                           <Copy className="h-3.5 w-3.5" />
                           {copyFeedback[row.index] || t.dashboard.copyClaimLink}
@@ -460,7 +461,7 @@ function StatusBadge({ status }: { status: Row["status"] }) {
   const { t } = useCoveLanguage();
   if (status === "loading") {
     return (
-      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-600 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">
+      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs text-zinc-300">
         <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-zinc-400" />
         {t.dashboard.checkingBadge}
       </span>
@@ -468,14 +469,14 @@ function StatusBadge({ status }: { status: Row["status"] }) {
   }
   if (status === "claimed") {
     return (
-      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1 text-xs text-zinc-700 dark:border-white/10 dark:bg-white/5 dark:text-zinc-200">
+      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs text-white">
         <CheckCircle2 className="h-3.5 w-3.5" />
         {t.dashboard.claimedBadge}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-300">
+    <span className="inline-flex items-center gap-2 rounded-full border border-cove-accent/30 bg-cove-accent/10 px-3 py-1 font-inter text-xs text-cove-accent">
       <Link2 className="h-3.5 w-3.5" />
       {t.dashboard.pendingClaimBadge}
     </span>
@@ -491,10 +492,10 @@ function Notice({
 }) {
   return (
     <div
-      className={`mt-6 rounded-[1.5rem] border p-4 text-sm ${
+      className={`mt-6 rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
-          ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-          : "border-zinc-200 bg-white/70 text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400"
+          ? "border-cove-accent/40 bg-cove-accent/10 text-white"
+          : "border-white/10 bg-black/40 text-zinc-400"
       }`}
     >
       {children}

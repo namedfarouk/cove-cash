@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { AnimatePresence, motion, type Variants } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  type Variants,
+} from "framer-motion";
 import {
   ChevronDown,
   Globe,
@@ -39,9 +45,26 @@ export const stagger: Variants = {
   },
 };
 
+export const primaryButtonClass =
+  "cove-primary-button";
+
+export const secondaryButtonClass =
+  "cove-secondary-button";
+
+export function useFloatingNavbarState(threshold = 32) {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > threshold);
+  });
+
+  return scrolled;
+}
+
 export function SectionEyebrow({ children }: { children: ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-emerald-600 dark:border-emerald-400/20 dark:bg-emerald-400/8 dark:text-emerald-300">
+    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-inter font-medium uppercase tracking-[0.24em] text-cove-accent">
       <Sparkles className="h-3.5 w-3.5" />
       {children}
     </div>
@@ -76,7 +99,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full text-zinc-600 transition-colors duration-200 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
     >
       {isDark ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
     </button>
@@ -119,7 +142,7 @@ export function LanguageSelector() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 text-sm font-medium text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-[#0B0F14] dark:text-zinc-300 dark:shadow-none dark:hover:border-zinc-700 dark:hover:bg-zinc-900 max-md:w-full max-md:justify-between"
+        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-black/10 bg-white px-4 font-inter text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white max-md:w-full max-md:justify-between"
       >
         <Globe className="h-4 w-4" />
         <span className="text-base leading-none">{selectedLanguage.flag}</span>
@@ -139,7 +162,7 @@ export function LanguageSelector() {
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
             role="menu"
-            className="absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 shadow-[0_20px_45px_rgba(0,0,0,0.12)] md:right-0 dark:border-zinc-800 dark:bg-[#0B0F14] dark:text-zinc-300 dark:shadow-[0_24px_60px_rgba(0,0,0,0.38)] max-md:relative max-md:top-0 max-md:mt-2 max-md:w-full"
+            className="absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-black/10 bg-white p-2 text-zinc-700 dark:border-white/10 dark:bg-cove-card dark:text-zinc-300 md:right-0 max-md:relative max-md:top-0 max-md:mt-2 max-md:w-full"
           >
             {supportedLanguages.map((language) => {
               const active = language.value === selectedLanguage.value;
@@ -164,8 +187,8 @@ export function LanguageSelector() {
                       : ""
                   } ${
                     active
-                      ? "bg-emerald-500/10 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300"
-                      : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-white"
+                      ? "bg-cove-accent/15 text-cove-accent"
+                      : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white"
                   }`}
                 >
                   <span className="text-base leading-none">{language.flag}</span>
@@ -194,6 +217,7 @@ export function CoveNavbar({
 }) {
   const { t } = useCoveLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  const scrolled = useFloatingNavbarState();
 
   useLockBodyScroll(isOpen);
 
@@ -203,48 +227,79 @@ export function CoveNavbar({
   ];
 
   return (
-    <div className="fixed left-0 top-0 z-50 w-full border-b border-zinc-200/70 bg-white/95 backdrop-blur-md dark:border-zinc-900 dark:bg-[#0B0F14]/95">
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-        <motion.header
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          className="flex min-h-[72px] items-center gap-4"
-        >
-          <Link href="/" className="flex shrink-0 items-center gap-3">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-lg font-semibold text-zinc-950 shadow-[0_10px_35px_rgba(0,0,0,0.08)] dark:border-white/10 dark:bg-white/5 dark:text-white dark:shadow-[0_0_30px_rgba(34,197,94,0.16)]">
-              C
-            </span>
-            <span className="text-lg font-semibold tracking-tight text-zinc-950 dark:text-white">
-              Cove
-            </span>
-          </Link>
-
-          <div className="min-w-0 flex-1" />
-
-          <button
-            type="button"
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-            onClick={() => setIsOpen((current) => !current)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white/80 text-zinc-700 shadow-sm transition-colors duration-200 hover:border-zinc-300 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-zinc-200 dark:shadow-none dark:hover:border-white/15 dark:hover:bg-white/8 md:hidden"
+    <>
+      <div className="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-md dark:border-white/10 dark:bg-cove-black/90 md:hidden">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <motion.header
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="flex min-h-[72px] items-center gap-4"
           >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-white">
+                C
+              </span>
+              <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
+                Cove
+              </span>
+            </Link>
 
-          <div className="hidden shrink-0 items-center gap-2 md:flex">
-            <ThemeToggle />
-            <LanguageSelector />
-            {cta ? (
-              <Link
-                href={cta.href}
-                className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5 text-sm font-medium text-emerald-700 shadow-sm transition-colors duration-200 hover:border-emerald-500/35 hover:bg-emerald-500/15 hover:text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-200 dark:shadow-[0_0_24px_rgba(16,185,129,0.18)] dark:hover:border-emerald-300/50 dark:hover:bg-emerald-400/15 dark:hover:text-white"
-              >
-                {cta.label}
+            <div className="min-w-0 flex-1" />
+
+            <button
+              type="button"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              onClick={() => setIsOpen((current) => !current)}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/10 dark:bg-cove-card dark:text-zinc-200 dark:hover:bg-white/[0.06]"
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </motion.header>
+        </div>
+      </div>
+
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden md:block">
+        <div className="mx-auto w-full max-w-7xl px-6 pt-4">
+          <motion.div
+            layout
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className={`pointer-events-auto transition-all duration-300 ${
+              scrolled
+                ? "mx-auto w-fit rounded-full border border-white/20 bg-[#070707]/80 px-6 py-3 backdrop-blur-md"
+                : "w-full px-0 py-0"
+            }`}
+          >
+            <motion.header
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              className="flex items-center gap-6"
+            >
+              <Link href="/" className="flex shrink-0 items-center gap-3">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-cove-card text-sm font-syne font-semibold tracking-tight text-white">
+                  C
+                </span>
+                <span className="font-syne text-lg font-semibold tracking-tighter text-white">
+                  Cove
+                </span>
               </Link>
-            ) : null}
-            {walletSlot}
-          </div>
-        </motion.header>
+
+              <div className="min-w-0 flex-1" />
+
+              <div className="hidden shrink-0 items-center gap-2 md:flex">
+                <ThemeToggle />
+                <LanguageSelector />
+                {cta ? (
+                  <Link href={cta.href} className={primaryButtonClass}>
+                    {cta.label}
+                  </Link>
+                ) : null}
+                {walletSlot}
+              </div>
+            </motion.header>
+          </motion.div>
+        </div>
       </div>
 
       <MobileMenuOverlay
@@ -254,7 +309,7 @@ export function CoveNavbar({
         primaryAction={cta}
         walletSlot={walletSlot}
       />
-    </div>
+    </>
   );
 }
 
@@ -290,7 +345,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-white text-zinc-900 dark:bg-[#0B0F14] dark:text-white md:hidden"
+          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-white text-zinc-900 dark:bg-cove-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="flex flex-col space-y-6">
@@ -302,7 +357,7 @@ export function MobileMenuOverlay({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+                    className="font-inter text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -311,7 +366,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+                    className="font-inter text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </a>
@@ -320,7 +375,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     onClick={onClose}
-                    className="text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+                    className="font-inter text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -338,11 +393,7 @@ export function MobileMenuOverlay({
             <div className="mt-8 flex flex-col gap-4">
               {walletSlot ? <div className="w-full">{walletSlot}</div> : null}
               {primaryAction ? (
-                <Link
-                  href={primaryAction.href}
-                  onClick={onClose}
-                  className="inline-flex w-full items-center justify-center rounded-full bg-[#22C55E] px-5 py-3 text-sm font-semibold text-zinc-950 transition-colors duration-200 hover:bg-[#16a34a]"
-                >
+                <Link href={primaryAction.href} onClick={onClose} className={`${primaryButtonClass} w-full`}>
                   {primaryAction.label}
                 </Link>
               ) : null}
@@ -383,25 +434,7 @@ export function CovePage({
   contentClassName?: string;
 }) {
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-white text-zinc-950 transition-colors duration-300 dark:bg-[#0B0F14] dark:text-zinc-50">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key="theme-surface"
-          initial={{ opacity: 0.92 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.92 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          className="absolute inset-0"
-        >
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-1/2 top-0 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.12),rgba(255,255,255,0)_60%)] blur-3xl dark:bg-[radial-gradient(circle_at_center,rgba(20,241,149,0.10),rgba(11,15,20,0)_62%)]" />
-            <div className="absolute -left-24 top-40 h-72 w-72 rounded-full bg-fuchsia-500/7 blur-3xl dark:bg-fuchsia-500/8" />
-            <div className="absolute -right-20 top-28 h-80 w-80 rounded-full bg-cyan-400/7 blur-3xl dark:bg-cyan-400/8" />
-            <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.78),rgba(255,255,255,0.97))] dark:bg-[linear-gradient(to_bottom,rgba(11,15,20,0.92),rgba(11,15,20,1))]" />
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
+    <main className="relative isolate min-h-screen overflow-hidden bg-cove-black text-white transition-colors duration-300">
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         {navbar}
         <div className={`relative flex-1 pt-24 ${contentClassName}`}>{children}</div>
@@ -418,11 +451,6 @@ export function PremiumCard({
   className?: string;
 }) {
   return (
-    <div
-      className={`relative overflow-hidden rounded-[2rem] border border-zinc-200 bg-white/85 shadow-[0_24px_70px_rgba(15,23,42,0.08)] transition-colors duration-300 dark:border-white/10 dark:bg-white/[0.04] dark:shadow-[0_30px_100px_rgba(0,0,0,0.35)] ${className}`}
-    >
-      <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent" />
-      {children}
-    </div>
+    <div className={`rounded-2xl border border-white/10 bg-cove-card transition-colors duration-300 ${className}`}>{children}</div>
   );
 }

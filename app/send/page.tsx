@@ -16,6 +16,8 @@ import {
   PageReveal,
   PremiumCard,
   fadeUp,
+  primaryButtonClass,
+  secondaryButtonClass,
 } from "@/components/cove-ui";
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { persistDeposit, type PersistedDeposit } from "@/lib/cove/storage";
@@ -193,25 +195,25 @@ export default function SendPage() {
     >
       <PageReveal className="mx-auto w-full max-w-xl">
         <motion.section variants={fadeUp}>
-          <PremiumCard className="border-emerald-500/20 dark:border-emerald-400/20">
+          <PremiumCard>
             <div className="p-6 sm:p-8">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-500">
+                  <p className="font-inter text-sm text-zinc-500">
                     {t.send.liveTransferComposer}
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-zinc-950 dark:text-white">
+                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-white">
                     {t.send.sendPrivatePayment}
                   </h2>
                 </div>
-                <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
+                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs font-medium text-cove-accent">
                   Mainnet
                 </span>
               </div>
 
-              <div className="mt-8 rounded-[1.5rem] border border-zinc-200 bg-zinc-50/80 p-5 dark:border-white/8 dark:bg-white/[0.03]">
+              <div className="mt-8 rounded-2xl border border-white/10 bg-black/40 p-5">
                 <label className="block space-y-3">
-                  <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                  <span className="font-inter text-sm font-medium text-zinc-400">
                     {t.send.amount}
                   </span>
                   <input
@@ -221,9 +223,9 @@ export default function SendPage() {
                     value={amountSol}
                     onChange={(e) => setAmountSol(e.target.value)}
                     placeholder={MIN_SOL.toString()}
-                    className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 text-lg font-medium text-zinc-950 outline-none transition-colors duration-200 placeholder:text-zinc-400 focus:border-emerald-500 dark:border-white/10 dark:bg-black/30 dark:text-white dark:focus:border-emerald-300"
+                    className="w-full rounded-2xl border border-white/10 bg-cove-card px-4 py-4 font-syne text-lg font-medium tracking-tight text-white outline-none transition-colors duration-200 placeholder:text-zinc-500 focus:border-cove-accent"
                   />
-                  <span className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                  <span className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500">
                     {t.send.minimumSol}
                   </span>
                 </label>
@@ -233,7 +235,7 @@ export default function SendPage() {
                   whileTap={canSubmit ? { scale: 0.995 } : undefined}
                   onClick={handleGenerate}
                   disabled={!canSubmit}
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-400 dark:text-zinc-950 dark:hover:bg-emerald-300"
+                  className={`${primaryButtonClass} mt-6 w-full`}
                 >
                   {t.send.generateClaimLink}
                   <ArrowRight className="h-4 w-4" />
@@ -261,7 +263,7 @@ function StatusPanel({
   const { t } = useCoveLanguage();
   if (status.kind === "idle") {
     return (
-      <div className="rounded-[1.5rem] border border-zinc-200 bg-white/70 p-4 text-sm text-zinc-600 shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400 dark:shadow-none">
+      <div className="rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-zinc-400">
         {connected ? t.send.readyToPrepare : t.send.connectWalletToBegin}
       </div>
     );
@@ -289,14 +291,14 @@ function StatusPanel({
   }
 
   return (
-    <div className="space-y-4 rounded-[1.5rem] border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
+    <div className="space-y-4 rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-white">
       <div className="flex items-center gap-2 font-medium">
-        <CheckCircle2 className="h-4 w-4" />
+        <CheckCircle2 className="h-4 w-4 text-cove-accent" />
         {t.send.depositConfirmed}
       </div>
 
       <label className="block space-y-2">
-        <span className="text-xs uppercase tracking-[0.2em] text-emerald-700/80 dark:text-emerald-300/80">
+        <span className="text-xs uppercase tracking-[0.2em] text-zinc-500">
           {t.send.claimLinkLabel}
         </span>
         <div className="flex gap-2">
@@ -304,23 +306,23 @@ function StatusPanel({
             readOnly
             value={status.url}
             onFocus={(e) => e.currentTarget.select()}
-            className="min-w-0 flex-1 rounded-2xl border border-emerald-500/20 bg-white/80 px-3 py-3 text-xs font-mono text-zinc-900 outline-none dark:border-white/10 dark:bg-black/20 dark:text-zinc-100"
+            className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-cove-card px-3 py-3 text-xs font-mono text-zinc-100 outline-none"
           />
           <motion.button
             whileHover={{ scale: 1.02 }}
             type="button"
             onClick={() => navigator.clipboard.writeText(status.url)}
-            className="inline-flex items-center justify-center rounded-2xl border border-emerald-500/20 bg-white/70 px-3 text-zinc-900 transition-colors duration-200 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+            className={`${secondaryButtonClass} rounded-2xl px-3`}
           >
             <Copy className="h-4 w-4" />
           </motion.button>
         </div>
       </label>
 
-      <p className="break-all text-xs text-emerald-800/80 dark:text-emerald-200/80">
+      <p className="break-all text-xs text-zinc-400">
         {t.send.signatureLabel} <span className="font-mono">{status.signature}</span>
       </p>
-      <p className="text-xs text-zinc-600 dark:text-zinc-400">
+      <p className="text-xs text-zinc-400">
         {t.send.openDashboardPrefix}
         <Link href="/dashboard" className="underline">
           {t.send.dashboardLinkText}
@@ -340,10 +342,10 @@ function InlineNotice({
 }) {
   return (
     <div
-      className={`rounded-[1.5rem] border p-4 text-sm shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:shadow-none ${
+      className={`rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
-          ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"
-          : "border-zinc-200 bg-white/70 text-zinc-600 dark:border-white/8 dark:bg-white/[0.03] dark:text-zinc-400"
+          ? "border-cove-accent/40 bg-cove-accent/10 text-white"
+          : "border-white/10 bg-black/40 text-zinc-400"
       }`}
     >
       {children}
