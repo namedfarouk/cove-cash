@@ -363,7 +363,7 @@ export function MobileMenuOverlay({
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 py-5">
                 <LanguageSelector />
                 <ThemeToggle />
               </div>
