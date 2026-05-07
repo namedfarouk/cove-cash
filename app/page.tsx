@@ -16,6 +16,7 @@ import Link from "next/link";
 
 import { useCoveLanguage } from "@/components/cove-language";
 import {
+  CoveBrand,
   MobileMenuOverlay,
   LanguageSelector,
   SectionEyebrow,
@@ -99,15 +100,10 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex min-h-[72px] items-center gap-4"
+            className="flex min-h-[84px] items-center gap-4"
           >
-            <Link href="/" className="flex shrink-0 items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
-                C
-              </span>
-              <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
-                Cove
-              </span>
+            <Link href="/" className="flex shrink-0 items-center">
+              <CoveBrand />
             </Link>
 
             <div className="min-w-0 flex-1 md:hidden" />
@@ -141,13 +137,8 @@ export default function Home() {
               variants={fadeUp}
               className="flex items-center gap-6"
             >
-              <Link href="/" className="flex shrink-0 items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
-                  C
-                </span>
-                <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
-                  Cove
-                </span>
+              <Link href="/" className="flex shrink-0 items-center">
+                <CoveBrand />
               </Link>
 
               <nav className="flex min-w-0 flex-1 items-center justify-center gap-6">
