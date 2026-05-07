@@ -289,7 +289,7 @@ export default function DashboardPage() {
       <PageReveal className="space-y-8">
         <motion.section variants={fadeUp} className="max-w-3xl">
           <SectionEyebrow>{t.dashboard.eyebrow}</SectionEyebrow>
-          <h1 className="mt-6 font-syne text-4xl font-semibold tracking-tighter text-white sm:text-5xl">
+          <h1 className="mt-6 font-syne text-4xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-5xl">
             {t.dashboard.title}
           </h1>
           <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
@@ -324,7 +324,7 @@ export default function DashboardPage() {
                     <p className="mt-4 font-inter text-sm text-zinc-500">
                       {item.label}
                     </p>
-                    <p className="mt-1 font-syne text-3xl font-semibold tracking-tighter text-white">
+                    <p className="mt-1 font-syne text-3xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                       {item.value}
                     </p>
                   </div>
@@ -342,7 +342,7 @@ export default function DashboardPage() {
                   <p className="font-inter text-sm text-zinc-500">
                     {t.dashboard.complianceSafeExport}
                   </p>
-                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-white">
+                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                     {t.dashboard.depositActivity}
                   </h2>
                 </div>
@@ -392,13 +392,13 @@ export default function DashboardPage() {
                     <motion.div
                       whileHover={{ scale: 1.005 }}
                       key={row.index}
-                      className="grid gap-4 rounded-2xl border border-white/10 bg-black/40 p-4 transition-colors duration-200 hover:bg-white/[0.04] md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center"
+                      className="grid gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 transition-colors duration-200 hover:bg-white md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center dark:border-white/20 dark:bg-black/40 dark:hover:bg-white/[0.04]"
                     >
                       <div>
                         <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colAmount}
                         </p>
-                        <p className="font-syne tabular-nums text-base font-semibold tracking-tight text-white">
+                        <p className="font-syne tabular-nums text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
                           {lamportsToSol(row.amount)} SOL
                         </p>
                       </div>
@@ -407,7 +407,7 @@ export default function DashboardPage() {
                         <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
                           {t.dashboard.colMint}
                         </p>
-                        <p className="font-mono text-sm text-zinc-300">
+                        <p className="font-mono text-sm text-zinc-600 dark:text-zinc-300">
                           {row.mint.slice(0, 4)}…{row.mint.slice(-4)}
                         </p>
                       </div>
@@ -427,7 +427,7 @@ export default function DashboardPage() {
                           href={`https://solscan.io/tx/${row.depositSignature}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-sm text-zinc-300 transition hover:text-white"
+                          className="inline-flex items-center gap-1 font-mono text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                         >
                           {row.depositSignature.slice(0, 8)}…
                           <ArrowUpRight className="h-3.5 w-3.5" />
@@ -461,7 +461,7 @@ function StatusBadge({ status }: { status: Row["status"] }) {
   const { t } = useCoveLanguage();
   if (status === "loading") {
     return (
-      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs text-zinc-300">
+      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 font-inter text-xs text-zinc-600 dark:border-white/20 dark:bg-white/[0.04] dark:text-zinc-300">
         <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-zinc-400" />
         {t.dashboard.checkingBadge}
       </span>
@@ -469,7 +469,7 @@ function StatusBadge({ status }: { status: Row["status"] }) {
   }
   if (status === "claimed") {
     return (
-      <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs text-white">
+      <span className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 font-inter text-xs text-zinc-900 dark:border-white/20 dark:bg-white/[0.04] dark:text-white">
         <CheckCircle2 className="h-3.5 w-3.5" />
         {t.dashboard.claimedBadge}
       </span>
@@ -495,7 +495,7 @@ function Notice({
       className={`mt-6 rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
           ? "border-cove-accent/40 bg-cove-accent/10 text-white"
-          : "border-white/10 bg-black/40 text-zinc-400"
+          : "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
       }`}
     >
       {children}

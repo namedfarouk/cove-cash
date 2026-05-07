@@ -64,7 +64,7 @@ export function useFloatingNavbarState(threshold = 32) {
 
 export function SectionEyebrow({ children }: { children: ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-inter font-medium uppercase tracking-[0.24em] text-cove-accent">
+    <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 text-[11px] font-inter font-medium uppercase tracking-[0.24em] text-cove-accent dark:border-white/20 dark:bg-white/[0.04]">
       <Sparkles className="h-3.5 w-3.5" />
       {children}
     </div>
@@ -99,7 +99,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
     >
       {isDark ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
     </button>
@@ -142,7 +142,7 @@ export function LanguageSelector() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-black/10 bg-white px-4 font-inter text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white max-md:w-full max-md:justify-between"
+        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 font-inter text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white max-md:w-full max-md:justify-between"
       >
         <Globe className="h-4 w-4" />
         <span className="text-base leading-none">{selectedLanguage.flag}</span>
@@ -162,7 +162,7 @@ export function LanguageSelector() {
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
             role="menu"
-            className="absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-black/10 bg-white p-2 text-zinc-700 dark:border-white/10 dark:bg-cove-card dark:text-zinc-300 md:right-0 max-md:relative max-md:top-0 max-md:mt-2 max-md:w-full"
+            className="absolute md:absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 md:right-0 max-md:relative max-md:w-full max-md:top-0"
           >
             {supportedLanguages.map((language) => {
               const active = language.value === selectedLanguage.value;
@@ -228,7 +228,7 @@ export function CoveNavbar({
 
   return (
     <>
-      <div className="fixed inset-x-0 top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-md dark:border-white/10 dark:bg-cove-black/90 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-50 border-b border-zinc-200 bg-white/95 backdrop-blur-md dark:border-white/20 dark:bg-black/95 md:hidden">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.header
             initial="hidden"
@@ -237,7 +237,7 @@ export function CoveNavbar({
             className="flex min-h-[72px] items-center gap-4"
           >
             <Link href="/" className="flex shrink-0 items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/10 dark:bg-cove-card dark:text-white">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
                 C
               </span>
               <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
@@ -251,7 +251,7 @@ export function CoveNavbar({
               type="button"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/10 dark:bg-cove-card dark:text-zinc-200 dark:hover:bg-white/[0.06]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -266,7 +266,7 @@ export function CoveNavbar({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`pointer-events-auto transition-all duration-300 ${
               scrolled
-                ? "mx-auto w-fit rounded-full border border-white/20 bg-[#070707]/80 px-6 py-3 backdrop-blur-md"
+                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
                 : "w-full px-0 py-0"
             }`}
           >
@@ -277,10 +277,10 @@ export function CoveNavbar({
               className="flex items-center gap-6"
             >
               <Link href="/" className="flex shrink-0 items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-cove-card text-sm font-syne font-semibold tracking-tight text-white">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
                   C
                 </span>
-                <span className="font-syne text-lg font-semibold tracking-tighter text-white">
+                <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
                   Cove
                 </span>
               </Link>
@@ -345,7 +345,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute left-0 top-full h-[calc(100vh-100%)] w-full overflow-y-auto bg-white text-zinc-900 dark:bg-cove-black dark:text-white md:hidden"
+          className="fixed inset-x-0 top-[72px] z-40 h-[calc(100vh-72px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="flex flex-col space-y-6">
@@ -383,7 +383,7 @@ export function MobileMenuOverlay({
               )}
             </div>
 
-            <div className="border-t border-zinc-200 pt-6 dark:border-zinc-800">
+            <div className="border-t border-zinc-200 pt-6 dark:border-white/20">
               <div className="flex items-center gap-3">
                 <LanguageSelector />
                 <ThemeToggle />
@@ -434,7 +434,7 @@ export function CovePage({
   contentClassName?: string;
 }) {
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-cove-black text-white transition-colors duration-300">
+    <main className="relative isolate min-h-screen overflow-hidden bg-white text-zinc-900 transition-colors duration-300 dark:bg-black dark:text-white">
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         {navbar}
         <div className={`relative flex-1 pt-24 ${contentClassName}`}>{children}</div>
@@ -451,6 +451,6 @@ export function PremiumCard({
   className?: string;
 }) {
   return (
-    <div className={`rounded-2xl border border-white/10 bg-cove-card transition-colors duration-300 ${className}`}>{children}</div>
+    <div className={`rounded-2xl border border-zinc-200 bg-white transition-colors duration-300 dark:border-white/20 dark:bg-[#070707] ${className}`}>{children}</div>
   );
 }

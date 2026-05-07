@@ -206,10 +206,10 @@ export default function ClaimPage() {
       <PageReveal className="grid w-full gap-8 lg:grid-cols-[0.95fr_1.05fr]">
         <motion.section variants={fadeUp} className="self-center">
           <SectionEyebrow>{t.claim.eyebrow}</SectionEyebrow>
-          <h1 className="mt-6 max-w-xl font-syne text-4xl font-semibold tracking-tighter text-white sm:text-5xl">
+          <h1 className="mt-6 max-w-xl font-syne text-4xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-5xl">
             {t.claim.heroTitle}
           </h1>
-          <p className="mt-5 max-w-xl font-inter text-base leading-7 text-zinc-400">
+          <p className="mt-5 max-w-xl font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400">
             {t.claim.heroBody}
           </p>
 
@@ -217,7 +217,7 @@ export default function ClaimPage() {
             {[t.claim.bullet1, t.claim.bullet2, t.claim.bullet3].map((copy) => (
               <div
                 key={copy}
-                className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3 font-inter text-sm text-zinc-400"
+                className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
               >
                 {copy}
               </div>
@@ -233,11 +233,11 @@ export default function ClaimPage() {
                   <p className="font-inter text-sm text-zinc-500">
                     {t.claim.redemptionModule}
                   </p>
-                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-white">
+                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                     {t.claim.claimAPrivatePayment}
                   </h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs font-medium text-cove-accent">
+                <span className="rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 font-inter text-xs font-medium text-cove-accent dark:border-white/20 dark:bg-white/[0.04]">
                   {t.claim.privateSpend}
                 </span>
               </div>
@@ -249,19 +249,19 @@ export default function ClaimPage() {
               ) : (
                 <>
                   <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                    <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-white/20 dark:bg-black/40">
                       <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500">
                         {t.claim.amountLabel}
                       </p>
-                      <p className="mt-3 font-syne text-3xl font-semibold tracking-tighter tabular-nums text-white">
+                      <p className="mt-3 font-syne text-3xl font-semibold tracking-tighter tabular-nums text-zinc-900 dark:text-white">
                         {lamportsToSol(decoded.blob.amt)} SOL
                       </p>
                     </div>
-                    <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
+                    <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-white/20 dark:bg-black/40">
                       <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500">
                         {t.claim.delivery}
                       </p>
-                      <div className="mt-3 flex items-center gap-2 font-inter text-sm font-medium text-zinc-300">
+                      <div className="mt-3 flex items-center gap-2 font-inter text-sm font-medium text-zinc-600 dark:text-zinc-300">
                         <ShieldCheck className="h-4 w-4 text-cove-accent" />
                         {t.claim.encryptedWitness}
                       </div>
@@ -269,8 +269,8 @@ export default function ClaimPage() {
                   </div>
 
                   {connected && publicKey ? (
-                    <div className="mt-4 rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-zinc-400">
-                      <div className="flex items-center gap-2 font-medium text-white">
+                    <div className="mt-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400">
+                      <div className="flex items-center gap-2 font-medium text-zinc-900 dark:text-white">
                         <Wallet className="h-4 w-4" />
                         {t.claim.recipientWallet}
                       </div>
@@ -341,13 +341,13 @@ function ClaimStatusPanel({
   }
 
   return (
-    <div className="space-y-4 rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-white">
+    <div className="space-y-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-900 dark:border-white/20 dark:bg-black/40 dark:text-white">
       <div className="flex items-center gap-2 font-medium">
         <CheckCircle2 className="h-4 w-4 text-cove-accent" />
         {t.claim.claimConfirmed}
       </div>
       {status.mode === "relay_submitted" ? (
-        <p className="text-xs text-zinc-400">
+        <p className="text-xs text-zinc-600 dark:text-zinc-400">
           {t.claim.claimedViaRelay}
         </p>
       ) : null}
@@ -355,7 +355,7 @@ function ClaimStatusPanel({
         {t.claim.signatureLabel} <span className="font-mono">{status.signature}</span>
       </p>
       <a
-        className="inline-flex items-center gap-1 text-xs underline text-zinc-300 hover:text-white"
+        className="inline-flex items-center gap-1 text-xs underline text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
         href={`https://solscan.io/tx/${status.signature}`}
         target="_blank"
         rel="noreferrer"
@@ -381,7 +381,7 @@ function Notice({
       className={`rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
           ? "border-cove-accent/40 bg-cove-accent/10 text-white"
-          : "border-white/10 bg-black/40 text-zinc-400"
+          : "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
       } ${className}`}
     >
       {children}

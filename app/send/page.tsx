@@ -202,18 +202,18 @@ export default function SendPage() {
                   <p className="font-inter text-sm text-zinc-500">
                     {t.send.liveTransferComposer}
                   </p>
-                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-white">
+                  <h2 className="mt-2 font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                     {t.send.sendPrivatePayment}
                   </h2>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs font-medium text-cove-accent">
+                <span className="rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 font-inter text-xs font-medium text-cove-accent dark:border-white/20 dark:bg-white/[0.04]">
                   Mainnet
                 </span>
               </div>
 
-              <div className="mt-8 rounded-2xl border border-white/10 bg-black/40 p-5">
+              <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-white/20 dark:bg-black/40">
                 <label className="block space-y-3">
-                  <span className="font-inter text-sm font-medium text-zinc-400">
+                  <span className="font-inter text-sm font-medium text-zinc-600 dark:text-zinc-400">
                     {t.send.amount}
                   </span>
                   <input
@@ -223,7 +223,7 @@ export default function SendPage() {
                     value={amountSol}
                     onChange={(e) => setAmountSol(e.target.value)}
                     placeholder={MIN_SOL.toString()}
-                    className="w-full rounded-2xl border border-white/10 bg-cove-card px-4 py-4 font-syne text-lg font-medium tracking-tight text-white outline-none transition-colors duration-200 placeholder:text-zinc-500 focus:border-cove-accent"
+                    className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 font-syne text-lg font-medium tracking-tight text-zinc-900 outline-none transition-colors duration-200 placeholder:text-zinc-500 focus:border-cove-accent dark:border-white/20 dark:bg-[#070707] dark:text-white"
                   />
                   <span className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500">
                     {t.send.minimumSol}
@@ -263,7 +263,7 @@ function StatusPanel({
   const { t } = useCoveLanguage();
   if (status.kind === "idle") {
     return (
-      <div className="rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-zinc-400">
+      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400">
         {connected ? t.send.readyToPrepare : t.send.connectWalletToBegin}
       </div>
     );
@@ -291,7 +291,7 @@ function StatusPanel({
   }
 
   return (
-    <div className="space-y-4 rounded-2xl border border-white/10 bg-black/40 p-4 font-inter text-sm text-white">
+    <div className="space-y-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-900 dark:border-white/20 dark:bg-black/40 dark:text-white">
       <div className="flex items-center gap-2 font-medium">
         <CheckCircle2 className="h-4 w-4 text-cove-accent" />
         {t.send.depositConfirmed}
@@ -306,7 +306,7 @@ function StatusPanel({
             readOnly
             value={status.url}
             onFocus={(e) => e.currentTarget.select()}
-            className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-cove-card px-3 py-3 text-xs font-mono text-zinc-100 outline-none"
+            className="min-w-0 flex-1 rounded-2xl border border-zinc-200 bg-white px-3 py-3 text-xs font-mono text-zinc-900 outline-none dark:border-white/20 dark:bg-[#070707] dark:text-zinc-100"
           />
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -319,10 +319,10 @@ function StatusPanel({
         </div>
       </label>
 
-      <p className="break-all text-xs text-zinc-400">
+      <p className="break-all text-xs text-zinc-600 dark:text-zinc-400">
         {t.send.signatureLabel} <span className="font-mono">{status.signature}</span>
       </p>
-      <p className="text-xs text-zinc-400">
+      <p className="text-xs text-zinc-600 dark:text-zinc-400">
         {t.send.openDashboardPrefix}
         <Link href="/dashboard" className="underline">
           {t.send.dashboardLinkText}
@@ -345,7 +345,7 @@ function InlineNotice({
       className={`rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
           ? "border-cove-accent/40 bg-cove-accent/10 text-white"
-          : "border-white/10 bg-black/40 text-zinc-400"
+          : "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
       }`}
     >
       {children}

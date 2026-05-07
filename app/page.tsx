@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 import {
-  Bird,
   Check,
   CopyCheck,
   LockKeyhole,
@@ -88,13 +87,13 @@ export default function Home() {
   ];
 
   return (
-    <main className="relative isolate overflow-hidden bg-cove-black text-white transition-colors">
+    <main className="relative isolate overflow-hidden bg-white text-zinc-900 transition-colors dark:bg-black dark:text-white">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:72px_72px]" />
-        <div className="absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(237,42,0,0.18),transparent_62%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(24,24,27,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(24,24,27,0.05)_1px,transparent_1px)] bg-[size:72px_72px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.04)_1px,transparent_1px)]" />
+        <div className="absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(237,42,0,0.10),transparent_62%)] dark:bg-[radial-gradient(circle_at_top,rgba(237,42,0,0.18),transparent_62%)]" />
       </div>
 
-      <div className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-cove-black/90 backdrop-blur-md md:hidden">
+      <div className="fixed inset-x-0 top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md dark:border-white/20 dark:bg-black/90 md:hidden">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
           <motion.header
             initial="hidden"
@@ -103,10 +102,10 @@ export default function Home() {
             className="flex min-h-[72px] items-center gap-4"
           >
             <Link href="/" className="flex shrink-0 items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-cove-card text-sm font-syne font-semibold tracking-tight text-white">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
                 C
               </span>
-              <span className="font-syne text-lg font-semibold tracking-tighter text-white">
+              <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
                 Cove
               </span>
             </Link>
@@ -117,7 +116,7 @@ export default function Home() {
               type="button"
               aria-label={isOpen ? "Close menu" : "Open menu"}
               onClick={() => setIsOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-cove-card text-zinc-200 transition-colors duration-200 hover:bg-white/[0.06]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
             >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -132,7 +131,7 @@ export default function Home() {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`pointer-events-auto transition-all duration-300 ${
               scrolled
-                ? "mx-auto w-fit rounded-full border border-white/20 bg-[#070707]/80 px-6 py-3 backdrop-blur-md"
+                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
                 : "w-full"
             }`}
           >
@@ -143,10 +142,10 @@ export default function Home() {
               className="flex items-center gap-6"
             >
               <Link href="/" className="flex shrink-0 items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-cove-card text-sm font-syne font-semibold tracking-tight text-white">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-sm font-syne font-semibold tracking-tight text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-white">
                   C
                 </span>
-                <span className="font-syne text-lg font-semibold tracking-tighter text-white">
+                <span className="font-syne text-lg font-semibold tracking-tighter text-zinc-950 dark:text-white">
                   Cove
                 </span>
               </Link>
@@ -154,13 +153,13 @@ export default function Home() {
               <nav className="flex min-w-0 flex-1 items-center justify-center gap-6">
                 <a
                   href="#how-it-works"
-                  className="font-inter text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   {t.nav.howItWorks}
                 </a>
                 <a
                   href="#compare"
-                  className="font-inter text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   {t.nav.compare}
                 </a>
@@ -168,7 +167,7 @@ export default function Home() {
                   href="https://github.com/namedfarouk/cove-cash#readme"
                   target="_blank"
                   rel="noreferrer"
-                  className="font-inter text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   {t.nav.docs}
                 </a>
@@ -207,14 +206,14 @@ export default function Home() {
 
             <motion.h1
               variants={fadeUp}
-              className="mt-8 max-w-4xl text-balance font-syne text-5xl font-semibold tracking-tighter text-white sm:text-6xl lg:text-7xl"
+              className="mt-8 max-w-4xl text-balance font-syne text-5xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-6xl lg:text-7xl"
             >
               {t.landing.heroTitle}
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
-              className="mt-6 max-w-2xl text-pretty font-inter text-base leading-7 text-zinc-400 sm:text-lg"
+              className="mt-6 max-w-2xl text-pretty font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400 sm:text-lg"
             >
               {t.landing.heroBody}
             </motion.p>
@@ -240,27 +239,27 @@ export default function Home() {
             <motion.div variants={fadeUp} className="mt-16 w-full max-w-4xl">
               <div className="cove-card mx-auto overflow-hidden p-3">
                 <div className="grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
-                  <div className="rounded-2xl border border-white/10 bg-cove-card p-6 sm:p-8">
+                  <div className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-white/20 dark:bg-[#070707] sm:p-8">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-inter text-sm text-zinc-500">
                           {t.landing.privateTransfer}
                         </p>
-                        <h2 className="mt-2 text-left font-syne text-2xl font-semibold tracking-tighter text-white sm:text-3xl">
+                        <h2 className="mt-2 text-left font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-3xl">
                           {t.landing.sendPrivatePayment}
                         </h2>
                       </div>
-                      <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-inter text-xs font-medium text-cove-accent">
+                      <div className="rounded-full border border-zinc-200 bg-black/[0.02] px-3 py-1 font-inter text-xs font-medium text-cove-accent dark:border-white/20 dark:bg-white/[0.04]">
                         {t.landing.liveOnSolana}
                       </div>
                     </div>
 
-                    <div className="mt-8 rounded-2xl border border-white/10 bg-black/40 p-4 sm:p-5">
+                    <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 dark:border-white/20 dark:bg-black/40 sm:p-5">
                       <div className="flex items-center justify-between font-inter text-sm text-zinc-500">
                         <span>{t.landing.amountSol}</span>
                         <span>{t.landing.privateOutput}</span>
                       </div>
-                      <div className="mt-4 rounded-2xl border border-white/10 bg-cove-card px-4 py-4 text-left font-syne text-3xl font-semibold tracking-tighter text-white">
+                      <div className="mt-4 rounded-2xl border border-zinc-200 bg-white px-4 py-4 text-left font-syne text-3xl font-semibold tracking-tighter text-zinc-900 dark:border-white/20 dark:bg-[#070707] dark:text-white">
                         2.40
                       </div>
                       <div className="mt-3 text-left font-inter text-xs uppercase tracking-[0.22em] text-zinc-500">
@@ -273,22 +272,22 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col justify-between rounded-2xl border border-white/10 bg-cove-card p-6 sm:p-8">
+                  <div className="flex flex-col justify-between rounded-2xl border border-zinc-200 bg-white p-6 dark:border-white/20 dark:bg-[#070707] sm:p-8">
                     <div>
                       <p className="font-inter text-sm text-cove-accent">
                         {t.landing.claimFlow}
                       </p>
-                      <h3 className="mt-2 text-left font-syne text-2xl font-semibold tracking-tighter text-white">
+                      <h3 className="mt-2 text-left font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                         {t.landing.noAddressTitle}
                       </h3>
-                      <p className="mt-3 text-left font-inter text-sm leading-6 text-zinc-400">
+                      <p className="mt-3 text-left font-inter text-sm leading-6 text-zinc-600 dark:text-zinc-400">
                         {t.landing.noAddressBody}
                       </p>
                     </div>
 
                     <div className="mt-8 space-y-3">
-                      <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-left">
-                        <div className="flex items-center justify-between font-inter text-sm text-zinc-300">
+                      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-left dark:border-white/20 dark:bg-black/40">
+                        <div className="flex items-center justify-between font-inter text-sm text-zinc-700 dark:text-zinc-300">
                           <span>{t.landing.encryptedLink}</span>
                           <span className="text-cove-accent">
                             {t.landing.singleUse}
@@ -298,16 +297,16 @@ export default function Home() {
                           cove.cash/claim/eyJ2IjoxLCJza...
                         </div>
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-black/40 p-4 text-left">
+                      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 text-left dark:border-white/20 dark:bg-black/40">
                         <div className="flex items-center gap-3">
                           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-cove-accent/15 text-cove-accent">
                             <Check className="h-4 w-4" />
                           </span>
                           <div>
-                            <p className="font-inter text-sm font-medium text-white">
+                            <p className="font-inter text-sm font-medium text-zinc-900 dark:text-white">
                               {t.landing.receiverClaims}
                             </p>
-                            <p className="mt-1 font-inter text-xs text-zinc-500">
+                            <p className="mt-1 font-inter text-xs text-zinc-500 dark:text-zinc-400">
                               {t.landing.receiverClaimsBody}
                             </p>
                           </div>
@@ -331,10 +330,10 @@ export default function Home() {
         >
           <motion.div variants={fadeUp} className="max-w-3xl">
             <SectionEyebrow>{t.landing.howItWorksEyebrow}</SectionEyebrow>
-            <h2 className="mt-6 font-syne text-3xl font-semibold tracking-tighter text-white sm:text-4xl">
+            <h2 className="mt-6 font-syne text-3xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-4xl">
               {t.landing.howItWorksTitle}
             </h2>
-            <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
+            <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400">
               {t.landing.howItWorksBody}
             </p>
           </motion.div>
@@ -349,20 +348,20 @@ export default function Home() {
                 <motion.div
                   key={step.title}
                   variants={fadeUp}
-                  className="rounded-2xl border border-white/10 bg-cove-card p-6 transition hover:border-white/20"
+                  className="rounded-2xl border border-zinc-200 bg-white p-6 transition hover:border-zinc-300 dark:border-white/20 dark:bg-[#070707] dark:hover:border-white/30"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-cove-accent">
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-black/[0.02] text-cove-accent dark:border-white/20 dark:bg-white/[0.04]">
                       <Icon className="h-5 w-5" />
                     </span>
                     <span className="font-syne text-sm font-medium tracking-tight text-zinc-500">
                       0{index + 1}
                     </span>
                   </div>
-                  <h3 className="mt-8 font-syne text-2xl font-semibold tracking-tighter text-white">
+                  <h3 className="mt-8 font-syne text-2xl font-semibold tracking-tighter text-zinc-900 dark:text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-3 font-inter text-sm leading-6 text-zinc-400">
+                  <p className="mt-3 font-inter text-sm leading-6 text-zinc-600 dark:text-zinc-400">
                     {step.copy}
                   </p>
                 </motion.div>
@@ -381,22 +380,22 @@ export default function Home() {
         >
           <motion.div variants={fadeUp} className="max-w-3xl">
             <SectionEyebrow>{t.landing.oldFlowEyebrow}</SectionEyebrow>
-            <h2 className="mt-6 font-syne text-3xl font-semibold tracking-tighter text-white sm:text-4xl">
+            <h2 className="mt-6 font-syne text-3xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-4xl">
               {t.landing.comparisonTitle}
             </h2>
-            <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
+            <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400">
               {t.landing.comparisonBody}
             </p>
           </motion.div>
 
           <motion.div
             variants={fadeUp}
-            className="mt-12 overflow-hidden rounded-2xl border border-white/10 bg-cove-card"
+            className="mt-12 overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-white/20 dark:bg-[#070707]"
           >
-            <div className="grid grid-cols-[1.1fr_1fr_1fr] border-b border-white/10 bg-white/[0.03] text-left font-inter text-sm font-medium text-zinc-400">
+            <div className="grid grid-cols-[1.1fr_1fr_1fr] border-b border-zinc-200 bg-zinc-50 text-left font-inter text-sm font-medium text-zinc-500 dark:border-white/20 dark:bg-white/[0.03] dark:text-zinc-400">
               <div className="px-5 py-4 sm:px-6">{t.landing.category}</div>
               <div className="px-5 py-4 sm:px-6">{t.landing.oldWay}</div>
-              <div className="border-l border-white/10 bg-cove-accent/10 px-5 py-4 text-white sm:px-6">
+              <div className="border-l border-zinc-200 bg-cove-accent/10 px-5 py-4 text-zinc-900 dark:border-white/20 dark:text-white sm:px-6">
                 {t.landing.cove}
               </div>
             </div>
@@ -406,17 +405,17 @@ export default function Home() {
                 key={row.label}
                 className={`grid grid-cols-[1.1fr_1fr_1fr] text-left ${
                   index !== comparisonRows.length - 1
-                    ? "border-b border-white/10"
+                    ? "border-b border-zinc-200 dark:border-white/20"
                     : ""
                 }`}
               >
-                <div className="px-5 py-5 font-inter text-sm font-medium text-white sm:px-6">
+                <div className="px-5 py-5 font-inter text-sm font-medium text-zinc-900 dark:text-white sm:px-6">
                   {row.label}
                 </div>
-                <div className="px-5 py-5 font-inter text-sm leading-6 text-zinc-400 sm:px-6">
+                <div className="px-5 py-5 font-inter text-sm leading-6 text-zinc-600 dark:text-zinc-400 sm:px-6">
                   {row.oldWay}
                 </div>
-                <div className="border-l border-white/10 bg-cove-accent/10 px-5 py-5 font-inter text-sm leading-6 text-white sm:px-6">
+                <div className="border-l border-zinc-200 bg-cove-accent/10 px-5 py-5 font-inter text-sm leading-6 text-zinc-900 dark:border-white/20 dark:text-white sm:px-6">
                   {row.cove}
                 </div>
               </div>
@@ -432,12 +431,12 @@ export default function Home() {
           variants={fadeUp}
           className="scroll-mt-24 pb-16"
         >
-          <div className="rounded-2xl border border-white/10 bg-cove-card px-6 py-14 text-center sm:px-10">
+          <div className="rounded-2xl border border-zinc-200 bg-white px-6 py-14 text-center dark:border-white/20 dark:bg-[#070707] sm:px-10">
             <SectionEyebrow>{t.landing.moveFasterEyebrow}</SectionEyebrow>
-            <h2 className="mx-auto mt-6 max-w-3xl text-balance font-syne text-3xl font-semibold tracking-tighter text-white sm:text-5xl">
+            <h2 className="mx-auto mt-6 max-w-3xl text-balance font-syne text-3xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-5xl">
               {t.landing.finalTitle}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
+            <p className="mx-auto mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400">
               {t.landing.finalBody}
             </p>
             <Link href="/send" className={`${primaryButtonClass} mt-10 px-6`}>
@@ -446,9 +445,9 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <footer className="flex flex-col gap-5 border-t border-white/10 py-8 font-inter text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-syne text-base font-semibold tracking-tighter text-white">
+        <footer className="flex flex-col items-center gap-4 border-t border-zinc-200 py-6 text-center font-inter text-sm text-zinc-500 dark:border-white/20 dark:text-zinc-400 md:flex-row md:justify-between md:text-left">
+          <div className="flex flex-col items-center gap-2 md:flex-row md:items-center">
+            <span className="font-syne text-base font-semibold tracking-tighter text-zinc-900 dark:text-white">
               Cove
             </span>
             <span>— Private claim-link payments on Solana. © 2026 Cove.</span>
@@ -460,9 +459,15 @@ export default function Home() {
               rel="noreferrer"
               aria-label="Cove on X"
               title="Cove on X"
-              className="inline-flex items-center transition hover:text-white"
+              className="inline-flex items-center transition hover:text-zinc-900 dark:hover:text-white"
             >
-              <Bird className="h-4 w-4" />
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-5 w-5 fill-current"
+              >
+                <path d="M18.244 2H21.5l-7.11 8.128L22.75 22h-6.547l-5.126-6.71L5.21 22H1.95l7.604-8.69L1.5 2h6.713l4.634 6.118L18.244 2Zm-1.142 18h1.804L7.227 3.895H5.29L17.102 20Z" />
+              </svg>
             </a>
             <a
               href="https://github.com/namedfarouk/cove-cash"
@@ -470,7 +475,7 @@ export default function Home() {
               rel="noreferrer"
               aria-label="Cove GitHub repository"
               title="Cove GitHub repository"
-              className="inline-flex items-center transition hover:text-white"
+              className="inline-flex items-center transition hover:text-zinc-900 dark:hover:text-white"
             >
               <svg
                 aria-hidden="true"

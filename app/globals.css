@@ -18,13 +18,8 @@
 }
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-}
-
-.light {
-  --background: #f5f1eb;
-  --foreground: #111111;
+  --background: #ffffff;
+  --foreground: #18181b;
 }
 
 .dark {
@@ -76,21 +71,21 @@ body {
 }
 
 .cove-secondary-button {
-  @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-cove-card px-5 py-3 text-sm font-medium text-white transition-colors duration-300 hover:border-white/20 hover:bg-white/[0.06];
+  @apply inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-5 py-3 text-sm font-medium text-zinc-900 transition-colors duration-300 hover:bg-zinc-50 dark:border-white/20 dark:bg-[#070707] dark:text-white dark:hover:bg-white/[0.06];
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
 }
 
 .cove-card {
-  @apply rounded-2xl border border-white/10 bg-cove-card;
+  @apply rounded-2xl border border-zinc-200 bg-white dark:border-white/20 dark:bg-[#070707];
 }
 
 .wallet-adapter-button-trigger,
 .wallet-adapter-button:not([disabled]) {
-  background: #070707 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(228, 228, 231, 1) !important;
   border-radius: 9999px !important;
   box-shadow: none !important;
-  color: #ffffff !important;
+  color: #18181b !important;
   font-family: var(--font-body), Arial, Helvetica, sans-serif !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
@@ -104,36 +99,36 @@ body {
 
 .wallet-adapter-button-trigger:hover,
 .wallet-adapter-button:not([disabled]):hover {
-  background: rgba(255, 255, 255, 0.06) !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
+  background: rgba(24, 24, 27, 0.04) !important;
+  border-color: rgba(161, 161, 170, 0.7) !important;
   transform: none !important;
 }
 
-.light .wallet-adapter-button-trigger,
-.light .wallet-adapter-button:not([disabled]) {
-  background: #ffffff !important;
-  border-color: rgba(17, 17, 17, 0.1) !important;
-  color: #111111 !important;
-}
-
-.light .wallet-adapter-button-trigger:hover,
-.light .wallet-adapter-button:not([disabled]):hover {
-  background: rgba(17, 17, 17, 0.04) !important;
-  border-color: rgba(17, 17, 17, 0.18) !important;
-}
-
-.wallet-adapter-dropdown-list {
+.dark .wallet-adapter-button-trigger,
+.dark .wallet-adapter-button:not([disabled]) {
   background: #070707 !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 1rem !important;
-  box-shadow: none !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
 }
 
-.light .wallet-adapter-dropdown-list {
+.dark .wallet-adapter-button-trigger:hover,
+.dark .wallet-adapter-button:not([disabled]):hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+
+.wallet-adapter-dropdown-list {
   background: #ffffff !important;
-  border-color: rgba(17, 17, 17, 0.12) !important;
-  color: #111111 !important;
+  border: 1px solid rgba(228, 228, 231, 1) !important;
+  border-radius: 1rem !important;
+  box-shadow: none !important;
+  color: #18181b !important;
+}
+
+.dark .wallet-adapter-dropdown-list {
+  background: #070707 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
 }
 
 .wallet-adapter-dropdown-list-item {
@@ -143,9 +138,9 @@ body {
 }
 
 .wallet-adapter-dropdown-list-item:hover {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: rgba(24, 24, 27, 0.05) !important;
 }
 
-.light .wallet-adapter-dropdown-list-item:hover {
-  background: rgba(17, 17, 17, 0.05) !important;
+.dark .wallet-adapter-dropdown-list-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
 }
