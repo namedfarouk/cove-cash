@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Copy } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, Copy } from "lucide-react";
 import Link from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -22,7 +22,41 @@ import {
 import { buildClaimUrl } from "@/lib/cove/claim-link";
 import { persistDeposit, type PersistedDeposit } from "@/lib/cove/storage";
 
-const MIN_SOL = 0.02;
+type TokenTicker = "SOL" | "USDC" | "USDT";
+
+const TOKEN_CONFIG: Record<
+  TokenTicker,
+  {
+    mintAddress?: string;
+    minimumAtomic: bigint;
+    minimumDisplay: number;
+    decimals: number;
+    step: string;
+  }
+> = {
+  SOL: {
+    minimumAtomic: 20_000_000n,
+    minimumDisplay: 0.02,
+    decimals: 9,
+    step: "0.001",
+  },
+  USDC: {
+    mintAddress: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    minimumAtomic: 1_000_000n,
+    minimumDisplay: 1,
+    decimals: 6,
+    step: "0.01",
+  },
+  USDT: {
+    mintAddress: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+    minimumAtomic: 1_000_000n,
+    minimumDisplay: 1,
+    decimals: 6,
+    step: "0.01",
+  },
+};
+
+const TOKEN_OPTIONS = Object.keys(TOKEN_CONFIG) as TokenTicker[];
 
 type PrepareResponse = {
   unsignedTransactionBase64: string;
@@ -63,31 +97,83 @@ function base64ToBytes(b64: string): Uint8Array {
   return bytes;
 }
 
+function decimalToAtomicUnits(value: string, decimals: number): bigint | null {
+  const trimmed = value.trim();
+  if (!trimmed || !/^\d*\.?\d*$/.test(trimmed)) return null;
+
+  const [whole = "0", fraction = ""] = trimmed.split(".");
+  if (fraction.length > decimals) return null;
+
+  const normalizedWhole = whole === "" ? "0" : whole;
+  const atomicUnits = `${normalizedWhole}${fraction.padEnd(decimals, "0")}`
+    .replace(/^0+(?=\d)/, "");
+
+  return BigInt(atomicUnits || "0");
+}
+
 export default function SendPage() {
   const { connection } = useConnection();
   const { publicKey, signTransaction, connected } = useWallet();
-  const { t } = useCoveLanguage();
-  const [amountSol, setAmountSol] = useState<string>("");
+  const { language, t } = useCoveLanguage();
+  const [amountInput, setAmountInput] = useState<string>("");
+  const [selectedToken, setSelectedToken] = useState<TokenTicker>("SOL");
+  const [tokenMenuOpen, setTokenMenuOpen] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const tokenMenuRef = useRef<HTMLDivElement | null>(null);
+  const tokenConfig = TOKEN_CONFIG[selectedToken];
 
-  const amountLamports = useMemo<bigint | null>(() => {
-    const n = Number(amountSol);
-    if (!Number.isFinite(n) || n < MIN_SOL) return null;
-    return BigInt(Math.round(n * 1e9));
-  }, [amountSol]);
+  useEffect(() => {
+    function handlePointerDown(event: MouseEvent) {
+      if (!tokenMenuRef.current?.contains(event.target as Node)) {
+        setTokenMenuOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setTokenMenuOpen(false);
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  const amountLabel = useMemo(() => {
+    if (t.send.amount.includes("(")) {
+      return t.send.amount.replace(/\(([^)]+)\)/, `(${selectedToken})`);
+    }
+    return `${t.send.amount} (${selectedToken})`;
+  }, [selectedToken, t.send.amount]);
+
+  const minimumLabel = useMemo(() => {
+    const minimum = tokenConfig.minimumDisplay.toFixed(2);
+    const formattedMinimum =
+      language === "fr" ? minimum.replace(".", ",") : minimum;
+    return `Minimum ${formattedMinimum} ${selectedToken}`;
+  }, [language, selectedToken, tokenConfig.minimumDisplay]);
+
+  const amountAtomic = useMemo<bigint | null>(() => {
+    const parsed = decimalToAtomicUnits(amountInput, tokenConfig.decimals);
+    if (parsed === null || parsed < tokenConfig.minimumAtomic) return null;
+    return parsed;
+  }, [amountInput, tokenConfig.decimals, tokenConfig.minimumAtomic]);
 
   const canSubmit =
     connected &&
     publicKey &&
     signTransaction &&
-    amountLamports !== null &&
+    amountAtomic !== null &&
     status.kind !== "preparing" &&
     status.kind !== "signing" &&
     status.kind !== "submitting" &&
     status.kind !== "confirming";
 
   async function handleGenerate() {
-    if (!publicKey || !signTransaction || amountLamports === null) return;
+    if (!publicKey || !signTransaction || amountAtomic === null) return;
 
     setStatus({ kind: "preparing" });
     try {
@@ -95,8 +181,9 @@ export default function SendPage() {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          amountLamports: amountLamports.toString(),
+          amountLamports: amountAtomic.toString(),
           depositorPublicKey: publicKey.toBase58(),
+          mintAddress: tokenConfig.mintAddress,
         }),
       });
       if (!res.ok) {
@@ -213,20 +300,61 @@ export default function SendPage() {
 
               <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-white/20 dark:bg-black/40">
                 <label className="block space-y-3">
-                  <span className="font-inter text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                    {t.send.amount}
+                  <span className="font-syne text-sm font-semibold tracking-tight text-zinc-700 dark:text-zinc-300">
+                    {amountLabel}
                   </span>
-                  <input
-                    type="number"
-                    min={MIN_SOL}
-                    step="0.001"
-                    value={amountSol}
-                    onChange={(e) => setAmountSol(e.target.value)}
-                    placeholder={MIN_SOL.toString()}
-                    className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-4 font-syne text-lg font-medium tracking-tight text-zinc-900 outline-none transition-colors duration-200 placeholder:text-zinc-500 focus:border-cove-accent dark:border-white/20 dark:bg-[#070707] dark:text-white"
-                  />
+                  <div ref={tokenMenuRef} className="relative">
+                    <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white px-4 py-3 transition-colors duration-200 focus-within:border-cove-accent dark:border-white/20 dark:bg-[#070707]">
+                      <input
+                        type="number"
+                        min={tokenConfig.minimumDisplay}
+                        step={tokenConfig.step}
+                        value={amountInput}
+                        onChange={(e) => setAmountInput(e.target.value)}
+                        placeholder={tokenConfig.minimumDisplay.toFixed(2)}
+                        className="min-w-0 flex-1 bg-transparent font-syne text-lg font-medium tracking-tight text-zinc-900 outline-none placeholder:text-zinc-500 dark:text-white"
+                      />
+                      <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-expanded={tokenMenuOpen}
+                        onClick={() => setTokenMenuOpen((current) => !current)}
+                        className="flex items-center gap-1 rounded-lg bg-zinc-100 px-3 py-1.5 text-sm font-bold text-zinc-900 transition-colors hover:bg-zinc-200 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700"
+                      >
+                        <span>{selectedToken}</span>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform duration-200 ${
+                            tokenMenuOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    {tokenMenuOpen ? (
+                      <div className="absolute right-0 top-full z-20 mt-3 w-40 rounded-xl border border-zinc-800 bg-zinc-900 p-2 text-white shadow-2xl">
+                        {TOKEN_OPTIONS.map((token) => (
+                          <button
+                            key={token}
+                            type="button"
+                            onClick={() => {
+                              setSelectedToken(token);
+                              setTokenMenuOpen(false);
+                              setStatus({ kind: "idle" });
+                            }}
+                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-bold transition-colors ${
+                              token === selectedToken
+                                ? "bg-zinc-800 text-[#DA4022]"
+                                : "text-white hover:bg-zinc-800 hover:text-[#DA4022]"
+                            }`}
+                          >
+                            <span>{token}</span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
                   <span className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500">
-                    {t.send.minimumSol}
+                    {minimumLabel}
                   </span>
                 </label>
 
