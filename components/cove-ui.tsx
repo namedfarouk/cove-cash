@@ -54,8 +54,8 @@ export const secondaryButtonClass =
 
 export function CoveBrand() {
   return (
-    <div className="flex items-center gap-3 md:gap-4">
-      <div className="relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
+    <div className="flex items-center gap-1">
+      <div className="relative w-32 h-32 md:w-36 md:h-36 flex-shrink-0 -ml-2">
         <Image 
           src="/logo.png" 
           alt="Cove Logo" 
@@ -64,7 +64,7 @@ export function CoveBrand() {
           priority 
         />
       </div>
-      <span className="text-3xl md:text-4xl font-black font-syne tracking-tighter text-zinc-900 dark:text-white">
+      <span className="text-2xl md:text-3xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
         Cove
       </span>
     </div>
@@ -355,7 +355,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-x-0 top-[112px] z-40 h-[calc(100vh-112px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
+          className="fixed inset-x-0 top-[160px] z-40 h-[calc(100vh-160px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
@@ -450,7 +450,7 @@ export function CovePage({
     <main className="relative isolate min-h-screen overflow-hidden bg-white text-zinc-900 transition-colors duration-300 dark:bg-black dark:text-white">
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         {navbar}
-        <div className={`relative flex-1 pt-24 ${contentClassName}`}>{children}</div>
+        <div className={`relative flex-1 pt-44 md:pt-48 ${contentClassName}`}>{children}</div>
       </div>
     </main>
   );
