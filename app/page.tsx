@@ -100,22 +100,26 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex items-center gap-4 py-4"
+            className="w-full py-4"
           >
-            <Link href="/" className="flex shrink-0 items-center">
-              <CoveBrand />
-            </Link>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-1">
+                <Link href="/" className="flex shrink-0 items-center">
+                  <CoveBrand />
+                </Link>
+              </div>
 
-            <div className="min-w-0 flex-1 md:hidden" />
-
-            <button
-              type="button"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              onClick={() => setIsOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  aria-label={isOpen ? "Close menu" : "Open menu"}
+                  onClick={() => setIsOpen((current) => !current)}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
+                >
+                  {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
           </motion.header>
         </div>
       </div>

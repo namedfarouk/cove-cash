@@ -55,7 +55,7 @@ export const secondaryButtonClass =
 export function CoveBrand() {
   return (
     <div className="flex items-center gap-1">
-      <div className="relative w-32 h-32 md:w-36 md:h-36 flex-shrink-0 -ml-2">
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-36 md:h-36 flex-shrink-0 -ml-1">
         <Image 
           src="/logo.png" 
           alt="Cove Logo" 
@@ -64,7 +64,7 @@ export function CoveBrand() {
           priority 
         />
       </div>
-      <span className="text-2xl md:text-3xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
+      <span className="text-xl sm:text-2xl md:text-3xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
         Cove
       </span>
     </div>
@@ -254,22 +254,26 @@ export function CoveNavbar({
             initial="hidden"
             animate="visible"
             variants={fadeUp}
-            className="flex items-center gap-4 py-4"
+            className="w-full py-4"
           >
-            <Link href="/" className="flex shrink-0 items-center">
-              <CoveBrand />
-            </Link>
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-1">
+                <Link href="/" className="flex items-center">
+                  <CoveBrand />
+                </Link>
+              </div>
 
-            <div className="min-w-0 flex-1" />
-
-            <button
-              type="button"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              onClick={() => setIsOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
+              <div className="flex items-center">
+                <button
+                  type="button"
+                  aria-label={isOpen ? "Close menu" : "Open menu"}
+                  onClick={() => setIsOpen((current) => !current)}
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] dark:border-white/20 dark:bg-[#070707] dark:text-zinc-200 dark:hover:bg-white/[0.06]"
+                >
+                  {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
           </motion.header>
         </div>
       </div>
@@ -355,7 +359,7 @@ export function MobileMenuOverlay({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="fixed inset-x-0 top-[160px] z-40 h-[calc(100vh-160px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden"
+          className="fixed inset-x-0 top-[72px] z-40 h-[calc(100vh-72px)] overflow-y-auto bg-white text-zinc-900 dark:bg-black dark:text-white md:hidden sm:top-[88px] sm:h-[calc(100vh-88px)]"
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
@@ -450,7 +454,7 @@ export function CovePage({
     <main className="relative isolate min-h-screen overflow-hidden bg-white text-zinc-900 transition-colors duration-300 dark:bg-black dark:text-white">
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         {navbar}
-        <div className={`relative flex-1 pt-44 md:pt-48 ${contentClassName}`}>{children}</div>
+        <div className={`relative flex-1 pt-24 md:pt-48 ${contentClassName}`}>{children}</div>
       </div>
     </main>
   );
