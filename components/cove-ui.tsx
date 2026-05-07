@@ -54,17 +54,17 @@ export const secondaryButtonClass =
 
 export function CoveBrand() {
   return (
-    <div className="flex items-center gap-1">
-      <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-36 md:h-36 flex-shrink-0 -ml-1">
-        <Image 
-          src="/logo.png" 
-          alt="Cove Logo" 
-          fill 
-          className="object-contain" 
-          priority 
+    <div className="flex items-center gap-0">
+      <div className="relative w-16 h-16 md:w-36 md:h-36 flex-shrink-0">
+        <Image
+          src="/logo.png"
+          alt="Cove Logo"
+          fill
+          className="object-contain object-left md:object-center"
+          priority
         />
       </div>
-      <span className="text-xl sm:text-2xl md:text-3xl font-bold font-syne tracking-tighter text-zinc-900 dark:text-white">
+      <span className="-ml-3 md:-ml-8 text-2xl md:text-3xl font-bold font-syne tracking-tighter text-[#DA4022]">
         Cove
       </span>
     </div>
