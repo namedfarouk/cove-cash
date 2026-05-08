@@ -104,6 +104,7 @@ export default function DashboardPage() {
   const [state, setState] = useState<LoadState>({ kind: "loading" });
   const [exporting, setExporting] = useState(false);
   const [copyFeedback, setCopyFeedback] = useState<Record<number, string>>({});
+  const [statusFilter, setStatusFilter] = useState<'All' | 'Claimed' | 'Pending'>('All');
 
   useEffect(() => {
     const rows = readDepositedFromStorage();
@@ -276,6 +277,12 @@ export default function DashboardPage() {
   const pendingCount = rows.filter((row) => row.status === "pending").length;
   const claimedCount = rows.filter((row) => row.status === "claimed").length;
 
+  const filteredRows = rows.filter(row => {
+    if (statusFilter === 'Claimed') return row.status === 'claimed';
+    if (statusFilter === 'Pending') return row.status === 'pending' || row.status === 'loading';
+    return true;
+  });
+
   return (
     <CovePage
       navbar={
@@ -380,22 +387,32 @@ export default function DashboardPage() {
 
               {state.kind === "ready" && state.rows.length > 0 ? (
                 <div className="mt-8 space-y-3">
-                  <div className="hidden grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] gap-3 px-4 font-inter text-xs font-medium uppercase tracking-[0.2em] text-zinc-500 md:grid">
-                    <span>{t.dashboard.colAmount}</span>
-                    <span>{t.dashboard.colMint}</span>
-                    <span>{t.dashboard.colStatus}</span>
-                    <span>{t.dashboard.colDepositTx}</span>
-                    <span>{t.dashboard.colActions}</span>
+                  <div className="hidden grid grid-cols-12 gap-4 items-center w-full px-4 font-inter text-xs font-medium uppercase tracking-widest text-zinc-500 md:grid">
+                    <span className="col-span-2">{t.dashboard.colAmount}</span>
+                    <span className="col-span-3">{t.dashboard.colMint}</span>
+                    <div className="col-span-3 flex items-center">
+                      <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value as 'All' | 'Claimed' | 'Pending')}
+                        className="bg-transparent text-xs tracking-widest text-zinc-500 uppercase font-bold outline-none cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300 appearance-none"
+                      >
+                        <option value="All">{t.dashboard.colStatus}</option>
+                        <option value="Claimed">Claimed</option>
+                        <option value="Pending">Pending</option>
+                      </select>
+                    </div>
+                    <span className="col-span-2">{t.dashboard.colDepositTx}</span>
+                    <span className="col-span-2 flex justify-end">{t.dashboard.colActions}</span>
                   </div>
 
-                  {state.rows.map((row) => (
+                  {filteredRows.map((row) => (
                     <motion.div
                       whileHover={{ scale: 1.005 }}
                       key={row.index}
-                      className="grid gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 transition-colors duration-200 hover:bg-white md:grid-cols-[1.1fr_1fr_0.95fr_1fr_auto] md:items-center dark:border-white/20 dark:bg-black/40 dark:hover:bg-white/[0.04]"
+                      className="grid gap-4 rounded-2xl border border-zinc-200 bg-zinc-50 p-4 transition-colors duration-200 hover:bg-white md:grid-cols-12 md:items-center w-full px-4 dark:border-white/20 dark:bg-black/40 dark:hover:bg-white/[0.04]"
                     >
-                      <div>
-                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                      <div className="md:col-span-2">
+                        <p className="font-inter text-xs uppercase tracking-widest text-zinc-500 md:hidden">
                           {t.dashboard.colAmount}
                         </p>
                         <p className="font-syne tabular-nums text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
@@ -403,8 +420,8 @@ export default function DashboardPage() {
                         </p>
                       </div>
 
-                      <div>
-                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                      <div className="md:col-span-3">
+                        <p className="font-inter text-xs uppercase tracking-widest text-zinc-500 md:hidden">
                           {t.dashboard.colMint}
                         </p>
                         <p className="font-mono text-sm text-zinc-600 dark:text-zinc-300">
@@ -412,15 +429,15 @@ export default function DashboardPage() {
                         </p>
                       </div>
 
-                      <div>
-                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                      <div className="md:col-span-3">
+                        <p className="font-inter text-xs uppercase tracking-widest text-zinc-500 md:hidden">
                           {t.dashboard.colStatus}
                         </p>
                         <StatusBadge status={row.status} />
                       </div>
 
-                      <div>
-                        <p className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 md:hidden">
+                      <div className="md:col-span-2">
+                        <p className="font-inter text-xs uppercase tracking-widest text-zinc-500 md:hidden">
                           {t.dashboard.colDepositTx}
                         </p>
                         <a
@@ -434,7 +451,7 @@ export default function DashboardPage() {
                         </a>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 md:col-span-2 md:justify-end">
                         <motion.button
                           whileHover={{ scale: 1.02 }}
                           type="button"
