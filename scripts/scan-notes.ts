@@ -34,7 +34,7 @@ import { Connection, Keypair } from "@solana/web3.js";
 // Config
 // ---------------------------------------------------------------------------
 
-const RPC_URL = "https://api.mainnet-beta.solana.com";
+const RPC_URL = process.env.SOLANA_RPC_URL ?? process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.mainnet-beta.solana.com";
 const KEYPAIR_PATH = ".keypair.json";
 
 // UTXO owner private key for the existing test UTXO (the one whose 0.02 SOL is

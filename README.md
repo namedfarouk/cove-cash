@@ -66,6 +66,7 @@ Create `.env.local`:
 
 NEXT_PUBLIC_SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
 SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
+CLOAK_RELAY_URL=https://api.cloak.ag
 
 ```bash
 npm run dev

@@ -76,6 +76,8 @@ const RPC_URL =
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL ??
   "https://api.mainnet-beta.solana.com";
 
+const RELAY_URL = process.env.CLOAK_RELAY_URL;
+
 function hexToBigint(hex: string): bigint {
   return BigInt(hex.startsWith("0x") || hex.startsWith("0X") ? hex : "0x" + hex);
 }
@@ -204,6 +206,7 @@ export async function POST(req: Request) {
       walletPublicKey: recipientPubkey,
       signTransaction: signTransactionTrap,
       enforceViewingKeyRegistration: false,
+      relayUrl: RELAY_URL,
       onProgress: (statusMsg) => {
         const msg = statusMsg.toLowerCase();
         if (msg.includes("merkle") || msg.includes("tree")) {

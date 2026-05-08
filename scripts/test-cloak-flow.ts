@@ -50,7 +50,7 @@ import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 // Config — edit RECIPIENT before running.
 // ---------------------------------------------------------------------------
 
-const RPC_URL = "https://api.mainnet-beta.solana.com";
+const RPC_URL = process.env.SOLANA_RPC_URL ?? process.env.NEXT_PUBLIC_SOLANA_RPC_URL ?? "https://api.mainnet-beta.solana.com";
 const KEYPAIR_PATH = ".keypair.json";
 const UTXO_FILE = "scripts/shielded-utxo.json";
 

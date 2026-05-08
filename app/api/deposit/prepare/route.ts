@@ -63,6 +63,8 @@ const RPC_URL =
   process.env.NEXT_PUBLIC_SOLANA_RPC_URL ??
   "https://api.mainnet-beta.solana.com";
 
+const RELAY_URL = process.env.CLOAK_RELAY_URL;
+
 function bigintToHex(n: bigint): string {
   return "0x" + n.toString(16).padStart(64, "0");
 }
@@ -187,6 +189,7 @@ export async function POST(req: Request) {
         walletPublicKey: depositorPubkey,
         signTransaction: signTransactionTrap,
         enforceViewingKeyRegistration: false,
+        relayUrl: RELAY_URL,
       },
     );
     // transact returned without throwing — meaning the SDK swallowed our throw
