@@ -57,6 +57,7 @@ import { Connection, PublicKey, VersionedTransaction } from "@solana/web3.js";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 const RPC_URL =
   process.env.SOLANA_RPC_URL ??
