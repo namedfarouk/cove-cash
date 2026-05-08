@@ -183,9 +183,9 @@ const translations: Record<LanguageValue, TranslationTree> = {
     },
     landing: {
       eyebrow: "Private settlement for Solana",
-      heroTitle: "Send SOL privately. No wallet address required.",
+      heroTitle: "Send SOL & Stablecoins privately. No wallet address required.",
       heroBody:
-        "Deposit funds. Generate a private link. DM it to anyone. Stop asking for public keys and start settling instantly.",
+        "Deposit SOL, USDC, or USDT. Generate an encrypted link. DM it to anyone. Stop asking for public keys and start settling instantly.",
       startSending: "Start Sending",
       viewDashboard: "View Dashboard",
       liveOnSolana: "Live on Solana",
@@ -342,9 +342,9 @@ const translations: Record<LanguageValue, TranslationTree> = {
     },
     landing: {
       eyebrow: "Règlement privé pour Solana",
-      heroTitle: "Envoyez du SOL en privé. Aucune adresse wallet requise.",
+      heroTitle: "Envoyez du SOL et des stablecoins en privé. Aucune adresse wallet requise.",
       heroBody:
-        "Déposez les fonds. Générez un lien privé. Envoyez-le en DM. Arrêtez de demander des clés publiques et réglez instantanément.",
+        "Déposez du SOL, de l'USDC ou de l'USDT. Générez un lien chiffré. Envoyez-le en DM. Arrêtez de demander des clés publiques et réglez instantanément.",
       startSending: "Commencer l'envoi",
       viewDashboard: "Voir le tableau de bord",
       liveOnSolana: "En direct sur Solana",

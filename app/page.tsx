@@ -23,7 +23,6 @@ import {
   ThemeToggle,
   fadeUp,
   primaryButtonClass,
-  secondaryButtonClass,
   stagger,
   useFloatingNavbarState,
   useLockBodyScroll,
@@ -201,31 +200,31 @@ export default function Home() {
 
             <motion.h1
               variants={fadeUp}
-              className="mt-8 max-w-4xl text-balance font-syne text-5xl font-semibold tracking-tighter text-zinc-900 dark:text-white sm:text-6xl lg:text-7xl"
+              className="mx-auto mt-8 max-w-4xl text-center font-syne text-5xl font-black leading-[1.1] tracking-tighter text-zinc-900 md:text-7xl dark:text-white"
             >
               {t.landing.heroTitle}
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
-              className="mt-6 max-w-2xl text-pretty font-inter text-base leading-7 text-zinc-600 dark:text-zinc-400 sm:text-lg"
+              className="mx-auto mt-6 max-w-2xl text-center font-inter text-lg leading-relaxed text-zinc-500 md:text-xl dark:text-zinc-400"
             >
               {t.landing.heroBody}
             </motion.p>
 
             <motion.div
               variants={fadeUp}
-              className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+              className="mt-12 flex flex-col items-center gap-4 sm:flex-row"
             >
               <Link
                 href="/send"
-                className={`${primaryButtonClass} px-6`}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#DA4022] px-6 py-3 font-inter text-sm font-semibold text-white transition-opacity hover:opacity-90"
               >
                 {t.landing.startSending}
               </Link>
               <Link
                 href="/dashboard"
-                className={`${secondaryButtonClass} px-6`}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-white px-6 py-3 font-inter text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-[#070707] dark:text-white dark:hover:bg-zinc-800"
               >
                 {t.landing.viewDashboard}
               </Link>
