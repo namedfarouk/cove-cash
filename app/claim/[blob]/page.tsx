@@ -208,10 +208,11 @@ export default function ClaimPage() {
       );
       setStatus({ kind: "success", signature, mode: prepared.mode });
     } catch (err) {
-      console.error("[cove/claim] failed:", err);
+      // eslint-disable-next-line no-console
+      console.error("Claim Flow Error:", err);
       setStatus({
         kind: "error",
-        message: err instanceof Error ? err.message : String(err),
+        message: err instanceof Error ? `Claim failed: ${err.message}` : `Claim failed: ${String(err)}`,
       });
     }
   }
@@ -403,7 +404,7 @@ function Notice({
     <div
       className={`rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
-          ? "border-cove-accent/40 bg-cove-accent/10 text-white"
+          ? "border-cove-accent/40 bg-cove-accent/10 text-cove-accent dark:text-red-400"
           : "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
       } ${className}`}
     >

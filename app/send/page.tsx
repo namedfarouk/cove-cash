@@ -472,17 +472,19 @@ function StatusPanel({
 function InlineNotice({
   children,
   tone,
+  className = "",
 }: {
   children: React.ReactNode;
   tone: "neutral" | "error";
+  className?: string;
 }) {
   return (
     <div
       className={`rounded-2xl border p-4 font-inter text-sm ${
         tone === "error"
-          ? "border-cove-accent/40 bg-cove-accent/10 text-white"
+          ? "border-cove-accent/40 bg-cove-accent/10 text-cove-accent dark:text-red-400"
           : "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400"
-      }`}
+      } ${className}`}
     >
       {children}
     </div>

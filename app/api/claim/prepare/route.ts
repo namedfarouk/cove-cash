@@ -194,6 +194,8 @@ export async function POST(req: Request) {
   //    - throws with capturedTx null → real failure (relay rejected, etc.)
   let withdrawResult: TransactResult | null = null;
   let transactError: unknown = null;
+  let currentStep = "Initializing";
+
   try {
     withdrawResult = await fullWithdraw([inputUtxo], recipientPubkey, {
       connection,
@@ -202,8 +204,20 @@ export async function POST(req: Request) {
       walletPublicKey: recipientPubkey,
       signTransaction: signTransactionTrap,
       enforceViewingKeyRegistration: false,
+      onProgress: (statusMsg) => {
+        const msg = statusMsg.toLowerCase();
+        if (msg.includes("merkle") || msg.includes("tree")) {
+          currentStep = "Step A: Fetching on-chain state/Merkle tree";
+        } else if (msg.includes("proof") || msg.includes("zk") || msg.includes("witness")) {
+          currentStep = "Step B: Generating the ZK witness/proof";
+        } else if (msg.includes("relay") || msg.includes("submit") || msg.includes("transact")) {
+          currentStep = "Step C: Submitting to the Cloak relay";
+        }
+      }
     });
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("Claim Flow Error:", err, `(Failed at ${currentStep})`);
     transactError = err;
   }
 
@@ -269,7 +283,7 @@ export async function POST(req: Request) {
       ? transactError.message
       : String(transactError ?? "fullWithdraw produced no result and no error");
   return NextResponse.json(
-    { error: `fullWithdraw failed: ${message}` },
+    { error: `[${currentStep}] ${message}` },
     { status: 500 },
   );
 }
