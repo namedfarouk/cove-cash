@@ -399,7 +399,7 @@ function StatusPanel({
     }
 
     return (
-      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400">
+      <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 font-inter text-sm text-zinc-600 dark:border-white/20 dark:bg-black/40 dark:text-zinc-400 text-center flex justify-center items-center w-full">
         {t.send.readyToPrepare}
       </div>
     );

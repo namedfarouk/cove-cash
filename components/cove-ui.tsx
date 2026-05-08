@@ -182,7 +182,7 @@ export function LanguageSelector() {
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
             role="menu"
-            className="absolute md:absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 md:right-0 max-md:relative max-md:w-full max-md:top-0"
+            className="absolute md:absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 md:right-0 max-md:w-full"
           >
             {supportedLanguages.map((language) => {
               const active = language.value === selectedLanguage.value;
@@ -363,7 +363,7 @@ export function MobileMenuOverlay({
         >
           <div className="flex flex-col space-y-6 p-6">
             <div className="border-b border-zinc-200 pb-4 mb-4 dark:border-white/10">
-              <div className="flex items-center gap-3 py-5">
+              <div className="flex items-start gap-3 py-5">
                 <LanguageSelector />
                 <ThemeToggle />
               </div>
