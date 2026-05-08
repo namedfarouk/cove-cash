@@ -285,7 +285,7 @@ export function CoveNavbar({
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`pointer-events-auto transition-all duration-300 ${
               scrolled
-                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
+                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
                 : "w-full px-0 py-0"
             }`}
           >
@@ -293,7 +293,7 @@ export function CoveNavbar({
               initial="hidden"
               animate="visible"
               variants={fadeUp}
-              className="flex items-center gap-6 py-3"
+              className="flex items-center gap-6"
             >
               <Link href="/" className="flex shrink-0 items-center">
                 <CoveBrand />

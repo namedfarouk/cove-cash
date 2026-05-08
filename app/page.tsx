@@ -131,7 +131,7 @@ export default function Home() {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`pointer-events-auto transition-all duration-300 ${
               scrolled
-                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
+                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
                 : "w-full"
             }`}
           >
