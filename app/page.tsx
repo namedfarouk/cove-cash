@@ -200,7 +200,7 @@ export default function Home() {
 
             <motion.h1
               variants={fadeUp}
-              className="mx-auto mt-8 max-w-4xl text-center font-syne text-5xl font-black leading-[1.1] tracking-tighter text-zinc-900 md:text-7xl dark:text-white"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-syne tracking-tighter leading-[1.1] text-zinc-900 dark:text-white max-w-4xl mx-auto text-center w-full break-words px-4 mt-8"
             >
               {language === "fr" ? (
                 <>
