@@ -29,7 +29,7 @@ import {
 } from "@/components/cove-ui";
 
 export default function Home() {
-  const { t } = useCoveLanguage();
+  const { language, t } = useCoveLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const scrolled = useFloatingNavbarState();
 
@@ -202,7 +202,23 @@ export default function Home() {
               variants={fadeUp}
               className="mx-auto mt-8 max-w-4xl text-center font-syne text-5xl font-black leading-[1.1] tracking-tighter text-zinc-900 md:text-7xl dark:text-white"
             >
-              {t.landing.heroTitle}
+              {language === "fr" ? (
+                <>
+                  Envoyez du{" "}
+                  <span className="text-[#DA4022]">
+                    SOL et des stablecoins en prive
+                  </span>
+                  . Aucune adresse wallet requise.
+                </>
+              ) : (
+                <>
+                  Send{" "}
+                  <span className="text-[#DA4022]">
+                    SOL & Stablecoins privately
+                  </span>
+                  . No wallet address required.
+                </>
+              )}
             </motion.h1>
 
             <motion.p
