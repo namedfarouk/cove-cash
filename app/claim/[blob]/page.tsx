@@ -28,6 +28,10 @@ import {
 } from "@/components/cove-ui";
 import { decodeClaimBlob, type ClaimBlobV1 } from "@/lib/cove/claim-link";
 
+const NATIVE_SOL_MINT = "So11111111111111111111111111111111111111112";
+const USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+const USDT_MINT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+
 type ClaimMetadata = {
   amount: string;
   mint: string;
@@ -66,11 +70,21 @@ function base64ToBytes(b64: string): Uint8Array {
   return bytes;
 }
 
-function lamportsToSol(lamportsStr: string): string {
-  const lamports = BigInt(lamportsStr);
-  const whole = lamports / 1_000_000_000n;
-  const frac = lamports % 1_000_000_000n;
-  const fracStr = frac.toString().padStart(9, "0").replace(/0+$/, "");
+function getTokenDisplayConfig(mint: string): {
+  symbol: "SOL" | "USDC" | "USDT";
+  decimals: number;
+} {
+  if (mint === USDC_MINT) return { symbol: "USDC", decimals: 6 };
+  if (mint === USDT_MINT) return { symbol: "USDT", decimals: 6 };
+  return { symbol: "SOL", decimals: 9 };
+}
+
+function formatTokenAmount(amountStr: string, decimals: number): string {
+  const amount = BigInt(amountStr);
+  const divisor = 10n ** BigInt(decimals);
+  const whole = amount / divisor;
+  const frac = amount % divisor;
+  const fracStr = frac.toString().padStart(decimals, "0").replace(/0+$/, "");
   return fracStr.length > 0 ? `${whole}.${fracStr}` : whole.toString();
 }
 
@@ -100,6 +114,15 @@ export default function ClaimPage() {
       return { ok: false, reason: `${t.claim.failedToDecodePrefix}${msg}` };
     }
   }, [params?.blob, t]);
+
+  const claimDisplay = useMemo(() => {
+    if (!decoded.ok) return null;
+    const { symbol, decimals } = getTokenDisplayConfig(decoded.blob.mint);
+    return {
+      symbol,
+      formattedAmount: formatTokenAmount(decoded.blob.amt, decimals),
+    };
+  }, [decoded]);
 
   const canClaim =
     decoded.ok &&
@@ -254,7 +277,7 @@ export default function ClaimPage() {
                         {t.claim.amountLabel}
                       </p>
                       <p className="mt-3 font-syne text-3xl font-semibold tracking-tighter tabular-nums text-zinc-900 dark:text-white">
-                        {lamportsToSol(decoded.blob.amt)} SOL
+                        {claimDisplay?.formattedAmount} {claimDisplay?.symbol}
                       </p>
                     </div>
                     <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-5 dark:border-white/20 dark:bg-black/40">
