@@ -51,12 +51,25 @@ type LoadState =
   | { kind: "ready"; rows: Row[] }
   | { kind: "error"; message: string };
 
-function lamportsToSol(lamportsStr: string): string {
-  const lamports = BigInt(lamportsStr);
-  const whole = lamports / 1_000_000_000n;
-  const frac = lamports % 1_000_000_000n;
-  const fracStr = frac.toString().padStart(9, "0").replace(/0+$/, "");
+const TOKEN_MAP: Record<string, { symbol: string; decimals: number }> = {
+  "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": { symbol: "USDC", decimals: 6 },
+  "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": { symbol: "USDT", decimals: 6 },
+  "11111111111111111111111111111111": { symbol: "SOL", decimals: 9 },
+  "So11111111111111111111111111111111111111112": { symbol: "SOL", decimals: 9 },
+};
+
+function formatAmount(atomicAmountStr: string, mint: string): string {
+  const config = TOKEN_MAP[mint] || { symbol: "Token", decimals: 9 };
+  const atomicAmount = BigInt(atomicAmountStr);
+  const divisor = 10n ** BigInt(config.decimals);
+  const whole = atomicAmount / divisor;
+  const frac = atomicAmount % divisor;
+  const fracStr = frac.toString().padStart(config.decimals, "0").replace(/0+$/, "");
   return fracStr.length > 0 ? `${whole}.${fracStr}` : whole.toString();
+}
+
+function getTokenSymbol(mint: string): string {
+  return TOKEN_MAP[mint]?.symbol || "Token";
 }
 
 function readDepositedFromStorage(): Row[] {
@@ -251,7 +264,7 @@ export default function DashboardPage() {
         const status = r.status === "claimed" ? "claimed" : "pending";
         return [
           date,
-          lamportsToSol(r.amount),
+          formatAmount(r.amount, r.mint),
           r.mint,
           status,
           r.depositSignature,
@@ -416,7 +429,7 @@ export default function DashboardPage() {
                           {t.dashboard.colAmount}
                         </p>
                         <p className="font-syne tabular-nums text-base font-semibold tracking-tight text-zinc-900 dark:text-white">
-                          {lamportsToSol(row.amount)} SOL
+                          {formatAmount(row.amount, row.mint)} {getTokenSymbol(row.mint)}
                         </p>
                       </div>
 
