@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   CheckCircle2,
+  ChevronDown,
   Clock3,
   Copy,
   Download,
@@ -404,15 +405,18 @@ export default function DashboardPage() {
                     <span className="col-span-2">{t.dashboard.colAmount}</span>
                     <span className="col-span-3">{t.dashboard.colMint}</span>
                     <div className="col-span-3 flex items-center">
-                      <select
-                        value={statusFilter}
-                        onChange={(e) => setStatusFilter(e.target.value as 'All' | 'Claimed' | 'Pending')}
-                        className="bg-transparent text-xs tracking-widest text-zinc-500 uppercase font-bold outline-none cursor-pointer hover:text-zinc-700 dark:hover:text-zinc-300 appearance-none"
-                      >
-                        <option value="All">{t.dashboard.colStatus}</option>
-                        <option value="Claimed">Claimed</option>
-                        <option value="Pending">Pending</option>
-                      </select>
+                      <div className="relative inline-block">
+                        <select
+                          value={statusFilter}
+                          onChange={(e) => setStatusFilter(e.target.value as 'All' | 'Claimed' | 'Pending')}
+                          className="bg-transparent text-xs tracking-widest text-zinc-500 uppercase font-bold outline-none cursor-pointer hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 rounded px-2 py-1 -ml-2 transition-colors hover:text-zinc-700 dark:hover:text-zinc-200 appearance-none pr-6"
+                        >
+                          <option value="All">{t.dashboard.colStatus}</option>
+                          <option value="Claimed">Claimed</option>
+                          <option value="Pending">Pending</option>
+                        </select>
+                        <ChevronDown className="absolute right-1 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 pointer-events-none" />
+                      </div>
                     </div>
                     <span className="col-span-2">{t.dashboard.colDepositTx}</span>
                     <span className="col-span-2 flex justify-end">{t.dashboard.colActions}</span>
