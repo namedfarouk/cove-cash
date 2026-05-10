@@ -50,6 +50,12 @@ export const primaryButtonClass =
 export const secondaryButtonClass =
   "cove-secondary-button";
 
+export const desktopNavLinkClass =
+  "text-sm font-medium text-zinc-400 hover:text-white transition-colors";
+
+export const navbarPrimaryButtonClass =
+  "inline-flex h-9 items-center justify-center rounded-full bg-cove-accent px-5 font-inter text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#f14f44]";
+
 export function CoveBrand() {
   return (
     <div className="flex items-center gap-0">
@@ -63,6 +69,24 @@ export function CoveBrand() {
         />
       </div>
       <span className="-ml-3 md:-ml-8 text-2xl md:text-3xl font-bold font-syne tracking-tighter text-[#DA4022]">
+        Cove
+      </span>
+    </div>
+  );
+}
+
+export function NavbarBrand() {
+  return (
+    <div className="flex items-center gap-2">
+      <Image
+        src="/logo.png"
+        alt="Cove Logo"
+        width={24}
+        height={24}
+        className="h-6 w-auto object-contain"
+        priority
+      />
+      <span className="font-syne text-lg font-semibold tracking-tighter text-white">
         Cove
       </span>
     </div>
@@ -91,7 +115,7 @@ export function useLockBodyScroll(locked: boolean) {
   }, [locked]);
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -106,14 +130,22 @@ export function ThemeToggle() {
       type="button"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+      className={
+        compact
+          ? "inline-flex h-9 w-9 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-400 transition-colors duration-200 hover:bg-zinc-800 hover:text-white"
+          : "inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-400 dark:hover:bg-white/[0.06] dark:hover:text-white"
+      }
     >
-      {isDark ? <Sun className="h-4.5 w-4.5" /> : <Moon className="h-4.5 w-4.5" />}
+      {isDark ? (
+        <Sun className={compact ? "h-4 w-4" : "h-4.5 w-4.5"} />
+      ) : (
+        <Moon className={compact ? "h-4 w-4" : "h-4.5 w-4.5"} />
+      )}
     </button>
   );
 }
 
-export function LanguageSelector() {
+export function LanguageSelector({ compact = false }: { compact?: boolean }) {
   const { language, setLanguage, t } = useCoveLanguage();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -149,13 +181,19 @@ export function LanguageSelector() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 font-inter text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white max-md:w-full max-md:justify-between"
+        className={
+          compact
+            ? "inline-flex h-9 items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-3 font-inter text-sm font-medium text-zinc-400 transition-colors duration-200 hover:bg-zinc-800 hover:text-white max-md:w-full max-md:justify-between"
+            : "inline-flex h-11 items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-4 font-inter text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-black/[0.04] hover:text-zinc-950 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white max-md:w-full max-md:justify-between"
+        }
       >
-        <Globe className="h-4 w-4" />
-        <span className="text-base leading-none">{selectedLanguage.flag}</span>
+        <Globe className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
+        <span className={`${compact ? "text-sm" : "text-base"} leading-none`}>
+          {selectedLanguage.flag}
+        </span>
         <span className="hidden sm:inline">{selectedLanguage.label}</span>
         <ChevronDown
-          className={`h-4 w-4 transition-transform duration-200 ${
+          className={`${compact ? "h-3.5 w-3.5" : "h-4 w-4"} transition-transform duration-200 ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -169,7 +207,11 @@ export function LanguageSelector() {
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
             role="menu"
-            className="absolute md:absolute top-full left-0 z-50 mt-2 w-48 overflow-hidden rounded-2xl border border-zinc-200 bg-white p-2 text-zinc-700 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300 md:right-0 max-md:w-full"
+            className={`absolute md:absolute top-full left-0 z-50 mt-2 overflow-hidden rounded-2xl p-2 md:right-0 max-md:w-full ${
+              compact
+                ? "w-48 border border-zinc-800 bg-zinc-950 text-zinc-300"
+                : "w-48 border border-zinc-200 bg-white text-zinc-700 dark:border-white/20 dark:bg-[#070707] dark:text-zinc-300"
+            }`}
           >
             {supportedLanguages.map((language) => {
               const active = language.value === selectedLanguage.value;
@@ -195,7 +237,9 @@ export function LanguageSelector() {
                   } ${
                     active
                       ? "bg-cove-accent/15 text-cove-accent"
-                      : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white"
+                      : compact
+                        ? "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                        : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/[0.06] dark:hover:text-white"
                   }`}
                 >
                   <span className="text-base leading-none">{language.flag}</span>
@@ -264,37 +308,29 @@ export function CoveNavbar({
         </div>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden md:block">
-        <div className="mx-auto w-full max-w-7xl px-6 pt-4">
-          <motion.div
-            className="pointer-events-auto mx-auto w-fit rounded-full border border-zinc-200 bg-white/90 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/90"
-          >
-            <motion.header
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="flex items-center gap-6"
-            >
-              <Link href="/" className="flex shrink-0 items-center">
-                <CoveBrand />
-              </Link>
+      <motion.header
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        className="fixed top-6 left-1/2 z-50 hidden h-14 w-[95%] max-w-4xl -translate-x-1/2 items-center justify-between rounded-full border border-zinc-800 bg-zinc-950/80 px-4 shadow-2xl backdrop-blur-md sm:px-6 md:flex"
+      >
+        <Link href="/" className="flex items-center">
+          <NavbarBrand />
+        </Link>
 
-              <div className="min-w-0 flex-1" />
+        <div className="flex min-w-0 flex-1 items-center justify-center gap-8" />
 
-              <div className="hidden shrink-0 items-center gap-2 md:flex">
-                <ThemeToggle />
-                <LanguageSelector />
-                {cta ? (
-                  <Link href={cta.href} className={primaryButtonClass}>
-                    {cta.label}
-                  </Link>
-                ) : null}
-                {walletSlot}
-              </div>
-            </motion.header>
-          </motion.div>
+        <div className="flex items-center gap-3">
+          <LanguageSelector compact />
+          <ThemeToggle compact />
+          {cta ? (
+            <Link href={cta.href} className={navbarPrimaryButtonClass}>
+              {cta.label}
+            </Link>
+          ) : null}
+          {walletSlot}
         </div>
-      </div>
+      </motion.header>
 
       <MobileMenuOverlay
         isOpen={isOpen}

@@ -20,9 +20,12 @@ import {
   CoveBrand,
   MobileMenuOverlay,
   LanguageSelector,
+  NavbarBrand,
   SectionEyebrow,
   ThemeToggle,
+  desktopNavLinkClass,
   fadeUp,
+  navbarPrimaryButtonClass,
   primaryButtonClass,
   stagger,
   useLockBodyScroll,
@@ -122,53 +125,41 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden md:block">
-        <div className="mx-auto w-full max-w-7xl px-6 pt-4">
-          <motion.div className="pointer-events-auto mx-auto w-fit rounded-full border border-zinc-200 bg-white/90 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/90">
-            <motion.header
-              initial="hidden"
-              animate="visible"
-              variants={fadeUp}
-              className="flex items-center gap-6"
-            >
-              <Link href="/" className="flex shrink-0 items-center">
-                <CoveBrand />
-              </Link>
+      <motion.header
+        initial="hidden"
+        animate="visible"
+        variants={fadeUp}
+        className="fixed top-6 left-1/2 z-50 hidden h-14 w-[95%] max-w-4xl -translate-x-1/2 items-center justify-between rounded-full border border-zinc-800 bg-zinc-950/80 px-4 shadow-2xl backdrop-blur-md sm:px-6 md:flex"
+      >
+        <Link href="/" className="flex items-center">
+          <NavbarBrand />
+        </Link>
 
-              <nav className="flex min-w-0 flex-1 items-center justify-center gap-6">
-                <a
-                  href="#how-it-works"
-                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                >
-                  {t.nav.howItWorks}
-                </a>
-                <a
-                  href="#compare"
-                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                >
-                  {t.nav.compare}
-                </a>
-                <a
-                  href="https://cove-cash.mintlify.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                >
-                  {t.nav.docs}
-                </a>
-              </nav>
+        <nav className="flex items-center gap-8">
+          <a href="#how-it-works" className={desktopNavLinkClass}>
+            {t.nav.howItWorks}
+          </a>
+          <a href="#compare" className={desktopNavLinkClass}>
+            {t.nav.compare}
+          </a>
+          <a
+            href="https://cove-cash.mintlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={desktopNavLinkClass}
+          >
+            {t.nav.docs}
+          </a>
+        </nav>
 
-              <div className="hidden shrink-0 items-center gap-2 md:flex">
-                <LanguageSelector />
-                <ThemeToggle />
-                <Link href="/send" className={primaryButtonClass}>
-                  {t.landing.launchCove}
-                </Link>
-              </div>
-            </motion.header>
-          </motion.div>
+        <div className="flex items-center gap-3">
+          <LanguageSelector compact />
+          <ThemeToggle compact />
+          <Link href="/send" className={navbarPrimaryButtonClass}>
+            {t.landing.launchCove}
+          </Link>
         </div>
-      </div>
+      </motion.header>
 
       <MobileMenuOverlay
         isOpen={isOpen}
