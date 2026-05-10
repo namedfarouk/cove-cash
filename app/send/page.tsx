@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ChevronDown, Copy } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, ChevronDown, Copy } from "lucide-react";
 import Link from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -389,6 +389,23 @@ function StatusPanel({
   connected: boolean;
 }) {
   const { t } = useCoveLanguage();
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    if (!isCopied) return;
+
+    const timeout = window.setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+
+    return () => window.clearTimeout(timeout);
+  }, [isCopied]);
+
+  async function handleCopy(url: string) {
+    await navigator.clipboard.writeText(url);
+    setIsCopied(true);
+  }
+
   if (status.kind === "idle") {
     if (!connected) {
       return (
@@ -447,10 +464,18 @@ function StatusPanel({
           <motion.button
             whileHover={{ scale: 1.02 }}
             type="button"
-            onClick={() => navigator.clipboard.writeText(status.url)}
-            className={`${secondaryButtonClass} rounded-2xl px-3`}
+            onClick={() => handleCopy(status.url)}
+            className={`${secondaryButtonClass} rounded-2xl px-3 transition-colors ${
+              isCopied
+                ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300"
+                : ""
+            }`}
           >
-            <Copy className="h-4 w-4" />
+            {isCopied ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </motion.button>
         </div>
       </label>
