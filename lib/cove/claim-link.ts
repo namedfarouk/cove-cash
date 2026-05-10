@@ -2,7 +2,7 @@
  * Claim-link encoding for Cove.
  *
  * A claim link is a URL of the form
- *   https://cove-cash.vercel.app/claim/<base64url-encoded-blob>
+ *   https://covecash.app/claim/<base64url-encoded-blob>
  * where the blob is a JSON object containing everything the recipient needs to
  * spend the shielded UTXO: owner private key, amount, mint, leaf index,
  * commitment, sibling commitment, deposit signature.
@@ -10,8 +10,7 @@
  * The blob INCLUDES the secret needed to spend, so anyone with the link can
  * claim. Treat it like a bearer instrument.
  */
-
-const CLAIM_BASE_URL = "https://cove-cash.vercel.app/claim";
+const DEFAULT_APP_URL = "https://covecash.app";
 
 export type ClaimBlobV1 = {
   v: 1;
@@ -51,5 +50,10 @@ export function decodeClaimBlob(encoded: string): ClaimBlobV1 {
 }
 
 export function buildClaimUrl(blob: ClaimBlobV1): string {
-  return `${CLAIM_BASE_URL}/${encodeClaimBlob(blob)}`;
+  const baseUrl =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_APP_URL ?? DEFAULT_APP_URL;
+
+  return `${baseUrl.replace(/\/$/, "")}/claim/${encodeClaimBlob(blob)}`;
 }

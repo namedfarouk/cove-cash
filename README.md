@@ -4,7 +4,7 @@ Public ledgers are a feature, but public spending shouldn't be mandatory. Cove i
 
 No wallet addresses required upfront. Send money, not addresses.
 
-**Live on Mainnet:** [https://cove-cash.vercel.app](https://cove-cash.vercel.app)  
+**Live on Mainnet:** [https://covecash.app](https://covecash.app)  
 **Official Documentation:** [https://cove-cash.mintlify.app/](https://cove-cash.mintlify.app/)
 
 ## 🏆 Colosseum Frontier Hackathon Submission
@@ -60,4 +60,4 @@ To deliver a consumer-grade experience on complex cryptography, we made specific
 
 ## 🛡️ Security & Legal
 
-Cove is a non-custodial interface. We do not hold, manage, or control user funds. All transactions and escrows are handled directly via smart contracts on the Solana blockchain. See our [Terms of Service](https://cove-cash.vercel.app/terms) and [Privacy Policy](https://cove-cash.vercel.app/privacy) for more details on our zero-knowledge architecture.
+Cove is a non-custodial interface. We do not hold, manage, or control user funds. All transactions and escrows are handled directly via smart contracts on the Solana blockchain. See our [Terms of Service](https://covecash.app/terms) and [Privacy Policy](https://covecash.app/privacy) for more details on our zero-knowledge architecture.
