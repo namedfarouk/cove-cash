@@ -1,97 +1,63 @@
-# Cove
+# Cove: Private Settlement on Solana ✦
 
-**Private payment receiving layer for Solana.**
+Public ledgers are a feature, but public spending shouldn't be mandatory. Cove is a non-custodial, private settlement layer built on Solana. It allows users to send SOL, USDC, and USDT completely privately via single-use, encrypted claim links.
 
-Send SOL privately. No wallet address required. Generate a single-use claim link, drop it in a DM, and the recipient claims instantly — without exposing a public key.
+No wallet addresses required upfront. Send money, not addresses.
 
-Built for the Colosseum Frontier Hackathon (Cloak specialty track).
+**Live on Mainnet:** [https://cove-cash.vercel.app](https://cove-cash.vercel.app)  
+**Official Documentation:** [https://cove-cash.mintlify.app/](https://cove-cash.mintlify.app/)
 
-## Live Demo
+## 🏆 Colosseum Frontier Hackathon Submission
 
-[cove-cash.vercel.app](https://cove-cash.vercel.app)
+Cove is built specifically for the **Cloak Track** (Cross-border stablecoin payments & private B2B settlement).
 
-## What It Does
+If your users would walk away the moment their transaction amounts and counterparties went public, privacy isn't a feature - it's load-bearing. Cove uses the Cloak SDK to make privacy the default without sacrificing Solana's speed or the economic guarantees of stablecoins.
 
-Public Web3 builders face a real problem: every payment they receive is permanently indexed on chain. Hackathon prizes, sponsorships, grants, tips — all publicly linked to their identity wallet.
+## ⚙️ Architecture & Decisions
 
-Cove solves this with a private payment receiving layer:
+To deliver a consumer-grade experience on complex cryptography, we made specific architectural choices:
 
-1. **Sender** connects wallet, deposits SOL into the Cloak shielded pool, gets a single-use claim link
-2. **Link** encodes the spending key and cryptographic commitment — a bearer instrument, no addresses exchanged
-3. **Recipient** opens the link, connects any wallet, and claims — the Cloak relay submits the withdrawal and pays the fee, so recipients need zero SOL to claim
+* **The Cloak SDK (Shielded Pool):** We utilize Cloak's UTXO shielded pool. When a user deposits funds, it generates a ZK-proof witness, shielding the sender's address and the transaction amount from public block explorers.
+* **Link-Based Claiming (UX):** The recipient does not need to understand ZK-cryptography or even know what Cloak is. The sender DMs an encrypted link, and the recipient claims it to a fresh wallet, breaking the on-chain link between counterparties.
+* **Helius RPC Infrastructure:** Generating Groth16 proofs requires fetching heavy Merkle tree states from the blockchain. Standard public RPCs rate-limit or timeout these requests. We integrated dedicated Helius RPCs to handle the heavy data load, preventing 504 gateway timeouts and ensuring smooth execution on Mainnet.
 
-The sender's wallet and recipient's wallet are never linked on chain.
+## 🚀 Quick Start (Local Development)
 
-## Architecture
+### Prerequisites
 
-Cove uses the [Cloak SDK](https://docs.cloak.ag) for ZK-proof generation and shielded pool management.
+* Node.js (v18+)
+* A Solana wallet funded with Mainnet SOL, USDC, or USDT for testing
+* A dedicated Helius RPC endpoint
 
-**Key design decisions:**
+### Installation
 
-- ZK proof generation runs server-side (Next.js API routes) rather than in the browser. The Cloak SDK has Node-only assumptions; server-side execution eliminates browser polyfill complexity entirely.
-- Deposit flow uses a trap pattern: the SDK signTransaction callback is intercepted to capture the unsigned VersionedTransaction before submission, returned to the browser for wallet signing.
-- Withdrawal flow uses the Cloak relay by default — the relay submits and pays the fee. Recipients need no SOL.
-- UTXO state including the blinding factor is persisted to localStorage before any network call. If a deposit confirms but the page crashes, the UTXO is recoverable via /api/recover.
+1. Clone the repository:
 
-**Routes:**
-- `POST /api/deposit/prepare` — generates ZK proof, returns unsigned tx + UTXO state
-- `POST /api/claim/prepare` — reconstructs input UTXO, runs withdrawal via relay
-- `POST /api/recover` — extracts blinding from serialized UTXO for claim link recovery
-- `POST /api/dashboard/status` — checks on-chain nullifier status for tracked deposits
+   ```bash
+   git clone https://github.com/namedfarouk/cove-cash.git
+   cd cove-cash
+   ```
 
-## Pages
+2. Install dependencies:
 
-| Route | Description |
-|-------|-------------|
-| `/` | Landing page |
-| `/send` | Deposit SOL and generate a claim link |
-| `/claim/[blob]` | Recipient claims a payment |
-| `/dashboard` | Deposit history, claim status, CSV export |
+   ```bash
+   npm install
+   ```
 
-## Validated On-Chain
+3. Set up environment variables:
 
-Deposit: [`3Hpe2HVx8qMFxHjefqswAqZfZkzuWpycxKkJ8oxzdQYEw69e1eDp8nWSo7MBGE8boB32KHiBUFRkR3kMimq1pEZW`](https://solscan.io/tx/3Hpe2HVx8qMFxHjefqswAqZfZkzuWpycxKkJ8oxzdQYEw69e1eDp8nWSo7MBGE8boB32KHiBUFRkR3kMimq1pEZW)
+   Create a `.env.local` file in the root directory and add your Helius RPC:
 
-Claim: [`3mGX8ePX3xPB9mB3cJPBvVVfgfGMHsxExLdT7fN5oSzGKDJxVFxnBz4qNa3fxzZ4mDK8XBBfSmfEVN7PsPxC9uM`](https://solscan.io/tx/3mGX8ePX3xPB9mB3cJPBvVVfgfGMHsxExLdT7fN5oSzGKDJxVFxnBz4qNa3fxzZ4mDK8XBBfSmfEVN7PsPxC9uM)
+   ```env
+   NEXT_PUBLIC_SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY
+   ```
 
-## Running Locally
+4. Run the development server:
 
-```bash
-git clone https://github.com/namedfarouk/cove-cash
-cd cove-cash
-npm install
-```
+   ```bash
+   npm run dev
+   ```
 
-Create `.env.local`:
+## 🛡️ Security & Legal
 
-NEXT_PUBLIC_SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
-SOLANA_RPC_URL=https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
-CLOAK_RELAY_URL=https://api.cloak.ag
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-Cove runs on Solana mainnet. The Cloak program is mainnet-only. You need a funded wallet with at least 0.022 SOL to test deposits.
-
-## Tech Stack
-
-- **Framework:** Next.js 16 (Turbopack)
-- **Privacy layer:** Cloak SDK (@cloak.dev/sdk)
-- **Chain:** Solana mainnet
-- **Wallet:** Solana wallet adapter (Phantom, Solflare, Backpack)
-- **Deployment:** Vercel
-
-## Roadmap
-
-- USDC/USDT support via SPL token ATA handling
-- Cross-device deposit history via Cloak viewing-key registration
-- Multi-language support beyond English and French
-- SDK browser compatibility (contribute upstream to @cloak.dev/sdk)
-
-## Built By
-
-[@NamedFarouk](https://x.com/NamedFarouk) 
----
+Cove is a non-custodial interface. We do not hold, manage, or control user funds. All transactions and escrows are handled directly via smart contracts on the Solana blockchain. See our [Terms of Service](https://cove-cash.vercel.app/terms) and [Privacy Policy](https://cove-cash.vercel.app/privacy) for more details on our zero-knowledge architecture.
