@@ -461,6 +461,20 @@ export default function Home() {
               Cove
             </span>
             <span>— Private claim-link payments on Solana. © 2026 Cove.</span>
+            <div className="flex items-center gap-3 text-sm">
+              <Link
+                href="/terms"
+                className="transition hover:text-zinc-900 dark:hover:text-white"
+              >
+                Terms
+              </Link>
+              <Link
+                href="/privacy"
+                className="transition hover:text-zinc-900 dark:hover:text-white"
+              >
+                Privacy
+              </Link>
+            </div>
           </div>
           <div className="flex items-center gap-5">
             <a
