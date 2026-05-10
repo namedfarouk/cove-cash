@@ -441,7 +441,20 @@ export default function Home() {
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <Link href="/" className="inline-flex items-center">
-                <CoveBrand />
+                <div className="flex items-center gap-0">
+                  <div className="relative w-16 h-16 md:w-36 md:h-36 flex-shrink-0">
+                    <Image
+                      src="/logo.png"
+                      alt="Cove Logo"
+                      fill
+                      className="object-contain object-left md:object-center"
+                      priority
+                    />
+                  </div>
+                  <span className="-ml-3 md:-ml-8 text-2xl md:text-3xl font-bold font-syne tracking-tighter text-[#DA4022]">
+                    Cove
+                  </span>
+                </div>
               </Link>
               <span className="text-sm text-zinc-600 dark:text-zinc-400">
                 {t.landing.footerBody}
