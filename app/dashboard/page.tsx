@@ -11,17 +11,17 @@ import {
   Copy,
   Download,
   Link2,
-  Wallet,
   WalletCards,
 } from "lucide-react";
 import Link from "next/link";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 import { useCoveLanguage } from "@/components/cove-language";
 import {
   CoveNavbar,
   CovePage,
+  WalletModalTrigger,
+  navbarWalletButtonClass,
   PageReveal,
   PremiumCard,
   SectionEyebrow,
@@ -303,7 +303,7 @@ export default function DashboardPage() {
       navbar={
         <CoveNavbar
           cta={{ label: t.nav.sendPayment, href: "/send" }}
-          walletSlot={<WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />}
+          walletSlot={<WalletModalTrigger className={navbarWalletButtonClass} />}
         />
       }
       contentClassName="py-10 sm:py-14"

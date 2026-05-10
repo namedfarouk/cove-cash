@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
 
 import { useCoveLanguage } from "@/components/cove-language";
@@ -23,7 +22,9 @@ import {
   PageReveal,
   PremiumCard,
   SectionEyebrow,
+  WalletModalTrigger,
   fadeUp,
+  navbarWalletButtonClass,
   primaryButtonClass,
 } from "@/components/cove-ui";
 import { decodeClaimBlob, type ClaimBlobV1 } from "@/lib/cove/claim-link";
@@ -239,7 +240,7 @@ export default function ClaimPage() {
       navbar={
         <CoveNavbar
           cta={{ label: t.nav.sendPayment, href: "/send" }}
-          walletSlot={<WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />}
+          walletSlot={<WalletModalTrigger className={navbarWalletButtonClass} />}
         />
       }
       contentClassName="flex items-center py-10 sm:py-14"

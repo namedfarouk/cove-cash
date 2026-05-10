@@ -3,18 +3,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Check, CheckCircle2, ChevronDown, Copy, Wallet } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, ChevronDown, Copy } from "lucide-react";
 import Link from "next/link";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { VersionedTransaction } from "@solana/web3.js";
 
 import { useCoveLanguage } from "@/components/cove-language";
 import {
+  cardWalletButtonClass,
   CoveNavbar,
   CovePage,
+  navbarWalletButtonClass,
   PageReveal,
   PremiumCard,
+  WalletModalTrigger,
   fadeUp,
   primaryButtonClass,
   secondaryButtonClass,
@@ -275,7 +277,7 @@ export default function SendPage() {
       navbar={
         <CoveNavbar
           cta={{ label: t.nav.dashboard, href: "/dashboard" }}
-          walletSlot={<WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />}
+          walletSlot={<WalletModalTrigger className={navbarWalletButtonClass} />}
         />
       }
       contentClassName="flex items-center py-10 sm:py-14"
@@ -409,9 +411,7 @@ function StatusPanel({
   if (status.kind === "idle") {
     if (!connected) {
       return (
-        <div className="w-full [&_.wallet-adapter-button]:flex [&_.wallet-adapter-button]:w-full [&_.wallet-adapter-button]:justify-center [&_.wallet-adapter-button]:items-center [&_.wallet-adapter-button]:rounded-xl [&_.wallet-adapter-button]:px-4 [&_.wallet-adapter-button]:py-3 [&_.wallet-adapter-button]:font-syne [&_.wallet-adapter-button]:font-bold [&_.wallet-adapter-button]:bg-zinc-900 [&_.wallet-adapter-button]:text-white [&_.wallet-adapter-button]:transition-colors hover:[&_.wallet-adapter-button]:bg-zinc-800 dark:[&_.wallet-adapter-button]:bg-white dark:[&_.wallet-adapter-button]:text-zinc-900 dark:hover:[&_.wallet-adapter-button]:bg-zinc-200 [&_.wallet-adapter-button-trigger]:flex [&_.wallet-adapter-button-trigger]:w-full [&_.wallet-adapter-button-trigger]:justify-center [&_.wallet-adapter-button-trigger]:items-center [&_.wallet-adapter-button-trigger]:rounded-xl [&_.wallet-adapter-button-trigger]:px-4 [&_.wallet-adapter-button-trigger]:py-3 [&_.wallet-adapter-button-trigger]:font-syne [&_.wallet-adapter-button-trigger]:font-bold [&_.wallet-adapter-button-trigger]:bg-zinc-900 [&_.wallet-adapter-button-trigger]:text-white [&_.wallet-adapter-button-trigger]:transition-colors hover:[&_.wallet-adapter-button-trigger]:bg-zinc-800 dark:[&_.wallet-adapter-button-trigger]:bg-white dark:[&_.wallet-adapter-button-trigger]:text-zinc-900 dark:hover:[&_.wallet-adapter-button-trigger]:bg-zinc-200">
-          <WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />
-        </div>
+        <WalletModalTrigger className={cardWalletButtonClass} />
       );
     }
 

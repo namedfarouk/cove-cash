@@ -14,11 +14,13 @@ import {
   Moon,
   Sparkles,
   Sun,
+  Wallet,
   X,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 import {
   type LanguageValue,
@@ -56,6 +58,12 @@ export const desktopNavLinkClass =
 export const navbarPrimaryButtonClass =
   "inline-flex h-9 items-center justify-center rounded-full bg-cove-accent px-5 font-inter text-sm font-semibold text-white transition-colors duration-200 hover:bg-[#f14f44]";
 
+export const navbarWalletButtonClass =
+  "inline-flex h-9 items-center justify-center gap-2 rounded-full border border-zinc-800 bg-zinc-900 px-4 font-inter text-sm font-semibold text-white transition-colors duration-200 hover:bg-zinc-800";
+
+export const cardWalletButtonClass =
+  "inline-flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-3 font-syne font-bold text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200";
+
 export function CoveBrand() {
   return (
     <div className="flex items-center gap-0">
@@ -92,6 +100,25 @@ export function NavbarBrand() {
         Cove
       </span>
     </div>
+  );
+}
+
+export function WalletModalTrigger({
+  className,
+}: {
+  className: string;
+}) {
+  const { setVisible } = useWalletModal();
+
+  return (
+    <button
+      type="button"
+      onClick={() => setVisible(true)}
+      className={className}
+    >
+      <Wallet className="h-[18px] w-[18px]" />
+      <span>Connect Wallet</span>
+    </button>
   );
 }
 
