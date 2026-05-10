@@ -60,6 +60,7 @@ type Status =
   | { kind: "signing" }
   | { kind: "submitting" }
   | { kind: "confirming"; signature: string }
+  | { kind: "spent" }
   | { kind: "success"; signature: string; mode: SubmissionMode }
   | { kind: "error"; message: string };
 
@@ -86,6 +87,15 @@ function formatTokenAmount(amountStr: string, decimals: number): string {
   const frac = amount % divisor;
   const fracStr = frac.toString().padStart(decimals, "0").replace(/0+$/, "");
   return fracStr.length > 0 ? `${whole}.${fracStr}` : whole.toString();
+}
+
+function isSpentClaimError(message: string): boolean {
+  const normalized = message.toLowerCase();
+  return (
+    normalized.includes("already-spent") ||
+    normalized.includes("already spent") ||
+    normalized.includes("first spent commitment")
+  );
 }
 
 export default function ClaimPage() {
@@ -132,7 +142,8 @@ export default function ClaimPage() {
     status.kind !== "preparing" &&
     status.kind !== "signing" &&
     status.kind !== "submitting" &&
-    status.kind !== "confirming";
+    status.kind !== "confirming" &&
+    status.kind !== "spent";
 
   async function handleClaim() {
     if (!decoded.ok || !publicKey || !signTransaction) return;
@@ -210,9 +221,15 @@ export default function ClaimPage() {
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error("Claim Flow Error:", err);
+      const message =
+        err instanceof Error ? err.message : String(err);
+      if (isSpentClaimError(message)) {
+        setStatus({ kind: "spent" });
+        return;
+      }
       setStatus({
         kind: "error",
-        message: err instanceof Error ? `Claim failed: ${err.message}` : `Claim failed: ${String(err)}`,
+        message: `Claim failed: ${message}`,
       });
     }
   }
@@ -309,10 +326,20 @@ export default function ClaimPage() {
                     whileTap={canClaim ? { scale: 0.995 } : undefined}
                     onClick={handleClaim}
                     disabled={!canClaim}
-                    className={`${primaryButtonClass} mt-6 w-full`}
+                    className={`mt-6 w-full ${
+                      status.kind === "spent"
+                        ? "inline-flex items-center justify-center gap-2 rounded-full border border-zinc-200 bg-zinc-200 px-5 py-3 font-inter text-sm font-semibold text-zinc-500 transition-colors dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
+                        : primaryButtonClass
+                    }`}
                   >
-                    {t.claim.claimToMyWallet}
-                    <Sparkles className="h-4 w-4" />
+                    {status.kind === "spent"
+                      ? t.claim.alreadyClaimed
+                      : t.claim.claimToMyWallet}
+                    {status.kind === "spent" ? (
+                      <CheckCircle2 className="h-4 w-4" />
+                    ) : (
+                      <Sparkles className="h-4 w-4" />
+                    )}
                   </motion.button>
 
                   <div className="mt-6">
@@ -359,6 +386,9 @@ function ClaimStatusPanel({
         <span className="ml-1 font-mono text-xs">{status.signature.slice(0, 12)}…</span>
       </Notice>
     );
+  }
+  if (status.kind === "spent") {
+    return <Notice tone="neutral">{t.claim.alreadyClaimedBody}</Notice>;
   }
   if (status.kind === "error") {
     return <Notice tone="error">{status.message}</Notice>;

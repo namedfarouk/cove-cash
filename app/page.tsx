@@ -25,14 +25,12 @@ import {
   fadeUp,
   primaryButtonClass,
   stagger,
-  useFloatingNavbarState,
   useLockBodyScroll,
 } from "@/components/cove-ui";
 
 export default function Home() {
   const { language, t } = useCoveLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const scrolled = useFloatingNavbarState();
 
   useLockBodyScroll(isOpen);
 
@@ -126,15 +124,7 @@ export default function Home() {
 
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden md:block">
         <div className="mx-auto w-full max-w-7xl px-6 pt-4">
-          <motion.div
-            layout
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className={`pointer-events-auto transition-all duration-300 ${
-              scrolled
-                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
-                : "w-full"
-            }`}
-          >
+          <motion.div className="pointer-events-auto mx-auto w-fit rounded-full border border-zinc-200 bg-white/90 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/90">
             <motion.header
               initial="hidden"
               animate="visible"
@@ -459,18 +449,8 @@ export default function Home() {
         <footer className="mt-8 border-t border-zinc-800 bg-zinc-950 px-6 py-12 text-zinc-400">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/" className="inline-flex items-center gap-3">
-                <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
-                  <Image
-                    src="/logo.png"
-                    alt="Cove Logo"
-                    fill
-                    className="object-contain p-1"
-                  />
-                </div>
-                <span className="font-syne text-lg font-semibold tracking-tighter text-white">
-                  Cove
-                </span>
+              <Link href="/" className="inline-flex items-center">
+                <CoveBrand />
               </Link>
               <span className="text-sm text-zinc-400">
                 Private settlement on Solana.

@@ -128,6 +128,8 @@ type TranslationTree = {
     waitingForSignature: string;
     submittingTransaction: string;
     confirmingOnChain: string;
+    alreadyClaimed: string;
+    alreadyClaimedBody: string;
     claimConfirmed: string;
     claimedViaRelay: string;
     signatureLabel: string;
@@ -286,6 +288,8 @@ const translations: Record<LanguageValue, TranslationTree> = {
       waitingForSignature: "Waiting for wallet signature...",
       submittingTransaction: "Submitting transaction...",
       confirmingOnChain: "Confirming on chain...",
+      alreadyClaimed: "Already Claimed",
+      alreadyClaimedBody: "This claim link has already been used and can no longer be redeemed.",
       claimConfirmed: "Claim confirmed.",
       claimedViaRelay:
         "Claimed via Cove relay. No transaction fee was paid by your wallet.",
@@ -449,6 +453,8 @@ const translations: Record<LanguageValue, TranslationTree> = {
       waitingForSignature: "En attente de la signature du wallet...",
       submittingTransaction: "Envoi de la transaction...",
       confirmingOnChain: "Confirmation on-chain...",
+      alreadyClaimed: "Déjà réclamé",
+      alreadyClaimedBody: "Ce lien de réclamation a déjà été utilisé et ne peut plus être encaissé.",
       claimConfirmed: "Réclamation confirmée.",
       claimedViaRelay:
         "Réclamé via le relais Cove. Aucun frais de transaction n'a été débité de votre wallet.",

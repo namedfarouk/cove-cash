@@ -5,8 +5,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   AnimatePresence,
   motion,
-  useMotionValueEvent,
-  useScroll,
   type Variants,
 } from "framer-motion";
 import {
@@ -69,17 +67,6 @@ export function CoveBrand() {
       </span>
     </div>
   );
-}
-
-export function useFloatingNavbarState(threshold = 32) {
-  const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > threshold);
-  });
-
-  return scrolled;
 }
 
 export function SectionEyebrow({ children }: { children: ReactNode }) {
@@ -237,7 +224,6 @@ export function CoveNavbar({
 }) {
   const { t } = useCoveLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const scrolled = useFloatingNavbarState();
 
   useLockBodyScroll(isOpen);
 
@@ -281,13 +267,7 @@ export function CoveNavbar({
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50 hidden md:block">
         <div className="mx-auto w-full max-w-7xl px-6 pt-4">
           <motion.div
-            layout
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className={`pointer-events-auto transition-all duration-300 ${
-              scrolled
-                ? "mx-auto w-fit rounded-full border border-zinc-200 bg-white/80 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/80"
-                : "w-full px-0 py-0"
-            }`}
+            className="pointer-events-auto mx-auto w-fit rounded-full border border-zinc-200 bg-white/90 px-6 py-2 md:py-3 backdrop-blur-md dark:border-white/20 dark:bg-[#070707]/90"
           >
             <motion.header
               initial="hidden"
