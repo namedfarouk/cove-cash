@@ -77,16 +77,18 @@ export function CoveBrand() {
 
 export function NavbarBrand() {
   return (
-    <div className="flex items-center gap-2">
-      <Image
-        src="/logo.png"
-        alt="Cove Logo"
-        width={32}
-        height={32}
-        className="h-8 w-auto object-contain"
-        priority
-      />
-      <span className="font-syne text-xl font-bold tracking-tighter text-white">
+    <div className="flex items-center gap-0">
+      <div className="relative w-10 h-10 flex-shrink-0 z-10">
+        <Image
+          src="/logo.png"
+          alt="Cove Logo"
+          fill
+          className="object-contain object-center"
+          quality={100}
+          priority
+        />
+      </div>
+      <span className="-ml-3 text-2xl font-bold font-syne tracking-tighter text-[#DA4022]">
         Cove
       </span>
     </div>
