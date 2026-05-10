@@ -239,7 +239,7 @@ export default function ClaimPage() {
       navbar={
         <CoveNavbar
           cta={{ label: t.nav.sendPayment, href: "/send" }}
-          walletSlot={<WalletMultiButton />}
+          walletSlot={<WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />}
         />
       }
       contentClassName="flex items-center py-10 sm:py-14"

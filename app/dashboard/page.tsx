@@ -11,6 +11,7 @@ import {
   Copy,
   Download,
   Link2,
+  Wallet,
   WalletCards,
 } from "lucide-react";
 import Link from "next/link";
@@ -302,7 +303,7 @@ export default function DashboardPage() {
       navbar={
         <CoveNavbar
           cta={{ label: t.nav.sendPayment, href: "/send" }}
-          walletSlot={<WalletMultiButton />}
+          walletSlot={<WalletMultiButton startIcon={<Wallet className="h-4 w-4" />} />}
         />
       }
       contentClassName="py-10 sm:py-14"
