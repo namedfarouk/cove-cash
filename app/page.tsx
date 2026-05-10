@@ -460,7 +460,7 @@ export default function Home() {
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <Link href="/" className="inline-flex items-center gap-3">
-                <div className="relative h-8 w-8 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
+                <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
                   <Image
                     src="/logo.png"
                     alt="Cove Logo"

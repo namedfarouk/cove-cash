@@ -10,62 +10,94 @@ import {
   SectionEyebrow,
   fadeUp,
   primaryButtonClass,
+  secondaryButtonClass,
 } from "@/components/cove-ui";
 
 const takeaways = [
-  "Cove is a non-custodial interface for private settlement on Solana, not a bank or broker.",
-  "Every transaction depends on wallet signatures, smart contracts, and third-party networks that can fail or become congested.",
-  "Use of the beta interface is at your own risk, and prohibited or unlawful use is not allowed.",
+  "Cove is non-custodial. You sign your own transactions and retain control of your wallet and claim links.",
+  "Cove relies on the Solana network, the Cloak SDK, and beta infrastructure that can fail, degrade, or change unexpectedly.",
+  "Use of the interface is only permitted for lawful activity, and protocol interactions remain your responsibility.",
 ];
 
 const sections = [
   {
-    title: "1. The Cove Interface vs. The Solana Protocol",
-    body: [
-      "Cove provides a web interface for generating private claim-link payments and interacting with privacy-preserving settlement infrastructure on Solana. The interface helps users prepare and submit transactions, but it does not operate the Solana blockchain itself.",
-      "Your use of Cove is also subject to the rules, finality guarantees, outages, and validator behavior of the underlying Solana network and any supporting privacy infrastructure. If the network is delayed, reorganized, or unavailable, Cove cannot independently complete or reverse transactions.",
+    title: "1. Acceptance of Terms & Eligibility",
+    points: [
+      "By accessing or using Cove, you agree to these Terms of Service and represent that you are legally able to enter into a binding agreement.",
+      "You are responsible for ensuring that use of a privacy-preserving settlement interface is lawful in your jurisdiction.",
+      "If you do not agree to these terms, you should not use the Cove interface or interact with Cove-generated claim links.",
     ],
   },
   {
-    title: "2. User Eligibility & Wallet Authentication",
-    body: [
-      "You are responsible for ensuring that your access to Cove is lawful where you are located and that you have authority to use any connected wallet. Wallet authentication proves control over a wallet at the time of signing, but it does not create a custodial relationship with Cove.",
-      "You are solely responsible for safeguarding your wallet, device, recovery phrase, and any claim links generated through the interface. Anyone with access to a valid claim link may be able to redeem the associated funds.",
+    title: "2. Use of Cove & The Solana Protocol",
+    points: [
+      "Cove is an application interface built for private settlement flows on Solana. It is not the Solana blockchain, a validator, or a wallet provider.",
+      "Transactions depend on Solana consensus, RPC infrastructure, relay availability, browser compatibility, and smart-contract execution that Cove does not control.",
+      "A transaction may fail, be delayed, or become more expensive if the underlying network is congested or if third-party infrastructure is degraded.",
     ],
   },
   {
-    title: "3. Non-Custodial Smart Contract Escrow",
-    body: [
-      "Cove facilitates private settlement using the Cloak SDK on Solana. We never take custody of funds; all SOL and stablecoins are secured via smart contracts, and network fees are out of our control.",
-      "When you deposit assets through Cove, they move according to the logic of the relevant smart contracts, wallet signatures, and relay systems. Cove cannot freeze, reclaim, or unilaterally redirect assets once a valid transaction has been signed and accepted by the network.",
+    title: "3. Accounts & Authentication",
+    points: [
+      "Cove does not create custodial user accounts for normal product use. Access is mediated through cryptographic wallet authentication.",
+      "Your wallet, device security, recovery phrase, and private signing environment remain your responsibility at all times.",
+      "Anyone who obtains a valid private claim link may be able to redeem the underlying funds, so secure handling of links is essential.",
     ],
   },
   {
-    title: "4. Assumption of Beta & Network Risks",
-    body: [
-      "Cove is offered as beta software. Features may change, be interrupted, or contain defects, including UI bugs, proof-generation failures, relay downtime, RPC inconsistency, and incompatibilities with wallets or browsers.",
-      "You acknowledge the risks of smart contract execution, zero-knowledge proving systems, token integrations, claim-link handling, and blockchain settlement generally. You should test carefully and avoid using funds you cannot afford to lose.",
+    title: "4. Payments, Escrow, & The Cloak SDK (Cove is Non-Custodial)",
+    points: [
+      "Cove is a non-custodial private settlement layer on Solana powered by the Cloak SDK. We do not hold customer balances, operate a bank account, or maintain off-chain custody over user funds.",
+      "Private settlement is facilitated through smart-contract logic and zero-knowledge transaction flows. SOL and supported stablecoins remain subject to the rules of the deployed contracts and the Solana network.",
+      "Network fees, validator behavior, token-account requirements, and on-chain execution conditions are outside Cove's control, even when the interface helps prepare the transaction.",
     ],
   },
   {
-    title: "5. Prohibited Use Cases",
-    body: [
-      "You may not use Cove for unlawful conduct, sanctions evasion, fraud, money laundering, market manipulation, or any activity that would cause harm to other users, service providers, or the broader ecosystem.",
-      "You may not attempt to interfere with the interface, abuse rate limits, reverse engineer private infrastructure beyond what law permits, exploit vulnerabilities, or use Cove in a manner designed to conceal criminal proceeds or unauthorized access.",
+    title: "5. Prohibited Activities",
+    points: [
+      "You may not use Cove for unlawful conduct, sanctions evasion, fraud, market manipulation, money laundering, or abusive attempts to conceal criminal proceeds.",
+      "You may not interfere with the interface, bypass rate limits, attack the product, scrape private infrastructure, or exploit vulnerabilities against Cove, Cloak, or other users.",
+      "You may not impersonate another person, misrepresent affiliation, or use Cove in a way that harms the protocol, its operators, or the broader Solana ecosystem.",
     ],
   },
   {
     title: "6. Intellectual Property",
-    body: [
-      "The Cove interface, brand assets, written content, and original product presentation are owned by Cove or its licensors. Open-source dependencies remain governed by their respective licenses.",
-      "You may not copy, misrepresent, or redistribute Cove branding or proprietary interface content in a way that suggests affiliation, endorsement, or authorship without permission.",
+    points: [
+      "The Cove brand, interface presentation, and original written materials are owned by Cove or its licensors unless otherwise noted.",
+      "Open-source dependencies, including blockchain and wallet libraries, remain governed by their own licenses and terms.",
+      "You may not reproduce Cove branding or proprietary interface elements in a misleading way without permission.",
     ],
   },
   {
-    title: "7. Limitation of Protocol Liability",
-    body: [
-      "To the maximum extent permitted by law, Cove is provided on an “as is” and “as available” basis without warranties of uptime, merchantability, fitness for a particular purpose, or uninterrupted private settlement.",
-      "Cove and its contributors will not be liable for losses arising from wallet compromise, claim-link disclosure, smart contract bugs, token depegs, relay or RPC failures, transaction delays, failed proofs, mistaken user input, or other blockchain-specific risks.",
+    title: "7. Disclaimers & Assumption of Beta Risk",
+    points: [
+      "Cove is beta software. Features, transaction flows, supported assets, and privacy infrastructure may change without notice.",
+      "You accept the risk of software bugs, proof-generation failures, relay outages, RPC inconsistencies, token-account issues, and other technical defects.",
+      "No guarantee is made that the interface will be uninterrupted, error-free, or suitable for any specific use case.",
+    ],
+  },
+  {
+    title: "8. Limitation of Liability",
+    points: [
+      "To the maximum extent permitted by law, Cove is provided on an 'as is' and 'as available' basis without warranties of merchantability, fitness for a particular purpose, or uninterrupted availability.",
+      "Cove and its contributors are not liable for wallet compromise, link leakage, smart-contract bugs, failed claims, token depegs, network delays, or other blockchain-specific losses.",
+      "You are responsible for evaluating risk before using Cove with meaningful value or production payment flows.",
+    ],
+  },
+  {
+    title: "9. Termination & Governing Law",
+    points: [
+      "We may restrict or discontinue access to the interface for abuse, security incidents, legal compliance, or operational reasons.",
+      "These terms apply to your use of the interface even if network-level transactions remain permanently recorded on-chain after access ends.",
+      "Governing law and dispute treatment will apply to the maximum extent enforceable under the circumstances of use.",
+    ],
+  },
+  {
+    title: "10. Changes to Terms & Contact",
+    points: [
+      "We may update these terms as Cove evolves, including changes to supported assets, infrastructure, or legal requirements.",
+      "Your continued use of Cove after changes become effective constitutes acceptance of the revised terms.",
+      "For questions about these terms, users should reach out through Cove's official public channels or project documentation.",
     ],
   },
 ];
@@ -76,60 +108,70 @@ export default function TermsPage() {
       navbar={<CoveNavbar cta={{ label: "Launch Cove", href: "/send" }} />}
       contentClassName="py-10 sm:py-14"
     >
-      <PageReveal className="mx-auto w-full max-w-5xl">
-        <motion.section variants={fadeUp} className="rounded-[32px] border border-zinc-800 bg-zinc-950 px-6 py-10 text-zinc-100 shadow-[0_20px_80px_rgba(0,0,0,0.45)] sm:px-8 md:px-12">
-          <SectionEyebrow>Legal</SectionEyebrow>
-          <h1 className="mt-6 max-w-3xl font-syne text-4xl font-bold tracking-tighter text-white sm:text-5xl">
-            Terms of Service
-          </h1>
-          <p className="mt-4 max-w-2xl font-inter text-base leading-7 text-zinc-400">
-            These terms govern use of the Cove interface for private settlement on Solana.
-            They are written to clarify what Cove does, what it does not do, and where
-            responsibility remains with the user.
-          </p>
+      <PageReveal className="mx-auto w-full max-w-4xl">
+        <motion.section
+          variants={fadeUp}
+          className="rounded-[32px] border border-zinc-800 bg-zinc-950 px-6 py-10 text-center text-zinc-300 shadow-[0_20px_80px_rgba(0,0,0,0.45)] sm:px-8 md:px-12"
+        >
+          <div className="max-w-3xl mx-auto">
+            <SectionEyebrow>Legal</SectionEyebrow>
+            <h1 className="mt-6 font-syne text-4xl font-bold tracking-tighter text-white sm:text-5xl">
+              Terms of Service
+            </h1>
+            <p className="mt-4 font-inter text-base leading-7 text-zinc-400">
+              These terms describe the rules for using Cove as a non-custodial,
+              privacy-preserving settlement interface on Solana.
+            </p>
 
-          <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900/80 p-6">
-            <div className="flex items-center justify-between gap-4">
-              <h2 className="font-syne text-2xl font-semibold tracking-tighter text-white">
-                At a Glance
-              </h2>
-              <span className="rounded-full border border-zinc-700 px-3 py-1 text-[11px] font-inter uppercase tracking-[0.24em] text-[#DA4022]">
-                Quick Summary
-              </span>
+            <div className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-900/80 p-6 text-left">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <h2 className="font-syne text-2xl font-semibold tracking-tighter text-white">
+                  At a Glance
+                </h2>
+                <span className="rounded-full border border-zinc-700 px-3 py-1 text-[11px] font-inter uppercase tracking-[0.24em] text-[#DA4022]">
+                  Quick Summary
+                </span>
+              </div>
+              <ul className="mt-5 space-y-3">
+                {takeaways.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-2xl border border-zinc-800 bg-black/30 px-4 py-4 font-inter text-sm leading-6 text-zinc-300"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="mt-5 space-y-3">
-              {takeaways.map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-zinc-800 bg-black/30 px-4 py-4 font-inter text-sm leading-6 text-zinc-300"
-                >
-                  {item}
-                </div>
+
+            <div className="mt-12 space-y-10 text-center">
+              {sections.map((section) => (
+                <section key={section.title} className="space-y-4">
+                  <h2 className="font-syne text-2xl font-bold tracking-tighter text-white">
+                    {section.title}
+                  </h2>
+                  <ul className="space-y-3 text-zinc-300">
+                    {section.points.map((point) => (
+                      <li
+                        key={point}
+                        className="rounded-2xl border border-zinc-900 bg-black/20 px-4 py-4 font-inter text-sm leading-7"
+                      >
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               ))}
             </div>
-          </div>
 
-          <div className="mx-auto mt-12 max-w-prose space-y-10 font-inter text-[15px] leading-8 text-zinc-300">
-            {sections.map((section) => (
-              <section key={section.title} className="space-y-4">
-                <h2 className="font-syne text-2xl font-semibold tracking-tighter text-white">
-                  {section.title}
-                </h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </section>
-            ))}
-          </div>
-
-          <div className="mt-12 flex flex-col gap-4 border-t border-zinc-800 pt-8 text-sm text-zinc-400 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-2xl font-inter">
-              Questions about these terms can be directed through Cove&apos;s official
-              channels. Continued use of the interface constitutes acceptance of these terms.
-            </p>
-            <Link href="/send" className={`${primaryButtonClass} shrink-0`}>
-              Open App
-            </Link>
+            <div className="mt-12 flex flex-col items-center justify-center gap-4 border-t border-zinc-800 pt-8 sm:flex-row">
+              <Link href="/" className={primaryButtonClass}>
+                Open App
+              </Link>
+              <Link href="/privacy" className={secondaryButtonClass}>
+                View Privacy Policy
+              </Link>
+            </div>
           </div>
         </motion.section>
       </PageReveal>
