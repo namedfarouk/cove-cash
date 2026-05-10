@@ -81,12 +81,12 @@ export function NavbarBrand() {
       <Image
         src="/logo.png"
         alt="Cove Logo"
-        width={24}
-        height={24}
-        className="h-6 w-auto object-contain"
+        width={32}
+        height={32}
+        className="h-8 w-auto object-contain"
         priority
       />
-      <span className="font-syne text-lg font-semibold tracking-tighter text-white">
+      <span className="font-syne text-xl font-bold tracking-tighter text-white">
         Cove
       </span>
     </div>
