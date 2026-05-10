@@ -59,7 +59,7 @@ export const navbarPrimaryButtonClass =
 export function CoveBrand() {
   return (
     <div className="flex items-center gap-0">
-      <div className="relative w-16 h-16 md:w-36 md:h-36 flex-shrink-0">
+      <div className="relative w-32 h-32 md:w-72 md:h-72 flex-shrink-0">
         <Image
           src="/logo.png"
           alt="Cove Logo"
