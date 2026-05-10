@@ -376,7 +376,7 @@ export function MobileMenuOverlay({
                     key={link.href}
                     href={link.href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     onClick={onClose}
                     className="font-inter text-lg font-medium text-zinc-600 transition-colors duration-200 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
                   >

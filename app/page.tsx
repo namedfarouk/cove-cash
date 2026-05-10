@@ -81,7 +81,7 @@ export default function Home() {
     { label: t.nav.compare, href: "#compare" },
     {
       label: t.nav.docs,
-      href: "https://github.com/namedfarouk/cove-cash#readme",
+      href: "https://cove-cash.mintlify.app/",
       external: true,
     },
   ];
@@ -158,9 +158,9 @@ export default function Home() {
                   {t.nav.compare}
                 </a>
                 <a
-                  href="https://github.com/namedfarouk/cove-cash#readme"
+                  href="https://cove-cash.mintlify.app/"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="font-inter text-sm font-medium text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                 >
                   {t.nav.docs}
