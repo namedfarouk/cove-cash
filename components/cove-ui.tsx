@@ -78,7 +78,7 @@ export function CoveBrand() {
 export function NavbarBrand() {
   return (
     <div className="flex items-center gap-0">
-      <div className="relative w-10 h-10 flex-shrink-0 z-10">
+      <div className="relative w-16 h-16 flex-shrink-0 z-10">
         <Image
           src="/logo.png"
           alt="Cove Logo"
@@ -88,7 +88,7 @@ export function NavbarBrand() {
           priority
         />
       </div>
-      <span className="-ml-3 text-2xl font-bold font-syne tracking-tighter text-[#DA4022]">
+      <span className="-ml-5 text-2xl font-bold font-syne tracking-tighter text-[#DA4022]">
         Cove
       </span>
     </div>
