@@ -88,7 +88,7 @@ export function NavbarBrand() {
           priority
         />
       </div>
-      <span className="-ml-5 text-2xl font-bold font-syne tracking-tighter text-[#DA4022]">
+      <span className="-ml-4 text-xl font-bold font-syne tracking-tighter text-[#DA4022]">
         Cove
       </span>
     </div>
