@@ -446,14 +446,14 @@ export default function Home() {
           </div>
         </motion.section>
 
-        <footer className="mt-8 border-t border-zinc-800 bg-zinc-950 px-6 py-12 text-zinc-400">
+        <footer className="mt-8 border-t border-zinc-200 bg-white px-6 py-12 text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <Link href="/" className="inline-flex items-center">
                 <CoveBrand />
               </Link>
-              <span className="text-sm text-zinc-400">
-                Private settlement on Solana.
+              <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                {t.landing.footerBody}
               </span>
             </div>
 
@@ -462,21 +462,21 @@ export default function Home() {
                 href="https://cove-cash.mintlify.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-zinc-400 transition-colors hover:text-white"
+                className="text-sm text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               >
-                Docs
+                {t.nav.docs}
               </a>
               <Link
                 href="/terms"
-                className="text-sm text-zinc-400 transition-colors hover:text-white"
+                className="text-sm text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               >
-                Terms
+                {t.legal.common.termsShort}
               </Link>
               <Link
                 href="/privacy"
-                className="text-sm text-zinc-400 transition-colors hover:text-white"
+                className="text-sm text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               >
-                Privacy
+                {t.legal.common.privacyShort}
               </Link>
             </div>
 
@@ -487,7 +487,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 aria-label="Cove on X"
                 title="Cove on X"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/60 text-zinc-400 transition-colors hover:text-white"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-100 text-zinc-600 transition-colors hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:text-white"
               >
                 <svg
                   aria-hidden="true"
@@ -503,7 +503,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 aria-label="Cove GitHub repository"
                 title="Cove GitHub repository"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/60 text-zinc-400 transition-colors hover:text-white"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-100 text-zinc-600 transition-colors hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400 dark:hover:text-white"
               >
                 <svg
                   aria-hidden="true"
@@ -516,8 +516,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-10 border-t border-zinc-900 pt-8 text-center text-xs text-zinc-500">
-            © 2026 Cove. All rights reserved.
+          <div className="mt-10 border-t border-zinc-200 pt-8 text-center text-xs text-zinc-500 dark:border-zinc-900 dark:text-zinc-500">
+            {t.landing.footerCopyright}
           </div>
         </footer>
       </div>

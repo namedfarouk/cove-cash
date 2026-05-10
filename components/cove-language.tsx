@@ -85,6 +85,7 @@ type TranslationTree = {
     finalBody: string;
     launchCove: string;
     footerBody: string;
+    footerCopyright: string;
     footerX: string;
     footerGithub: string;
   };
@@ -165,6 +166,36 @@ type TranslationTree = {
     claimedBadge: string;
     pendingClaimBadge: string;
   };
+  legal: {
+    common: {
+      eyebrow: string;
+      atAGlance: string;
+      quickSummary: string;
+      openApp: string;
+      termsShort: string;
+      privacyShort: string;
+    };
+    terms: {
+      title: string;
+      intro: string;
+      ctaPrivacy: string;
+      takeaways: string[];
+      sections: Array<{
+        title: string;
+        points: string[];
+      }>;
+    };
+    privacy: {
+      title: string;
+      intro: string;
+      ctaTerms: string;
+      takeaways: string[];
+      sections: Array<{
+        title: string;
+        points: string[];
+      }>;
+    };
+  };
 };
 
 const translations: Record<LanguageValue, TranslationTree> = {
@@ -244,6 +275,7 @@ const translations: Record<LanguageValue, TranslationTree> = {
         "Private by default. Native to chat. Built for how Solana users actually move money.",
       launchCove: "Launch Cove",
       footerBody: "Private claim-link payments on Solana.",
+      footerCopyright: "© 2026 Cove. All rights reserved.",
       footerX: "Twitter/X",
       footerGithub: "Github",
     },
@@ -328,6 +360,178 @@ const translations: Record<LanguageValue, TranslationTree> = {
       claimedBadge: "Claimed",
       pendingClaimBadge: "Pending claim",
     },
+    legal: {
+      common: {
+        eyebrow: "Legal",
+        atAGlance: "At a Glance",
+        quickSummary: "Quick Summary",
+        openApp: "Open App",
+        termsShort: "Terms",
+        privacyShort: "Privacy",
+      },
+      terms: {
+        title: "Terms of Service",
+        intro:
+          "These terms describe the rules for using Cove as a non-custodial, privacy-preserving settlement interface on Solana.",
+        ctaPrivacy: "View Privacy Policy",
+        takeaways: [
+          "Cove is non-custodial. You sign your own transactions and retain control of your wallet and claim links.",
+          "Cove relies on the Solana network, the Cloak SDK, and beta infrastructure that can fail, degrade, or change unexpectedly.",
+          "Use of the interface is only permitted for lawful activity, and protocol interactions remain your responsibility.",
+        ],
+        sections: [
+          {
+            title: "1. Acceptance of Terms & Eligibility",
+            points: [
+              "By accessing or using Cove, you agree to these Terms of Service and represent that you are legally able to enter into a binding agreement.",
+              "You are responsible for ensuring that use of a privacy-preserving settlement interface is lawful in your jurisdiction.",
+              "If you do not agree to these terms, you should not use the Cove interface or interact with Cove-generated claim links.",
+            ],
+          },
+          {
+            title: "2. Use of Cove & The Solana Protocol",
+            points: [
+              "Cove is an application interface built for private settlement flows on Solana. It is not the Solana blockchain, a validator, or a wallet provider.",
+              "Transactions depend on Solana consensus, RPC infrastructure, relay availability, browser compatibility, and smart-contract execution that Cove does not control.",
+              "A transaction may fail, be delayed, or become more expensive if the underlying network is congested or if third-party infrastructure is degraded.",
+            ],
+          },
+          {
+            title: "3. Accounts & Authentication",
+            points: [
+              "Cove does not create custodial user accounts for normal product use. Access is mediated through cryptographic wallet authentication.",
+              "Your wallet, device security, recovery phrase, and private signing environment remain your responsibility at all times.",
+              "Anyone who obtains a valid private claim link may be able to redeem the underlying funds, so secure handling of links is essential.",
+            ],
+          },
+          {
+            title: "4. Payments, Escrow, & The Cloak SDK (Cove is Non-Custodial)",
+            points: [
+              "Cove is a non-custodial private settlement layer on Solana powered by the Cloak SDK. We do not hold customer balances, operate a bank account, or maintain off-chain custody over user funds.",
+              "Private settlement is facilitated through smart-contract logic and zero-knowledge transaction flows. SOL and supported stablecoins remain subject to the rules of the deployed contracts and the Solana network.",
+              "Network fees, validator behavior, token-account requirements, and on-chain execution conditions are outside Cove's control, even when the interface helps prepare the transaction.",
+            ],
+          },
+          {
+            title: "5. Prohibited Activities",
+            points: [
+              "You may not use Cove for unlawful conduct, sanctions evasion, fraud, market manipulation, money laundering, or abusive attempts to conceal criminal proceeds.",
+              "You may not interfere with the interface, bypass rate limits, attack the product, scrape private infrastructure, or exploit vulnerabilities against Cove, Cloak, or other users.",
+              "You may not impersonate another person, misrepresent affiliation, or use Cove in a way that harms the protocol, its operators, or the broader Solana ecosystem.",
+            ],
+          },
+          {
+            title: "6. Intellectual Property",
+            points: [
+              "The Cove brand, interface presentation, and original written materials are owned by Cove or its licensors unless otherwise noted.",
+              "Open-source dependencies, including blockchain and wallet libraries, remain governed by their own licenses and terms.",
+              "You may not reproduce Cove branding or proprietary interface elements in a misleading way without permission.",
+            ],
+          },
+          {
+            title: "7. Disclaimers & Assumption of Beta Risk",
+            points: [
+              "Cove is beta software. Features, transaction flows, supported assets, and privacy infrastructure may change without notice.",
+              "You accept the risk of software bugs, proof-generation failures, relay outages, RPC inconsistencies, token-account issues, and other technical defects.",
+              "No guarantee is made that the interface will be uninterrupted, error-free, or suitable for any specific use case.",
+            ],
+          },
+          {
+            title: "8. Limitation of Liability",
+            points: [
+              "To the maximum extent permitted by law, Cove is provided on an 'as is' and 'as available' basis without warranties of merchantability, fitness for a particular purpose, or uninterrupted availability.",
+              "Cove and its contributors are not liable for wallet compromise, link leakage, smart-contract bugs, failed claims, token depegs, network delays, or other blockchain-specific losses.",
+              "You are responsible for evaluating risk before using Cove with meaningful value or production payment flows.",
+            ],
+          },
+          {
+            title: "9. Termination & Governing Law",
+            points: [
+              "We may restrict or discontinue access to the interface for abuse, security incidents, legal compliance, or operational reasons.",
+              "These terms apply to your use of the interface even if network-level transactions remain permanently recorded on-chain after access ends.",
+              "Governing law and dispute treatment will apply to the maximum extent enforceable under the circumstances of use.",
+            ],
+          },
+          {
+            title: "10. Changes to Terms & Contact",
+            points: [
+              "We may update these terms as Cove evolves, including changes to supported assets, infrastructure, or legal requirements.",
+              "Your continued use of Cove after changes become effective constitutes acceptance of the revised terms.",
+              "For questions about these terms, users should reach out through Cove's official public channels or project documentation.",
+            ],
+          },
+        ],
+      },
+      privacy: {
+        title: "Privacy Policy",
+        intro:
+          "This policy explains how Cove approaches privacy, what standard web infrastructure may still observe, and how the product handles data around private settlement flows.",
+        ctaTerms: "View Terms of Service",
+        takeaways: [
+          "Cove is built to shield payment details on-chain through zero-knowledge transaction flows rather than expose them publicly on Solana.",
+          "Standard web infrastructure may still log operational metadata such as IP address, browser information, or request timing.",
+          "We do not track, store, or sell the underlying financial data associated with private settlement activity.",
+        ],
+        sections: [
+          {
+            title: "1. Our Commitment to Privacy & Zero-Knowledge Architecture",
+            points: [
+              "Cove is designed around privacy-preserving settlement on Solana. Our product goal is to reduce public linkage between sender, recipient, and payment flow where the underlying protocol allows it.",
+              "Privacy here refers primarily to on-chain settlement mechanics, not to the total elimination of all internet or hosting metadata generated when you use a website.",
+              "Cove is non-custodial and built to avoid creating a conventional user database of balances, profiles, or financial histories.",
+            ],
+          },
+          {
+            title: "2. Information We Collect",
+            points: [
+              "The interface may process wallet public keys, token selections, transaction payloads, and claim-link data needed to prepare, recover, or complete a transaction flow.",
+              "Local browser storage may be used to preserve in-progress deposit or claim state so a user can recover from a refresh or interruption.",
+              "We do not require traditional account registration for normal use of the app interface.",
+            ],
+          },
+          {
+            title: "3. ZK-Proof Mechanics (How We Shield Your Data)",
+            points: [
+              "Cove uses the Cloak SDK and zero-knowledge proof mechanics to support private settlement on Solana.",
+              "On-chain amounts, sender-recipient linkage, and claim execution details are designed to be shielded through ZK-proof flows rather than publicly exposed as plain transfers.",
+              "We do not track, store, or sell the underlying financial data associated with those shielded transactions outside the transient technical handling required to submit or recover them.",
+            ],
+          },
+          {
+            title: "4. Data Handling by Third Parties (Vercel)",
+            points: [
+              "Cove uses standard web infrastructure and hosting, including Vercel. Like many hosts, such providers may log basic connection data such as IP addresses, browser details, request metadata, and error logs.",
+              "Wallet providers, RPC endpoints, and relay infrastructure may also process operational information needed to deliver the product experience.",
+              "Those third parties operate under their own terms and privacy policies, which users should review independently.",
+            ],
+          },
+          {
+            title: "5. Data Security & Retention",
+            points: [
+              "Cove aims to minimize retention and avoid unnecessary collection. Some data may live only in browser storage, network logs, or ephemeral request handling.",
+              "Because Cove is non-custodial, many core transaction artifacts exist only in the user's wallet, device state, or on-chain execution path rather than in a centralized Cove account system.",
+              "Users should treat claim links and wallet environments as sensitive because unauthorized access can compromise funds even if the app itself is privacy-focused.",
+            ],
+          },
+          {
+            title: "6. Data Rights & International Transfers",
+            points: [
+              "Users may have local legal rights relating to personal data depending on jurisdiction, including rights to request information or object to certain processing.",
+              "Because third-party infrastructure may operate across regions, some limited operational metadata could be processed internationally.",
+              "Requests relating to Cove-controlled data will be evaluated in light of the non-custodial architecture and the limited categories of data we intentionally retain.",
+            ],
+          },
+          {
+            title: "7. Contact",
+            points: [
+              "Questions about this Privacy Policy or Cove's data-handling model should be directed through Cove's official public channels or documentation.",
+              "Users should also review the privacy policies of wallets, RPC providers, and hosting vendors that participate in the experience.",
+              "Continued use of the interface after policy changes constitutes acceptance of the updated policy.",
+            ],
+          },
+        ],
+      },
+    },
   },
   fr: {
     nav: {
@@ -405,6 +609,7 @@ const translations: Record<LanguageValue, TranslationTree> = {
         "Privé par défaut. Natif dans le chat. Construit pour la façon dont les utilisateurs Solana déplacent réellement l'argent.",
       launchCove: "Lancer Cove",
       footerBody: "Paiements Solana par lien de réclamation privé.",
+      footerCopyright: "© 2026 Cove. Tous droits réservés.",
       footerX: "Twitter/X",
       footerGithub: "Github",
     },
@@ -493,6 +698,178 @@ const translations: Record<LanguageValue, TranslationTree> = {
       checkingBadge: "Vérification",
       claimedBadge: "Réclamé",
       pendingClaimBadge: "En attente",
+    },
+    legal: {
+      common: {
+        eyebrow: "Mentions légales",
+        atAGlance: "À retenir",
+        quickSummary: "Résumé rapide",
+        openApp: "Ouvrir l'app",
+        termsShort: "Conditions",
+        privacyShort: "Confidentialité",
+      },
+      terms: {
+        title: "Conditions d'utilisation",
+        intro:
+          "Ces conditions décrivent les règles d'utilisation de Cove en tant qu'interface de règlement non dépositaire et respectueuse de la vie privée sur Solana.",
+        ctaPrivacy: "Voir la politique de confidentialité",
+        takeaways: [
+          "Cove est non dépositaire. Vous signez vos propres transactions et gardez le contrôle de votre wallet et de vos liens de réclamation.",
+          "Cove dépend du réseau Solana, du SDK Cloak et d'une infrastructure bêta susceptible d'échouer, de se dégrader ou d'évoluer de manière imprévisible.",
+          "L'utilisation de l'interface n'est autorisée que pour des activités licites, et les interactions avec le protocole restent sous votre responsabilité.",
+        ],
+        sections: [
+          {
+            title: "1. Acceptation des conditions et éligibilité",
+            points: [
+              "En accédant à Cove ou en l'utilisant, vous acceptez ces Conditions d'utilisation et déclarez être légalement en mesure de conclure un accord contraignant.",
+              "Vous êtes responsable de vérifier que l'usage d'une interface de règlement préservant la vie privée est légal dans votre juridiction.",
+              "Si vous n'acceptez pas ces conditions, vous ne devez pas utiliser l'interface Cove ni interagir avec les liens de réclamation générés par Cove.",
+            ],
+          },
+          {
+            title: "2. Utilisation de Cove et du protocole Solana",
+            points: [
+              "Cove est une interface d'application conçue pour des flux de règlement privés sur Solana. Ce n'est ni la blockchain Solana, ni un validateur, ni un fournisseur de wallet.",
+              "Les transactions dépendent du consensus Solana, de l'infrastructure RPC, de la disponibilité du relais, de la compatibilité navigateur et de l'exécution des smart contracts, autant d'éléments que Cove ne contrôle pas.",
+              "Une transaction peut échouer, être retardée ou devenir plus coûteuse si le réseau sous-jacent est congestionné ou si une infrastructure tierce se dégrade.",
+            ],
+          },
+          {
+            title: "3. Comptes et authentification",
+            points: [
+              "Cove ne crée pas de comptes utilisateurs dépositaires pour un usage produit normal. L'accès est assuré par l'authentification cryptographique du wallet.",
+              "Votre wallet, la sécurité de votre appareil, votre phrase de récupération et votre environnement de signature privé restent sous votre responsabilité à tout moment.",
+              "Toute personne obtenant un lien de réclamation privé valide peut être en mesure d'encaisser les fonds sous-jacents ; il est donc essentiel de sécuriser ces liens.",
+            ],
+          },
+          {
+            title: "4. Paiements, séquestre et SDK Cloak (Cove est non dépositaire)",
+            points: [
+              "Cove est une couche de règlement privé non dépositaire sur Solana, propulsée par le SDK Cloak. Nous ne détenons pas les soldes des clients, n'exploitons pas de compte bancaire et n'assurons aucune garde hors chaîne des fonds des utilisateurs.",
+              "Le règlement privé est facilité par une logique de smart contract et des flux transactionnels en zero-knowledge. Le SOL et les stablecoins pris en charge restent soumis aux règles des contrats déployés et du réseau Solana.",
+              "Les frais réseau, le comportement des validateurs, les exigences liées aux comptes de tokens et les conditions d'exécution on-chain échappent au contrôle de Cove, même lorsque l'interface aide à préparer la transaction.",
+            ],
+          },
+          {
+            title: "5. Activités interdites",
+            points: [
+              "Vous ne pouvez pas utiliser Cove pour des activités illégales, le contournement de sanctions, la fraude, la manipulation de marché, le blanchiment ou des tentatives abusives de dissimuler des produits criminels.",
+              "Vous ne pouvez pas perturber l'interface, contourner les limites de débit, attaquer le produit, aspirer une infrastructure privée ou exploiter des vulnérabilités contre Cove, Cloak ou d'autres utilisateurs.",
+              "Vous ne pouvez pas usurper l'identité d'une autre personne, déformer une affiliation ou utiliser Cove d'une manière nuisible au protocole, à ses opérateurs ou à l'écosystème Solana au sens large.",
+            ],
+          },
+          {
+            title: "6. Propriété intellectuelle",
+            points: [
+              "La marque Cove, la présentation de l'interface et les contenus écrits originaux appartiennent à Cove ou à ses concédants, sauf indication contraire.",
+              "Les dépendances open source, y compris les bibliothèques blockchain et wallet, restent régies par leurs propres licences et conditions.",
+              "Vous ne pouvez pas reproduire la marque Cove ou des éléments d'interface propriétaires d'une manière trompeuse sans autorisation.",
+            ],
+          },
+          {
+            title: "7. Avertissements et acceptation du risque bêta",
+            points: [
+              "Cove est un logiciel bêta. Les fonctionnalités, flux de transaction, actifs pris en charge et infrastructure de confidentialité peuvent évoluer sans préavis.",
+              "Vous acceptez le risque de bugs logiciels, d'échecs de génération de preuves, de pannes de relais, d'incohérences RPC, de problèmes de comptes de tokens et d'autres défauts techniques.",
+              "Aucune garantie n'est donnée quant au caractère ininterrompu, exempt d'erreurs ou adapté à un cas d'usage spécifique de l'interface.",
+            ],
+          },
+          {
+            title: "8. Limitation de responsabilité",
+            points: [
+              "Dans la mesure maximale permise par la loi, Cove est fourni 'tel quel' et 'selon disponibilité', sans garantie de qualité marchande, d'adaptation à un usage particulier ou de disponibilité ininterrompue.",
+              "Cove et ses contributeurs ne sont pas responsables des compromissions de wallet, fuites de liens, bugs de smart contracts, réclamations échouées, dépeg de tokens, retards réseau ou autres pertes spécifiques à la blockchain.",
+              "Il vous incombe d'évaluer le risque avant d'utiliser Cove avec des montants significatifs ou dans des flux de paiement en production.",
+            ],
+          },
+          {
+            title: "9. Résiliation et droit applicable",
+            points: [
+              "Nous pouvons restreindre ou interrompre l'accès à l'interface pour cause d'abus, d'incidents de sécurité, de conformité légale ou pour des raisons opérationnelles.",
+              "Ces conditions s'appliquent à votre utilisation de l'interface même si les transactions au niveau réseau restent enregistrées de manière permanente on-chain après la fin de l'accès.",
+              "Le droit applicable et le traitement des litiges s'appliqueront dans la mesure maximale exécutoire compte tenu des circonstances d'utilisation.",
+            ],
+          },
+          {
+            title: "10. Modifications des conditions et contact",
+            points: [
+              "Nous pouvons mettre à jour ces conditions à mesure que Cove évolue, notamment en cas de changement d'actifs pris en charge, d'infrastructure ou d'exigences légales.",
+              "Votre utilisation continue de Cove après l'entrée en vigueur des modifications vaut acceptation des conditions révisées.",
+              "Pour toute question relative à ces conditions, les utilisateurs doivent contacter Cove via ses canaux publics officiels ou sa documentation projet.",
+            ],
+          },
+        ],
+      },
+      privacy: {
+        title: "Politique de confidentialité",
+        intro:
+          "Cette politique explique l'approche de Cove en matière de confidentialité, ce que l'infrastructure web standard peut encore observer et la manière dont le produit traite les données liées aux flux de règlement privés.",
+        ctaTerms: "Voir les conditions d'utilisation",
+        takeaways: [
+          "Cove est conçu pour protéger les détails de paiement on-chain grâce à des flux zero-knowledge au lieu de les exposer publiquement sur Solana.",
+          "L'infrastructure web standard peut tout de même journaliser des métadonnées opérationnelles telles que l'adresse IP, les informations navigateur ou le timing des requêtes.",
+          "Nous ne suivons pas, ne stockons pas et ne vendons pas les données financières sous-jacentes associées à l'activité de règlement privé.",
+        ],
+        sections: [
+          {
+            title: "1. Notre engagement pour la confidentialité et l'architecture zero-knowledge",
+            points: [
+              "Cove est conçu autour d'un règlement préservant la vie privée sur Solana. Notre objectif produit est de réduire le lien public entre l'expéditeur, le destinataire et le flux de paiement lorsque le protocole sous-jacent le permet.",
+              "Ici, la confidentialité concerne principalement les mécanismes de règlement on-chain, et non l'élimination totale de toutes les métadonnées internet ou d'hébergement générées lors de l'utilisation d'un site web.",
+              "Cove est non dépositaire et conçu pour éviter la création d'une base de données utilisateur classique contenant soldes, profils ou historiques financiers.",
+            ],
+          },
+          {
+            title: "2. Informations que nous collectons",
+            points: [
+              "L'interface peut traiter les clés publiques de wallet, les sélections de tokens, les charges utiles transactionnelles et les données de liens de réclamation nécessaires pour préparer, récupérer ou finaliser un flux de transaction.",
+              "Le stockage local du navigateur peut être utilisé pour préserver l'état d'un dépôt ou d'une réclamation en cours afin qu'un utilisateur puisse se remettre d'un rafraîchissement ou d'une interruption.",
+              "Nous n'exigeons pas de création de compte traditionnelle pour l'utilisation normale de l'interface.",
+            ],
+          },
+          {
+            title: "3. Mécanique des preuves ZK (comment nous protégeons vos données)",
+            points: [
+              "Cove utilise le SDK Cloak et des mécanismes de preuve zero-knowledge pour prendre en charge le règlement privé sur Solana.",
+              "Les montants on-chain, le lien expéditeur-destinataire et les détails d'exécution de la réclamation sont conçus pour être protégés par des flux ZK plutôt que publiquement exposés comme des transferts simples.",
+              "Nous ne suivons pas, ne stockons pas et ne vendons pas les données financières sous-jacentes associées à ces transactions protégées, en dehors du traitement technique transitoire requis pour les soumettre ou les récupérer.",
+            ],
+          },
+          {
+            title: "4. Traitement des données par des tiers (Vercel)",
+            points: [
+              "Cove utilise une infrastructure web standard et un hébergement incluant Vercel. Comme beaucoup d'hébergeurs, ces fournisseurs peuvent journaliser des données de connexion de base telles que les adresses IP, les détails navigateur, les métadonnées de requête et les journaux d'erreurs.",
+              "Les fournisseurs de wallets, points RPC et infrastructure de relais peuvent également traiter les informations opérationnelles nécessaires pour fournir l'expérience produit.",
+              "Ces tiers opèrent selon leurs propres conditions et politiques de confidentialité, que les utilisateurs doivent consulter indépendamment.",
+            ],
+          },
+          {
+            title: "5. Sécurité et conservation des données",
+            points: [
+              "Cove cherche à minimiser la conservation et à éviter la collecte inutile. Certaines données peuvent n'exister que dans le stockage navigateur, les journaux réseau ou le traitement éphémère des requêtes.",
+              "Parce que Cove est non dépositaire, de nombreux artefacts transactionnels essentiels n'existent que dans le wallet de l'utilisateur, l'état de son appareil ou le parcours d'exécution on-chain plutôt que dans un système de compte Cove centralisé.",
+              "Les utilisateurs doivent traiter les liens de réclamation et les environnements de wallet comme sensibles, car un accès non autorisé peut compromettre les fonds même si l'application elle-même est orientée confidentialité.",
+            ],
+          },
+          {
+            title: "6. Droits sur les données et transferts internationaux",
+            points: [
+              "Les utilisateurs peuvent disposer de droits légaux locaux relatifs aux données personnelles selon leur juridiction, y compris des droits de demander des informations ou de s'opposer à certains traitements.",
+              "Comme l'infrastructure tierce peut opérer dans plusieurs régions, certaines métadonnées opérationnelles limitées peuvent être traitées à l'international.",
+              "Les demandes portant sur des données contrôlées par Cove seront évaluées à la lumière de l'architecture non dépositaire et des catégories limitées de données que nous conservons intentionnellement.",
+            ],
+          },
+          {
+            title: "7. Contact",
+            points: [
+              "Les questions relatives à cette Politique de confidentialité ou au modèle de traitement des données de Cove doivent être adressées via les canaux publics officiels ou la documentation de Cove.",
+              "Les utilisateurs doivent également consulter les politiques de confidentialité des wallets, fournisseurs RPC et hébergeurs participant à l'expérience.",
+              "L'utilisation continue de l'interface après modification de la politique vaut acceptation de la politique mise à jour.",
+            ],
+          },
+        ],
+      },
     },
   },
 };
