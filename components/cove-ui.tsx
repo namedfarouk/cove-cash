@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 
 import {
@@ -109,6 +110,14 @@ export function WalletModalTrigger({
   className: string;
 }) {
   const { setVisible } = useWalletModal();
+  const { connected, publicKey, wallet } = useWallet();
+
+  const label =
+    connected && publicKey
+      ? `${publicKey.toBase58().slice(0, 4)}...${publicKey.toBase58().slice(-4)}`
+      : connected && wallet?.adapter?.name
+        ? wallet.adapter.name
+        : "Connect Wallet";
 
   return (
     <button
@@ -117,7 +126,7 @@ export function WalletModalTrigger({
       className={className}
     >
       <Wallet className="h-[18px] w-[18px]" />
-      <span>Connect Wallet</span>
+      <span>{label}</span>
     </button>
   );
 }
